@@ -252,8 +252,6 @@ void AnalysisStop::FillAnalysisHistograms(int ichannel,
   h_mlb2truecomb     [ichannel][icut][ijet]->Fill(_mlb2truecomb,       _event_weight);
   h_mt2lblbvsmlbtrue [ichannel][icut][ijet]->Fill(_mlb1true, _mt2lblbtrue,       _event_weight);
   h_mt2lblbvsmlbtrue [ichannel][icut][ijet]->Fill(_mlb2true, _mt2lblbtrue,       _event_weight);
-  h_mt2lblbvsmlbtruecomb [ichannel][icut][ijet]->Fill(_mlb1truecomb, _mt2lblbtrue,       _event_weight);
-  h_mt2lblbvsmlbtruecomb [ichannel][icut][ijet]->Fill(_mlb2truecomb, _mt2lblbtrue,       _event_weight);
 }
 
 
