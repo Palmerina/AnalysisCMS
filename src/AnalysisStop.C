@@ -54,6 +54,8 @@ void AnalysisStop::Loop(TString analysis, TString filename, float luminosity)
 	h_mlb2comb          [i][j][k] = new TH1D("h_mlb2comb"         + suffix, "", 3000,    0, 3000);
 	h_mlb1true          [i][j][k] = new TH1D("h_mlb1true"         + suffix, "", 3000,    0, 3000);
 	h_mlb2true          [i][j][k] = new TH1D("h_mlb2true"         + suffix, "", 3000,    0, 3000);
+	h_mlb1truecomb      [i][j][k] = new TH1D("h_mlb1truecomb"     + suffix, "", 3000,    0, 3000);
+	h_mlb2truecomb      [i][j][k] = new TH1D("h_mlb2truecomb"     + suffix, "", 3000,    0, 3000);
 	h_mt2lblbvsmlbtrue  [i][j][k] = new TH2D("h_mt2lblbvsmlbtrue" + suffix, "",  100,    0, 1000,  100,    0, 1000);
 	
       }
@@ -246,8 +248,12 @@ void AnalysisStop::FillAnalysisHistograms(int ichannel,
   h_mlb2comb         [ichannel][icut][ijet]->Fill(_mlb2comb,       _event_weight);
   h_mlb1true         [ichannel][icut][ijet]->Fill(_mlb1true,       _event_weight);
   h_mlb2true         [ichannel][icut][ijet]->Fill(_mlb2true,       _event_weight);
+  h_mlb1truecomb     [ichannel][icut][ijet]->Fill(_mlb1truecomb,       _event_weight);
+  h_mlb2truecomb     [ichannel][icut][ijet]->Fill(_mlb2truecomb,       _event_weight);
   h_mt2lblbvsmlbtrue [ichannel][icut][ijet]->Fill(_mlb1true, _mt2lblbtrue,       _event_weight);
   h_mt2lblbvsmlbtrue [ichannel][icut][ijet]->Fill(_mlb2true, _mt2lblbtrue,       _event_weight);
+  h_mt2lblbvsmlbtruecomb [ichannel][icut][ijet]->Fill(_mlb1truecomb, _mt2lblbtrue,       _event_weight);
+  h_mt2lblbvsmlbtruecomb [ichannel][icut][ijet]->Fill(_mlb2truecomb, _mt2lblbtrue,       _event_weight);
 }
 
 

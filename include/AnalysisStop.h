@@ -35,6 +35,8 @@ class AnalysisStop : public AnalysisCMS
   TH1D*                  h_mlb2comb         [nchannel][ncut][njetbin+1];
   TH1D*                  h_mlb1true         [nchannel][ncut][njetbin+1];
   TH1D*                  h_mlb2true         [nchannel][ncut][njetbin+1];
+  TH1D*                  h_mlb1truecomb         [nchannel][ncut][njetbin+1];
+  TH1D*                  h_mlb2truecomb         [nchannel][ncut][njetbin+1];
   TH2D*                  h_mt2lblbvsmlbtrue [nchannel][ncut][njetbin+1];
   
 };

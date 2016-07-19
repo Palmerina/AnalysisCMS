@@ -251,6 +251,8 @@ class AnalysisCMS : public AnalysisBase
   float                  _mlb2comb;
   float                  _mlb1true;
   float                  _mlb2true;
+  float                  _mlb1truecomb;
+  float                  _mlb2truecomb;
 
   float                  _bjet1pt;
   float                  _bjet1eta;
