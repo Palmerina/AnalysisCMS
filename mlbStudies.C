@@ -44,7 +44,7 @@ void mlbStudies() {
     mlbHisto[hf]->SetLineColor(HistoCol[hf]);
     mlbcombHisto[hf]->SetLineColor(HistoCol[hf]);
     mlbtrueHisto[hf]->SetLineColor(HistoCol[hf]);
-    mlbcombHisto[hf]->SetLineColor(HistoCol[hf]);
+    mlbtruecombHisto[hf]->SetLineColor(HistoCol[hf]);
 
     mlbHisto[hf]->SetLineStyle(1);
     mlbcombHisto[hf]->SetLineStyle(1);
@@ -59,21 +59,17 @@ void mlbStudies() {
       
     }
 
-
-
-    
-  }
   
   TCanvas *CC = new TCanvas("CC", "", 1200, 400);
   CC->Divide(2, 2);
   TPad *CC1 = (TPad*)CC->GetPad(1); //Ahi va el mlbHisto
-  CC1->SetLogy(); CC1->SetGridx(); CC1->SetGridy(); 
+  CC1->SetGridx(); CC1->SetGridy(); 
   TPad *CC2 = (TPad*)CC->GetPad(2); //Ahi va el mlbcombHisto
-  CC2->SetLogy(); CC2->SetGridx(); CC2->SetGridy(); 
+  CC2->SetGridx(); CC2->SetGridy(); 
   TPad *CC3 = (TPad*)CC->GetPad(3); //Ahi va el mlbtrueHisto
-  CC3->SetLogy(); CC3->SetGridx(); CC3->SetGridy(); 
+  CC3->SetGridx(); CC3->SetGridy(); 
   TPad *CC4 = (TPad*)CC->GetPad(4); //Ahi va el mlbtruecombHisto
-  CC4->SetLogy(); CC4->SetGridx(); CC4->SetGridy(); 
+  CC4->SetGridx(); CC4->SetGridy(); 
 
     
   TString Option = "histo";
@@ -81,7 +77,9 @@ void mlbStudies() {
   for (int hf = 0; hf<2; hf++) {
 
     CC->cd(1); // se pone en el TPad 1 (mlbHisto)
-    mlbHisto[hf]->GetXaxis()->SetRange(1, 80);
+    mlbHisto[hf]->GetXaxis()->SetRange(1, 300);
+    mlbHisto[hf]->SetMaximum(30);
+
     mlbHisto[hf]->GetXaxis()->SetTitle("mlb");
     mlbHisto[hf]->DrawCopy(Option);
     
@@ -92,7 +90,8 @@ void mlbStudies() {
 
 
     CC->cd(2); // se pone en el TPad 2 (mlbcombHisto)
-    mlbcombHisto[hf]->GetXaxis()->SetRange(1, 80);
+    mlbcombHisto[hf]->GetXaxis()->SetRange(1, 300);
+    mlbcombHisto[hf]->SetMaximum(30);
     mlbcombHisto[hf]->GetXaxis()->SetTitle("mlbcomb");
     mlbcombHisto[hf]->DrawCopy(Option);
     
@@ -103,7 +102,8 @@ void mlbStudies() {
  
 
     CC->cd(3); // se pone en el TPad 1 (mlbtrueHisto)
-    mlbtrueHisto[hf]->GetXaxis()->SetRange(1, 80);
+    mlbtrueHisto[hf]->GetXaxis()->SetRange(1, 300);
+    mlbtrueHisto[hf]->SetMaximum(30);
     mlbtrueHisto[hf]->GetXaxis()->SetTitle("mlbtrue");
     mlbtrueHisto[hf]->DrawCopy(Option);
     
@@ -114,7 +114,8 @@ void mlbStudies() {
 
 
     CC->cd(4); // se pone en el TPad 4 (mlbtruecombHisto)
-    mlbtruecombHisto[hf]->GetXaxis()->SetRange(1, 80);
+    mlbtruecombHisto[hf]->GetXaxis()->SetRange(1, 300);
+    mlbtruecombHisto[hf]->SetMaximum(30);
     mlbtruecombHisto[hf]->GetXaxis()->SetTitle("mlbtruecomb");
     mlbtruecombHisto[hf]->DrawCopy(Option);
     
@@ -129,6 +130,6 @@ void mlbStudies() {
 
   }   
 
-  CC->Print(BTag + "_" + mlb + "_" + Reco + ".png");
+  //CC->Print(BTag + "_" + mlb + "_" + Reco + ".png");
   
 }
