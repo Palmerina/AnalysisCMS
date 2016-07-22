@@ -130,6 +130,6 @@ void mlbStudies() {
 
   }   
 
-  //CC->Print(BTag + "_" + mlb + "_" + Reco + ".png");
+  CC->Print(BTag + "_" + mlb[2] + "_" + Reco + ".png");
   
 }
