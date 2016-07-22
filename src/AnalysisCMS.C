@@ -1197,8 +1197,8 @@ void AnalysisCMS::OpenMinitree()
     minitree->Branch("mlb2comb",        &_mlb2comb,        "mlb2comb/F");
     minitree->Branch("mlb1true",        &_mlb1true,        "mlb1true/F");
     minitree->Branch("mlb2true",        &_mlb2true,        "mlb2true/F");
-    minitree->Branch("mlb1truecomb",    &_mlb1truecomb,        "mlb1true/F");
-    minitree->Branch("mlb2truecomb",    &_mlb2truecomb,        "mlb2true/F");
+    minitree->Branch("mlb1truecomb",    &_mlb1truecomb,        "mlb1truecomb/F");
+    minitree->Branch("mlb2truecomb",    &_mlb2truecomb,        "mlb2truecomb/F");
     minitree->Branch("bjet1pt",         &_bjet1pt,         "bjet1pt/F");
     minitree->Branch("bjet1eta",        &_bjet1eta,        "bjet1eta/F");
     minitree->Branch("bjet1phi",        &_bjet1phi,        "bjet1phi/F");
@@ -1677,7 +1677,7 @@ void AnalysisCMS::GetStopVar()
 	if (_tjet2pt==_bjet1pt) _tjet2assignment = 1;
 
 	_mlb1true = (AnalysisJets[IdxB1].v + Lepton1.v).M();
-	_mlb1truecomb = (AnalysisJets[IdxB2].v + Lepton1.v).M();
+	_mlb1truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
 
       }
     }
@@ -1696,7 +1696,7 @@ void AnalysisCMS::GetStopVar()
 	if (_tjet2pt==_bjet2pt) _tjet2assignment = 2;
 
 	_mlb2true = (AnalysisJets[IdxB2].v + Lepton2.v).M();
-	_mlb2truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
+	_mlb2truecomb = (AnalysisJets[IdxB2].v + Lepton1.v).M();
 	
       }
     }
@@ -1725,7 +1725,7 @@ void AnalysisCMS::GetStopVar()
 	if (_tjet2pt==_bjet1pt) _tjet2assignment = 1;
 
 	_mlb1true = (AnalysisJets[IdxB1].v + Lepton1.v).M();
-	_mlb1truecomb = (AnalysisJets[IdxB2].v + Lepton1.v).M();
+	_mlb1truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
 	
       }
     }
@@ -1744,7 +1744,7 @@ void AnalysisCMS::GetStopVar()
 	if (_tjet2pt==_bjet2pt) _tjet2assignment = 2;
 
 	_mlb2true = (AnalysisJets[IdxB2].v + Lepton2.v).M();
-	_mlb2true = (AnalysisJets[IdxB1].v + Lepton2.v).M();
+	_mlb2true = (AnalysisJets[IdxB2].v + Lepton1.v).M();
 	
       }
     }
