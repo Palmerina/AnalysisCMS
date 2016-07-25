@@ -1677,7 +1677,7 @@ void AnalysisCMS::GetStopVar()
 	if (_tjet2pt==_bjet1pt) _tjet2assignment = 1;
 
 	_mlb1true = (AnalysisJets[IdxB1].v + Lepton1.v).M();
-	_mlb1truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
+	_mlb2truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
 
       }
     }
@@ -1696,7 +1696,7 @@ void AnalysisCMS::GetStopVar()
 	if (_tjet2pt==_bjet2pt) _tjet2assignment = 2;
 
 	_mlb2true = (AnalysisJets[IdxB2].v + Lepton2.v).M();
-	_mlb2truecomb = (AnalysisJets[IdxB2].v + Lepton1.v).M();
+	_mlb1truecomb = (AnalysisJets[IdxB2].v + Lepton1.v).M();
 	
       }
     }
@@ -1725,7 +1725,7 @@ void AnalysisCMS::GetStopVar()
 	if (_tjet2pt==_bjet1pt) _tjet2assignment = 1;
 
 	_mlb1true = (AnalysisJets[IdxB1].v + Lepton1.v).M();
-	_mlb1truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
+	_mlb2truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
 	
       }
     }
@@ -1744,7 +1744,7 @@ void AnalysisCMS::GetStopVar()
 	if (_tjet2pt==_bjet2pt) _tjet2assignment = 2;
 
 	_mlb2true = (AnalysisJets[IdxB2].v + Lepton2.v).M();
-	_mlb2true = (AnalysisJets[IdxB2].v + Lepton1.v).M();
+	_mlb1truecomb = (AnalysisJets[IdxB2].v + Lepton1.v).M();
 	
       }
     }
