@@ -17,7 +17,7 @@ void mlbStudies() {
 
   int HistoCol[2] = {4, 2};
 
-  TString BTag = "02_Has2BJet"; // "02_Has2BJet","02_Has1BJet"
+  TString BTag = "02_Has1BJet"; // "02_Has2BJet","02_Has1BJet"
   TString mlb[2]= {"mlb1","mlb2"}; 
   TString mlbcomb[2]= {"mlb1comb","mlb2comb"}; 
   TString mlbtrue[2]= {"mlb1true","mlb2true"}; 
@@ -38,9 +38,6 @@ void mlbStudies() {
     mlbtrueHisto[hf] = (TH1D*) HistoFile->Get(HistoName_mlbtrue);
     mlbtruecombHisto[hf] = (TH1D*) HistoFile->Get(HistoName_mlbtruecomb);
     
-    //MT2Histo[hf]->Rebin(10);
-    //HistoInt[hf] = MT2Histo[hf]->Integral();
-    //MT2Histo[hf]->Scale(1./HistoInt[hf]); // normalization of the histogram
     mlbHisto[hf]->SetLineColor(HistoCol[hf]);
     mlbcombHisto[hf]->SetLineColor(HistoCol[hf]);
     mlbtrueHisto[hf]->SetLineColor(HistoCol[hf]);
@@ -78,8 +75,12 @@ void mlbStudies() {
 
     CC->cd(1); // se pone en el TPad 1 (mlbHisto)
     mlbHisto[hf]->GetXaxis()->SetRange(1, 300);
-    mlbHisto[hf]->SetMaximum(30);
-
+    if (BTag == "02_Has1BJet"){
+   	 mlbHisto[hf]->SetMaximum(60);
+    }
+    else {
+   	 mlbHisto[hf]->SetMaximum(30);
+    }
     mlbHisto[hf]->GetXaxis()->SetTitle("mlb");
     mlbHisto[hf]->DrawCopy(Option);
     
@@ -91,7 +92,12 @@ void mlbStudies() {
 
     CC->cd(2); // se pone en el TPad 2 (mlbcombHisto)
     mlbcombHisto[hf]->GetXaxis()->SetRange(1, 300);
-    mlbcombHisto[hf]->SetMaximum(30);
+    if (BTag == "02_Has1BJet"){
+   	 mlbcombHisto[hf]->SetMaximum(60);
+    }
+    else {
+   	 mlbcombHisto[hf]->SetMaximum(30);
+    }
     mlbcombHisto[hf]->GetXaxis()->SetTitle("mlbcomb");
     mlbcombHisto[hf]->DrawCopy(Option);
     
@@ -103,7 +109,12 @@ void mlbStudies() {
 
     CC->cd(3); // se pone en el TPad 1 (mlbtrueHisto)
     mlbtrueHisto[hf]->GetXaxis()->SetRange(1, 300);
-    mlbtrueHisto[hf]->SetMaximum(30);
+    if (BTag == "02_Has1BJet"){
+   	 mlbtrueHisto[hf]->SetMaximum(60);
+    }
+    else {
+   	 mlbtrueHisto[hf]->SetMaximum(30);
+    }
     mlbtrueHisto[hf]->GetXaxis()->SetTitle("mlbtrue");
     mlbtrueHisto[hf]->DrawCopy(Option);
     
@@ -115,7 +126,12 @@ void mlbStudies() {
 
     CC->cd(4); // se pone en el TPad 4 (mlbtruecombHisto)
     mlbtruecombHisto[hf]->GetXaxis()->SetRange(1, 300);
-    mlbtruecombHisto[hf]->SetMaximum(30);
+    if (BTag == "02_Has1BJet"){
+   	 mlbtruecombHisto[hf]->SetMaximum(60);
+    }
+    else {
+   	 mlbtruecombHisto[hf]->SetMaximum(30);
+    }
     mlbtruecombHisto[hf]->GetXaxis()->SetTitle("mlbtruecomb");
     mlbtruecombHisto[hf]->DrawCopy(Option);
     
@@ -130,6 +146,6 @@ void mlbStudies() {
 
   }   
 
-  CC->Print(BTag + "_" + mlb[2] + "_" + Reco + ".png");
+  CC->Print(BTag + "_mlb_" + Reco + ".png");
   
 }
