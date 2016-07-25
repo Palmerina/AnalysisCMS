@@ -17,7 +17,7 @@ void mlbStudies() {
 
   int HistoCol[2] = {4, 2};
 
-  TString BTag = "02_Has1BJet"; // "02_Has2BJet","02_Has1BJet"
+  TString BTag = "02_Has2BJet"; // "02_Has2BJet","02_Has1BJet"
   TString mlb[2]= {"mlb1","mlb2"}; 
   TString mlbcomb[2]= {"mlb1comb","mlb2comb"}; 
   TString mlbtrue[2]= {"mlb1true","mlb2true"}; 
