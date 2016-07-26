@@ -95,7 +95,9 @@ void AnalysisCMS::FillHistograms(int ichannel, int icut, int ijet)
   h_dphimetptbll  [ichannel][icut][ijet]->Fill(_dphimetptbll,   _event_weight);
   h_mt2ll         [ichannel][icut][ijet]->Fill(_mt2ll,          _event_weight);
   h_mt2bb         [ichannel][icut][ijet]->Fill(_mt2bb,          _event_weight);
-  h_mt2lblb       [ichannel][icut][ijet]->Fill(_mt2lblb,        _event_weight);
+  if (_mlb1true <= 160 && _mlb2true <= 160) {
+  	h_mt2lblb       [ichannel][icut][ijet]->Fill(_mt2lblb,        _event_weight);
+  }
   h_mlb1          [ichannel][icut][ijet]->Fill(_mlb1,           _event_weight);
   h_mlb2          [ichannel][icut][ijet]->Fill(_mlb2,           _event_weight);
 
