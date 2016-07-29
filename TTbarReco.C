@@ -31,8 +31,6 @@ TH1D *h_mt2lblbtrue[2];
 TH1D *h_mt2lblbtrue_cut[2]; 
 
 
-int HistoCol[2] = {4, 2};
-
 TTree *GetMiniTree(TFile *MiniTreeFile) {
 
   TTree *MiniTree = (TTree*) MiniTreeFile->Get("latino"); 
@@ -94,7 +92,7 @@ void TTbarReco() {
   TString FileName[2] = {"./minitrees/nominal/Stop/TTTo2L2Nu.root",
 			 "./minitrees/nominal/Stop/T2tt_mStop500-525-550_mLSP1to425-325to450-1to475.root"};
 
-    TCanvas *CC = new TCanvas("CC", "", 1200, 400);
+    TCanvas *CC = new TCanvas("CC", "", 1200, 700);
     CC->Divide(1, 2);
     TPad *CC1 = (TPad*)CC->GetPad(1); //Ahi va el h_mt2mlblbtrue
     CC1->SetGridx(); CC1->SetGridy(); 
@@ -102,6 +100,11 @@ void TTbarReco() {
 
     TString Option = "histo";
     TString Histoname[2] = {"h_mt2lblb", "h_mt2lblb_cut"};
+
+    int HistoCol[2] = {4, 2};
+    float mt2lblbtrue_Int[2];
+    float mt2lblbtrue_cut_Int[2];
+
 
   for (int dt = 0; dt<2; dt++) {
 
@@ -116,14 +119,6 @@ void TTbarReco() {
     h_mt2lblbtrue[dt] = new TH1D(Histoname[dt],"h_mt2lblbtrue",   3000, 0, 3000); //2 histos para top y stop
     h_mt2lblbtrue_cut[dt] = new TH1D(Histoname[dt], "h_mt2lblbtrue_cut", 3000, 0, 3000); //2 histos para top y stop
 
-    h_mt2lblbtrue[dt] -> SetLineColor(HistoCol[dt]);
-    h_mt2lblbtrue_cut[dt] -> SetLineColor(HistoCol[dt]);
-
-    h_mt2lblbtrue[dt] -> SetLineStyle(1);
-    h_mt2lblbtrue_cut[dt] -> SetLineStyle(1);
-
-    h_mt2lblbtrue[dt] -> SetLineWidth(2);
-    h_mt2lblbtrue_cut[dt] -> SetLineWidth(2);
 
 
     for (Int_t i = 0; i<nentries; i++) {
@@ -145,10 +140,24 @@ void TTbarReco() {
       else 
 	continue;
       
-      cout << njet << " " << channel << " " << metPfType1 << endl;
+      //cout << njet << " " << channel << " " << metPfType1 << endl;
       
     }
 
+    mt2lblbtrue_Int[dt] = h_mt2lblbtrue[dt]->Integral();
+    h_mt2lblbtrue[dt]->Scale(1./mt2lblbtrue_Int[dt]); // normalization of the histogram
+
+    mt2lblbtrue_cut_Int[dt] = h_mt2lblbtrue_cut[dt]->Integral();
+    h_mt2lblbtrue_cut[dt]->Scale(1./mt2lblbtrue_cut_Int[dt]); // normalization of the histogram
+
+    h_mt2lblbtrue[dt] -> SetLineColor(HistoCol[dt]);
+    h_mt2lblbtrue_cut[dt] -> SetLineColor(HistoCol[dt]);
+
+    h_mt2lblbtrue[dt] -> SetLineStyle(1);
+    h_mt2lblbtrue_cut[dt] -> SetLineStyle(1);
+
+    h_mt2lblbtrue[dt] -> SetLineWidth(2);
+    h_mt2lblbtrue_cut[dt] -> SetLineWidth(2);
     CC->cd(1); // se pone en el TPad 1 
     h_mt2lblbtrue[dt]->GetXaxis()->SetRange(1, 300);
     h_mt2lblbtrue[dt]->GetXaxis()->SetTitle("MT2lblb");
@@ -164,14 +173,15 @@ void TTbarReco() {
     h_mt2lblbtrue_cut[dt]->GetXaxis()->SetTitle("MT2lblb with mlb<160");
     h_mt2lblbtrue_cut[dt]->DrawCopy(Option);
     
-    TLegend *leg2 = new TLegend(0.5,0.75,0.7,0.9);
-    leg1->AddEntry(h_mt2lblbtrue_cut[0],"top","l");
-    leg1->AddEntry(h_mt2lblbtrue_cut[1],"stop","l");
-    leg1->Draw();
+    //TLegend *leg2 = new TLegend(0.5,0.75,0.7,0.9);
+    //leg1->AddEntry(h_mt2lblbtrue_cut[0],"top","l");
+    //leg1->AddEntry(h_mt2lblbtrue_cut[1],"stop","l");
+    //leg1->Draw();
 
     Option= "histosame";
      
 
  }
 
+  CC->Print("mt2lblb.png");
 }
