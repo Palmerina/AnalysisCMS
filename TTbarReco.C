@@ -26,6 +26,13 @@ float tjet2pt, tjet2phi, tjet2eta, tjet2mass, tjet2csvv2ivf, tjet2assignment;
 float bjet1pt, bjet1phi, bjet1eta, bjet1mass, bjet1csvv2ivf;
 float bjet2pt, bjet2phi, bjet2eta, bjet2mass, bjet2csvv2ivf;
 
+
+TH1D *h_mt2lblbtrue[2]; 
+TH1D *h_mt2lblbtrue_cut[2]; 
+
+
+int HistoCol[2] = {4, 2};
+
 TTree *GetMiniTree(TFile *MiniTreeFile) {
 
   TTree *MiniTree = (TTree*) MiniTreeFile->Get("latino"); 
@@ -87,6 +94,15 @@ void TTbarReco() {
   TString FileName[2] = {"./minitrees/nominal/Stop/TTTo2L2Nu.root",
 			 "./minitrees/nominal/Stop/T2tt_mStop500-525-550_mLSP1to425-325to450-1to475.root"};
 
+    TCanvas *CC = new TCanvas("CC", "", 1200, 400);
+    CC->Divide(1, 2);
+    TPad *CC1 = (TPad*)CC->GetPad(1); //Ahi va el h_mt2mlblbtrue
+    CC1->SetGridx(); CC1->SetGridy(); 
+    TPad *CC2 = (TPad*)CC->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
+
+    TString Option = "histo";
+    TString Histoname[2] = {"h_mt2lblb", "h_mt2lblb_cut"};
+
   for (int dt = 0; dt<2; dt++) {
 
     TFile *MiniTreeFile = TFile::Open(FileName[dt]);
@@ -95,6 +111,21 @@ void TTbarReco() {
     
     Int_t nentries = (Int_t) MiniTree->GetEntries();
     
+
+    //Histogramas mt2lblb con corte y sin corte
+    h_mt2lblbtrue[dt] = new TH1D(Histoname[dt],"h_mt2lblbtrue",   3000, 0, 3000); //2 histos para top y stop
+    h_mt2lblbtrue_cut[dt] = new TH1D(Histoname[dt], "h_mt2lblbtrue_cut", 3000, 0, 3000); //2 histos para top y stop
+
+    h_mt2lblbtrue[dt] -> SetLineColor(HistoCol[dt]);
+    h_mt2lblbtrue_cut[dt] -> SetLineColor(HistoCol[dt]);
+
+    h_mt2lblbtrue[dt] -> SetLineStyle(1);
+    h_mt2lblbtrue_cut[dt] -> SetLineStyle(1);
+
+    h_mt2lblbtrue[dt] -> SetLineWidth(2);
+    h_mt2lblbtrue_cut[dt] -> SetLineWidth(2);
+
+
     for (Int_t i = 0; i<nentries; i++) {
       
       MiniTree->GetEntry(i);
@@ -102,11 +133,45 @@ void TTbarReco() {
       // Apply ttbar selection
       if (njet<2) continue;
       if (nbjet30csvv2m<1) continue;
+
+
+      //Histogramas mt2lblbtrue para el top y el stop
+
+       h_mt2lblbtrue[dt] -> Fill(mt2lblbtrue, eventW);	
+      
+      if (mlb1true <= 160 && mlb2true <= 160) {
+	h_mt2lblbtrue_cut[dt] -> Fill(mt2lblbtrue, eventW);
+      }
+      else 
+	continue;
       
       cout << njet << " " << channel << " " << metPfType1 << endl;
       
     }
 
-  }
+    CC->cd(1); // se pone en el TPad 1 
+    h_mt2lblbtrue[dt]->GetXaxis()->SetRange(1, 300);
+    h_mt2lblbtrue[dt]->GetXaxis()->SetTitle("MT2lblb");
+    h_mt2lblbtrue[dt]->DrawCopy(Option);
+    
+    TLegend *leg1 = new TLegend(0.5,0.75,0.7,0.9);
+    leg1->AddEntry(h_mt2lblbtrue[0],"top","l");
+    leg1->AddEntry(h_mt2lblbtrue[1],"stop","l");
+    leg1->Draw();
+
+    CC->cd(2); // se pone en el TPad 2 
+    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetRange(1, 300);
+    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetTitle("MT2lblb with mlb<160");
+    h_mt2lblbtrue_cut[dt]->DrawCopy(Option);
+    
+    TLegend *leg2 = new TLegend(0.5,0.75,0.7,0.9);
+    leg1->AddEntry(h_mt2lblbtrue_cut[0],"top","l");
+    leg1->AddEntry(h_mt2lblbtrue_cut[1],"stop","l");
+    leg1->Draw();
+
+    Option= "histosame";
+     
+
+ }
 
 }
