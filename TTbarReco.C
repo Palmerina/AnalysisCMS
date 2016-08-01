@@ -103,6 +103,7 @@ void TTbarReco() {
 
   for (int dt = 0; dt<2; dt++) {
 
+                	cout << "dt: " << dt<<endl;                
     TFile *MiniTreeFile = TFile::Open(FileName[dt]);
     
     TTree *MiniTree = GetMiniTree(MiniTreeFile);
@@ -118,19 +119,23 @@ void TTbarReco() {
 
     for (Int_t i = 0; i<nentries; i++) {
       
+                	cout << "i: " << i<<endl;                
       MiniTree->GetEntry(i);
       
       // Apply ttbar selection
-      if (njet<2) continue;
-      if (nbjet30csvv2m<1) continue;
+      //if (njet<2) continue;
+      //if (nbjet30csvv2m<1) continue;
 
 
+                	cout <<"mt2lblbtrue:" << mt2lblbtrue<<endl;          
       //Histogramas mt2lblbtrue para el top y el stop
        if (dt == 0) {
 		h_mt2lblbtrue_top[0] -> Fill(mt2lblbtrue, eventW);	
-      
+                cout << mt2lblbtrue<<endl;                
+
       		if (mlb1true <= 160 && mlb2true <= 160) {
 			h_mt2lblbtrue_top[1] -> Fill(mt2lblbtrue, eventW);
+                	cout << mt2lblbtrue<<endl;                
       		}		
        	
       		else 
@@ -139,8 +144,10 @@ void TTbarReco() {
        else {
 		h_mt2lblbtrue_stop[0] -> Fill(mt2lblbtrue, eventW);	
       
+                	cout << mt2lblbtrue<<endl;                
       		if (mlb1true <= 160 && mlb2true <= 160) {
 			h_mt2lblbtrue_stop[1] -> Fill(mt2lblbtrue, eventW);
+                	cout << mt2lblbtrue<<endl;                
       		}	
       		else 
 			continue;
@@ -192,9 +199,9 @@ void TTbarReco() {
     leg1->Draw();
 
     TLegend *leg2 = new TLegend(0.5,0.75,0.7,0.9);
-    leg1->AddEntry(h_mt2lblbtrue_stop[0],"stop","l");
-    leg1->AddEntry(h_mt2lblbtrue_stop[1],"stop (mlbtrue < 160)","l");
-    leg1->Draw();
+    leg2->AddEntry(h_mt2lblbtrue_stop[0],"stop","l");
+    leg2->AddEntry(h_mt2lblbtrue_stop[1],"stop (mlbtrue < 160)","l");
+    leg2->Draw();
 
   CC->Print("mt2lblb.png");
 }
