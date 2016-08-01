@@ -27,8 +27,8 @@ float bjet1pt, bjet1phi, bjet1eta, bjet1mass, bjet1csvv2ivf;
 float bjet2pt, bjet2phi, bjet2eta, bjet2mass, bjet2csvv2ivf;
 
 
-TH1D *h_mt2lblbtrue[2]; 
-TH1D *h_mt2lblbtrue_cut[2]; 
+TH1D *h_mt2lblbtrue_top[2]; 
+TH1D *h_mt2lblbtrue_stop[2]; 
 
 
 TTree *GetMiniTree(TFile *MiniTreeFile) {
@@ -92,18 +92,13 @@ void TTbarReco() {
   TString FileName[2] = {"./minitrees/nominal/Stop/TTTo2L2Nu.root",
 			 "./minitrees/nominal/Stop/T2tt_mStop500-525-550_mLSP1to425-325to450-1to475.root"};
 
-    TCanvas *CC = new TCanvas("CC", "", 1200, 700);
-    CC->Divide(1, 2);
-    TPad *CC1 = (TPad*)CC->GetPad(1); //Ahi va el h_mt2mlblbtrue
-    CC1->SetGridx(); CC1->SetGridy(); 
-    TPad *CC2 = (TPad*)CC->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
 
     TString Option = "histo";
-    TString Histoname[2] = {"h_mt2lblb", "h_mt2lblb_cut"};
+    TString Histoname[2] = {"h_mt2lblb_top", "h_mt2lblb_stop"};
 
     int HistoCol[2] = {4, 2};
-    float mt2lblbtrue_Int[2];
-    float mt2lblbtrue_cut_Int[2];
+    float mt2lblb_top_Int[2];
+    float mt2lblb_stop_Int[2];
 
 
   for (int dt = 0; dt<2; dt++) {
@@ -116,8 +111,8 @@ void TTbarReco() {
     
 
     //Histogramas mt2lblb con corte y sin corte
-    h_mt2lblbtrue[dt] = new TH1D(Histoname[dt],"h_mt2lblbtrue",   3000, 0, 3000); //2 histos para top y stop
-    h_mt2lblbtrue_cut[dt] = new TH1D(Histoname[dt], "h_mt2lblbtrue_cut", 3000, 0, 3000); //2 histos para top y stop
+    h_mt2lblbtrue_top[dt] = new TH1D(Histoname[0],"h_mt2lblbtrue_top",   3000, 0, 3000); //2 histos para top y stop
+    h_mt2lblbtrue_stop[dt] = new TH1D(Histoname[1], "h_mt2lblbtrue_stop", 3000, 0, 3000); //2 histos para top y stop
 
 
 
@@ -131,57 +126,76 @@ void TTbarReco() {
 
 
       //Histogramas mt2lblbtrue para el top y el stop
-
-       h_mt2lblbtrue[dt] -> Fill(mt2lblbtrue, eventW);	
+       if (dt == 0) {
+		h_mt2lblbtrue_top[0] -> Fill(mt2lblbtrue, eventW);	
       
-      if (mlb1true <= 160 && mlb2true <= 160) {
-	h_mt2lblbtrue_cut[dt] -> Fill(mt2lblbtrue, eventW);
-      }
-      else 
-	continue;
+      		if (mlb1true <= 160 && mlb2true <= 160) {
+			h_mt2lblbtrue_top[1] -> Fill(mt2lblbtrue, eventW);
+      		}		
+       	
+      		else 
+			continue;
+       }
+       else {
+		h_mt2lblbtrue_stop[0] -> Fill(mt2lblbtrue, eventW);	
       
-      //cout << njet << " " << channel << " " << metPfType1 << endl;
-      
-    }
+      		if (mlb1true <= 160 && mlb2true <= 160) {
+			h_mt2lblbtrue_stop[1] -> Fill(mt2lblbtrue, eventW);
+      		}	
+      		else 
+			continue;
+       }   
+     }
+   }
 
-    mt2lblbtrue_Int[dt] = h_mt2lblbtrue[dt]->Integral();
-    h_mt2lblbtrue[dt]->Scale(1./mt2lblbtrue_Int[dt]); // normalization of the histogram
+    TCanvas *CC = new TCanvas("CC", "", 1200, 700);
+    CC->Divide(1, 2);
+    TPad *CC1 = (TPad*)CC->GetPad(1); //Ahi va el h_mt2mlblbtrue
+    CC1->SetGridx(); CC1->SetGridy(); 
+    TPad *CC2 = (TPad*)CC->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
 
-    mt2lblbtrue_cut_Int[dt] = h_mt2lblbtrue_cut[dt]->Integral();
-    h_mt2lblbtrue_cut[dt]->Scale(1./mt2lblbtrue_cut_Int[dt]); // normalization of the histogram
+   for (int dt = 0; dt<2; dt++) {
 
-    h_mt2lblbtrue[dt] -> SetLineColor(HistoCol[dt]);
-    h_mt2lblbtrue_cut[dt] -> SetLineColor(HistoCol[dt]);
+    mt2lblb_top_Int[dt] = h_mt2lblbtrue_top[dt]->Integral();
+    h_mt2lblbtrue_top[dt]->Scale(1./mt2lblb_top_Int[dt]); // normalization of the histogram
 
-    h_mt2lblbtrue[dt] -> SetLineStyle(1);
-    h_mt2lblbtrue_cut[dt] -> SetLineStyle(1);
+    mt2lblb_stop_Int[dt] = h_mt2lblbtrue_stop[dt]->Integral();
+    h_mt2lblbtrue_stop[dt]->Scale(1./mt2lblb_stop_Int[dt]); // normalization of the histogram
 
-    h_mt2lblbtrue[dt] -> SetLineWidth(2);
-    h_mt2lblbtrue_cut[dt] -> SetLineWidth(2);
+    h_mt2lblbtrue_top[dt] -> SetLineColor(HistoCol[dt]);
+    h_mt2lblbtrue_stop[dt] -> SetLineColor(HistoCol[dt]);
+
+    h_mt2lblbtrue_top[dt] -> SetLineStyle(1);
+    h_mt2lblbtrue_stop[dt] -> SetLineStyle(1);
+
+    h_mt2lblbtrue_top[dt] -> SetLineWidth(2);
+    h_mt2lblbtrue_stop[dt] -> SetLineWidth(2);
     CC->cd(1); // se pone en el TPad 1 
-    h_mt2lblbtrue[dt]->GetXaxis()->SetRange(1, 300);
-    h_mt2lblbtrue[dt]->GetXaxis()->SetTitle("MT2lblb");
-    h_mt2lblbtrue[dt]->DrawCopy(Option);
+    h_mt2lblbtrue_top[dt]->GetXaxis()->SetRange(1, 300);
+    h_mt2lblbtrue_top[dt]->GetXaxis()->SetTitle("MT2lblb top");
+    h_mt2lblbtrue_stop[dt]->DrawCopy(Option);
     
-    TLegend *leg1 = new TLegend(0.5,0.75,0.7,0.9);
-    leg1->AddEntry(h_mt2lblbtrue[0],"top","l");
-    leg1->AddEntry(h_mt2lblbtrue[1],"stop","l");
-    leg1->Draw();
 
     CC->cd(2); // se pone en el TPad 2 
-    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetRange(1, 300);
-    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetTitle("MT2lblb with mlb<160");
-    h_mt2lblbtrue_cut[dt]->DrawCopy(Option);
+    h_mt2lblbtrue_stop[dt]->GetXaxis()->SetRange(1, 300);
+    h_mt2lblbtrue_stop[dt]->GetXaxis()->SetTitle("MT2lblb stop");
+    h_mt2lblbtrue_stop[dt]->DrawCopy(Option);
     
-    //TLegend *leg2 = new TLegend(0.5,0.75,0.7,0.9);
-    //leg1->AddEntry(h_mt2lblbtrue_cut[0],"top","l");
-    //leg1->AddEntry(h_mt2lblbtrue_cut[1],"stop","l");
-    //leg1->Draw();
 
     Option= "histosame";
      
-
  }
+ 
+    TLegend *leg1 = new TLegend(0.5,0.75,0.7,0.9);
+    leg1->AddEntry(h_mt2lblbtrue_top[0],"top","l");
+    leg1->AddEntry(h_mt2lblbtrue_top[1],"top (mlbtrue < 160)","l");
+    leg1->Draw();
+
+    TLegend *leg2 = new TLegend(0.5,0.75,0.7,0.9);
+    leg1->AddEntry(h_mt2lblbtrue_stop[0],"stop","l");
+    leg1->AddEntry(h_mt2lblbtrue_stop[1],"stop (mlbtrue < 160)","l");
+    leg1->Draw();
 
   CC->Print("mt2lblb.png");
 }
+
