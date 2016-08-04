@@ -158,7 +158,7 @@ void TTbarRecoSignif() {
     h_mt2lblbtrue_cut[dt] -> SetLineColor(HistoCol[dt]);
     h_mt2lblbInteg[dt] -> SetLineColor(HistoCol[dt]);
     h_mt2lblbInteg_cut[dt] -> SetLineColor(HistoCol[dt]);
-    h_mt2lblbSignif -> SetLineColor(HistoCol[dt]);
+    h_mt2lblbSignif -> SetLineColor(1);
     h_mt2lblbSignif_cut -> SetLineColor(1);
 
     h_mt2lblbtrue[dt] -> SetLineStyle(1);
@@ -183,6 +183,7 @@ void TTbarRecoSignif() {
  	int nBinsX = h_mt2lblbtrue[hf]->GetNbinsX();
  	int nBinsX_cut = h_mt2lblbtrue_cut[hf]->GetNbinsX();
     	float ThisBinContent = 1.;
+    	float ThisBinContent_cut = 1.;
 
 	for (int ib = 1; ib<=nBinsX; ib++) { // loop through the bins
     	// Asigna el valor 1 al primer bin y va restando el contenido del bin anterior a los siguientes
@@ -190,15 +191,12 @@ void TTbarRecoSignif() {
       		ThisBinContent -= h_mt2lblbtrue[hf]->GetBinContent(ib); // le resta el valor del bin ib del histograma MT2Histo a ThisBinContent. 
     
   
-   }	
+   	
 
-	for (int ib = 1; ib<=nBinsX_cut; ib++) { // loop through the bins
-    	// Asigna el valor 1 al primer bin y va restando el contenido del bin anterior a los siguientes
-      		h_mt2lblbInteg_cut[hf]->SetBinContent(ib, ThisBinContent); // asigna el valor ThisBinContent al bin ib
-      		ThisBinContent -= h_mt2lblbtrue_cut[hf]->GetBinContent(ib); // le resta el valor del bin ib del histograma MT2Histo a ThisBinContent. 
+      		h_mt2lblbInteg_cut[hf]->SetBinContent(ib, ThisBinContent_cut); // asigna el valor ThisBinContent al bin ib
+      		ThisBinContent_cut -= h_mt2lblbtrue_cut[hf]->GetBinContent(ib); // le resta el valor del bin ib del histograma MT2Histo a ThisBinContent. 
+	}
 
-
-   	}
 
     }
 
