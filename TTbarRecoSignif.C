@@ -212,8 +212,8 @@ void TTbarRecoSignif() {
      		h_mt2lblbSignif->SetBinContent(ib,significance); 
   
    	
-     		float	topBackground_cut = mt2lblbtrue_cut_Int[0] * h_mt2lblbInteg_cut[0]->GetBinContent(ib); 
-     		float	stopEvents_cut =  mt2lblbtrue_cut_Int[1] * h_mt2lblbInteg_cut[1]->GetBinContent(ib);
+     		float	topBackground_cut = mt2lblbtrue_Int[0] * h_mt2lblbInteg_cut[0]->GetBinContent(ib); 
+     		float	stopEvents_cut =  mt2lblbtrue_Int[1] * h_mt2lblbInteg_cut[1]->GetBinContent(ib);
 		if (topBackground_cut + stopEvents_cut <= 0.) continue;
 		float	significance_cut = stopEvents_cut/(std::sqrt(stopEvents_cut+topBackground_cut));
      		h_mt2lblbSignif_cut->SetBinContent(ib,significance_cut); 
