@@ -117,7 +117,11 @@ void MT2lblbHistos() {
     for (Int_t i = 0; i<nentries; i++) {
       
       MiniTree->GetEntry(i);
-             h_mt2lblbtrue[dt] -> Fill(mt2lblbtrue, eventW);	
+
+      // Apply ttbar selection
+      if (njet<2) continue;
+      
+        h_mt2lblbtrue[dt] -> Fill(mt2lblbtrue, eventW);	
       
       if (mlb1true <= 160 && mlb2true <= 160) {
 	h_mt2lblbtrue_cut[dt] -> Fill(mt2lblbtrue, eventW);
