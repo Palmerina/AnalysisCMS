@@ -74,10 +74,10 @@ void MT2lblbStudies() {
    for (int dt  = 0; dt<2; dt++) {
 
 
-    mt2lblbtrue_Int[dt] = h_mt2lblbtrue[dt]->Integral();
+    mt2lblbtrue_Int[dt] = h_mt2lblbtrue[dt]->Integral(0,3001);
     h_mt2lblbtrue[dt]->Scale(1./mt2lblbtrue_Int[dt]); // normalization of the histogram
 
-    mt2lblbtrue_cut_Int[dt] = h_mt2lblbtrue_cut[dt]->Integral();
+    mt2lblbtrue_cut_Int[dt] = h_mt2lblbtrue_cut[dt]->Integral(0,3001);
     h_mt2lblbtrue_cut[dt]->Scale(1./mt2lblbtrue_cut_Int[dt]); // normalization of the histogram
 
 
