@@ -91,7 +91,7 @@ TTree *GetMiniTree(TFile *MiniTreeFile) {
 
 }
 
-void TTbarRecoSignif() {
+void MT2lblbStudies() {
 
   TString FileName[2] = {"./minitrees/nominal/Stop/TTTo2L2Nu.root",
 			 "./minitrees/nominal/Stop/T2tt_mStop500-525-550_mLSP1to425-325to450-1to475.root"};
@@ -275,5 +275,5 @@ void TTbarRecoSignif() {
  
     OutFile->Close(); 
 
-    CC->Print("TTbarRecoSignif.png");
+    CC->Print("MT2lblbStudies.png");
 }
