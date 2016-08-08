@@ -100,8 +100,6 @@ void MT2lblbHistos() {
     TString Histoname[2] = {"_top", "_stop"};
 
     int HistoCol[2] = {4, 2};
-    float mt2lblbtrue_Int[2];
-    float mt2lblbtrue_cut_Int[2];
 
 
   for (int dt = 0; dt<2; dt++) {
@@ -127,12 +125,6 @@ void MT2lblbHistos() {
       else 
 	continue;
     }
-
-    mt2lblbtrue_Int[dt] = h_mt2lblbtrue[dt]->Integral();
-    h_mt2lblbtrue[dt]->Scale(1./mt2lblbtrue_Int[dt]); // normalization of the histogram
-
-    mt2lblbtrue_cut_Int[dt] = h_mt2lblbtrue_cut[dt]->Integral();
-    h_mt2lblbtrue_cut[dt]->Scale(1./mt2lblbtrue_cut_Int[dt]); // normalization of the histogram
 
    // h_mt2lblbtrue[dt] -> SetLineColor(HistoCol[dt]);
    // h_mt2lblbtrue_cut[dt] -> SetLineColor(HistoCol[dt]);
