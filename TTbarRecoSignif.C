@@ -112,7 +112,7 @@ void TTbarRecoSignif() {
     CC6->SetGridx(); CC6->SetGridy(); 
 
     TString Option = "histo";
-    TString Histoname[2] = {"h_mt2lblb", "h_mt2lblb_cut"};
+    TString Histoname[2] = {"_top", "_stop"};
 
     int HistoCol[2] = {4, 2};
     float mt2lblbtrue_Int[2];
@@ -127,12 +127,12 @@ void TTbarRecoSignif() {
     
     Int_t nentries = (Int_t) MiniTree->GetEntries();
     
-    h_mt2lblbtrue[dt] = new TH1D(Histoname[dt],"h_mt2lblbtrue",   3000, 0, 3000); //2 histos para top y stop
-    h_mt2lblbtrue_cut[dt] = new TH1D(Histoname[dt], "h_mt2lblbtrue_cut", 3000, 0, 3000); //2 histos para top y stop
-    h_mt2lblbInteg[dt] = new TH1D("h_mt2lblbInteg", "h_mt2lblbInteg", 3000, 0, 3000); //2 histos para top y stop
-    h_mt2lblbInteg_cut[dt] = new TH1D("h_mt2lblbInteg_cut", "h_mt2lblbInteg_cut", 3000, 0, 3000); //2 histos para top y stop
-    h_mt2lblbSignif = new TH1D("h_mt2lblbSignif", "h_mt2lblbSignif", 3000, 0, 3000); //2 histos para top y stop
-    h_mt2lblbSignif_cut = new TH1D("h_mt2lblbSignif_cut", "h_mt2lblbSignif_cut", 3000, 0, 3000); //2 histos para top y stop
+    h_mt2lblbtrue[dt] = new TH1D("h_mt2lblbtrue" + Histoname[dt],"h_mt2lblbtrue",   3000, 0, 3000); //2 histos para top y stop
+    h_mt2lblbtrue_cut[dt] = new TH1D("h_mt2lblbtrue_cut" + Histoname[dt], "h_mt2lblbtrue_cut", 3000, 0, 3000); //2 histos para top y stop
+    h_mt2lblbInteg[dt] = new TH1D("h_mt2lblbInteg" + Histoname[dt], "h_mt2lblbInteg", 3000, 0, 3000); //2 histos para top y stop
+    h_mt2lblbInteg_cut[dt] = new TH1D("h_mt2lblbInteg_cut" + Histoname[dt], "h_mt2lblbInteg_cut", 3000, 0, 3000); //2 histos para top y stop
+    h_mt2lblbSignif = new TH1D("h_mt2lblbSignif" + Histoname[dt], "h_mt2lblbSignif", 3000, 0, 3000); //2 histos para top y stop
+    h_mt2lblbSignif_cut = new TH1D("h_mt2lblbSignif_cut" + Histoname[dt], "h_mt2lblbSignif_cut", 3000, 0, 3000); //2 histos para top y stop
 
 
 
@@ -225,47 +225,55 @@ void TTbarRecoSignif() {
     
     for (int dt = 0; dt<2; dt++) { // stop or top
 
-    CC->cd(1); // se pone en el TPad 1 
-    h_mt2lblbtrue[dt]->GetXaxis()->SetRange(1, 300);
-    h_mt2lblbtrue[dt]->GetXaxis()->SetTitle("MT2lblb");
-    h_mt2lblbtrue[dt]->DrawCopy(Option);
-    
-    TLegend *leg1 = new TLegend(0.5,0.75,0.7,0.9);
-    leg1->AddEntry(h_mt2lblbtrue[0],"top","l");
-    leg1->AddEntry(h_mt2lblbtrue[1],"stop","l");
-    leg1->Draw();
+	    CC->cd(1); // se pone en el TPad 1 
+	    h_mt2lblbtrue[dt]->GetXaxis()->SetRange(1, 300);
+	    h_mt2lblbtrue[dt]->GetXaxis()->SetTitle("MT2lblb");
+	    h_mt2lblbtrue[dt]->DrawCopy(Option);
+	    
+	    TLegend *leg1 = new TLegend(0.5,0.75,0.7,0.9);
+	    leg1->AddEntry(h_mt2lblbtrue[0],"top","l");
+	    leg1->AddEntry(h_mt2lblbtrue[1],"stop","l");
+	    leg1->Draw();
 
-    CC->cd(2); // se pone en el TPad 2 
-    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetRange(1, 300);
-    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetTitle("MT2lblb with mlb<160");
-    h_mt2lblbtrue_cut[dt]->DrawCopy(Option);
-    
-    CC->cd(3); // se pone en el TPad 1 
-    h_mt2lblbInteg[dt]->GetXaxis()->SetRange(1, 300);
-    h_mt2lblbInteg[dt]->GetXaxis()->SetTitle("MT2lblb integral");
-    h_mt2lblbInteg[dt]->DrawCopy(Option);
+	    CC->cd(2); // se pone en el TPad 2 
+	    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetRange(1, 300);
+	    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetTitle("MT2lblb with mlb<160");
+	    h_mt2lblbtrue_cut[dt]->DrawCopy(Option);
+	    
+	    CC->cd(3); // se pone en el TPad 1 
+	    h_mt2lblbInteg[dt]->GetXaxis()->SetRange(1, 300);
+	    h_mt2lblbInteg[dt]->GetXaxis()->SetTitle("MT2lblb integral");
+	    h_mt2lblbInteg[dt]->DrawCopy(Option);
+	    
+
+	    CC->cd(4); // se pone en el TPad 1 
+	    h_mt2lblbInteg_cut[dt]->GetXaxis()->SetRange(1, 300);
+	    h_mt2lblbInteg_cut[dt]->GetXaxis()->SetTitle("MT2lblb integral with cut");
+	    h_mt2lblbInteg_cut[dt]->DrawCopy(Option);
+	    
+	    CC->cd(5); // se pone en el TPad 1 
+	    h_mt2lblbSignif->GetXaxis()->SetRange(1, 300);
+	    h_mt2lblbSignif->GetXaxis()->SetTitle("Significance");
+	    h_mt2lblbSignif->DrawCopy(Option);
+	    
+	    CC->cd(6); // se pone en el TPad 1 
+	    h_mt2lblbSignif_cut->GetXaxis()->SetRange(1, 300);
+	    h_mt2lblbSignif_cut->GetXaxis()->SetTitle("Significance with cut");
+	    h_mt2lblbSignif_cut->DrawCopy(Option);
     
 
-    CC->cd(4); // se pone en el TPad 1 
-    h_mt2lblbInteg_cut[dt]->GetXaxis()->SetRange(1, 300);
-    h_mt2lblbInteg_cut[dt]->GetXaxis()->SetTitle("MT2lblb integral with cut");
-    h_mt2lblbInteg_cut[dt]->DrawCopy(Option);
-    
-    CC->cd(5); // se pone en el TPad 1 
-    h_mt2lblbSignif->GetXaxis()->SetRange(1, 300);
-    h_mt2lblbSignif->GetXaxis()->SetTitle("Significance");
-    h_mt2lblbSignif->DrawCopy(Option);
-    
-    CC->cd(6); // se pone en el TPad 1 
-    h_mt2lblbSignif_cut->GetXaxis()->SetRange(1, 300);
-    h_mt2lblbSignif_cut->GetXaxis()->SetTitle("Significance with cut");
-    h_mt2lblbSignif_cut->DrawCopy(Option);
-    
+	    Option= "histosame";
+    }   
 
-    Option= "histosame";
-  }   
+    TFile *OutFile = new TFile("TTbarRecoSignif.root", "recreate");
 
+    for (int hf = 0; hf<2; hf++) { // stop or top
+
+   	 h_mt2lblbtrue[hf]->Write();
+   	 h_mt2lblbtrue_cut[hf]->Write();
+    }
  
+    OutFile->Close(); 
 
-  CC->Print("TTbarRecoSignif.png");
+    CC->Print("TTbarRecoSignif.png");
 }
