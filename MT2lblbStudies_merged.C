@@ -45,8 +45,8 @@ void MT2lblbStudies_merged() {
 
 	   h_mt2lblbInteg[i] = new TH1D("h_mt2lblbInteg" + HistoName[i], "h_mt2lblbInteg", 3000, 0, 3000); //2 histos para top y stop
 	   h_mt2lblbInteg_cut[i] = new TH1D("h_mt2lblbInteg_cut" + HistoName[i], "h_mt2lblbInteg_cut", 3000, 0, 3000); //2 histos para top y stop
-	   h_mt2lblbSignif = new TH1D("h_mt2lblbSignif" + HistoName[i], "h_mt2lblbSignif", 3000, 0, 3000); //2 histos para top y stop
-	   h_mt2lblbSignif_cut = new TH1D("h_mt2lblbSignif_cut" + HistoName[i], "h_mt2lblbSignif_cut", 3000, 0, 3000); //2 histos para top y stop
+	   h_mt2lblbSignif = new TH1D("h_mt2lblbSignif", "h_mt2lblbSignif", 3000, 0, 3000); //2 histos para top y stop
+	   h_mt2lblbSignif_cut = new TH1D("h_mt2lblbSignif_cut", "h_mt2lblbSignif_cut", 3000, 0, 3000); //2 histos para top y stop
 
     }
 
@@ -68,11 +68,11 @@ void MT2lblbStudies_merged() {
    for (int dt  = 0; dt<2; dt++) {
 
 
-    mt2lblbtrue_Int[dt] = h_mt2lblbtrue[dt]->Integral(0, 3001);
+    mt2lblbtrue_Int[dt] = h_mt2lblbtrue[dt]->Integral();
     h_mt2lblbtrue[dt]->Scale(1./mt2lblbtrue_Int[dt]); // normalization of the histogram
 
-    mt2lblbtrue_cut_Int[dt] = h_mt2lblbtrue_cut[dt]->Integral(0, 3001);
-    h_mt2lblbtrue_cut[dt]->Scale(1./mt2lblbtrue_cut_Int[dt]); // normalization of the histogram
+    mt2lblbtrue_cut_Int[dt] = h_mt2lblbtrue_cut[dt]->Integral();
+    h_mt2lblbtrue_cut[dt]->Scale(1./mt2lblbtrue_Int[dt]); // normalization of the histogram
 
 
     h_mt2lblbtrue[dt] -> SetLineColor(HistoCol[dt]);
@@ -102,20 +102,17 @@ void MT2lblbStudies_merged() {
 
   
  	int nBinsX = h_mt2lblbtrue[hf]->GetNbinsX();
- 	int nBinsX_cut = h_mt2lblbtrue_cut[hf]->GetNbinsX();
-    	float ThisBinContent = 1.;
-    	float ThisBinContent_cut = 1.;
 
 	for (int ib = 1; ib<=nBinsX; ib++) { // loop through the bins
     	// Asigna el valor 1 al primer bin y va restando el contenido del bin anterior a los siguientes
-      		h_mt2lblbInteg[hf]->SetBinContent(ib, ThisBinContent); // asigna el valor ThisBinContent al bin ib
-      		ThisBinContent -= h_mt2lblbtrue[hf]->GetBinContent(ib); // le resta el valor del bin ib del histograma MT2Histo a ThisBinContent. 
+    	        float recursive_integral = h_mt2lblbtrue[hf]->Integral(ib, 3001);
+      		h_mt2lblbInteg[hf]->SetBinContent(ib, recursive_integral); // asigna el valor ThisBinContent al bin ib
     
   
+    	        float recursive_integral_cut = h_mt2lblbtrue_cut[hf]->Integral(ib, 3001);
+      		h_mt2lblbInteg_cut[hf]->SetBinContent(ib, recursive_integral_cut/(mt2lblbtrue_cut_Int[hf]/mt2lblbtrue_Int[hf])); // asigna el valor ThisBinContent al bin ib
    	
 
-      		h_mt2lblbInteg_cut[hf]->SetBinContent(ib, ThisBinContent_cut); // asigna el valor ThisBinContent al bin ib
-      		ThisBinContent_cut -= h_mt2lblbtrue_cut[hf]->GetBinContent(ib); // le resta el valor del bin ib del histograma MT2Histo a ThisBinContent. 
 	}
 
 
@@ -133,8 +130,8 @@ void MT2lblbStudies_merged() {
      		h_mt2lblbSignif->SetBinContent(ib,significance); 
   
    	
-     		float	topBackground_cut = mt2lblbtrue_Int[0] * h_mt2lblbInteg_cut[0]->GetBinContent(ib); 
-     		float	stopEvents_cut =  mt2lblbtrue_Int[1] * h_mt2lblbInteg_cut[1]->GetBinContent(ib);
+     		float	topBackground_cut = mt2lblbtrue_cut_Int[0] * h_mt2lblbInteg_cut[0]->GetBinContent(ib); 
+     		float	stopEvents_cut =  mt2lblbtrue_cut_Int[1] * h_mt2lblbInteg_cut[1]->GetBinContent(ib);
 		if (topBackground_cut + stopEvents_cut <= 0.) continue;
 		float	significance_cut = stopEvents_cut/(std::sqrt(stopEvents_cut+topBackground_cut));
      		h_mt2lblbSignif_cut->SetBinContent(ib,significance_cut); 
@@ -147,9 +144,10 @@ void MT2lblbStudies_merged() {
     for (int dt = 0; dt<2; dt++) { // stop or top
 
 	    CC->cd(1); // se pone en el TPad 1 
-	    h_mt2lblbtrue[dt]->GetXaxis()->SetRange(1, 300);
+	    h_mt2lblbtrue[dt]->GetXaxis()->SetRange(0, 300);
 	    h_mt2lblbtrue[dt]->GetXaxis()->SetTitle("MT2lblb");
-	    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetRange(1, 300);
+	    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetRange(0, 300);
+	    h_mt2lblbtrue[dt]->SetMaximum(1);
 	    h_mt2lblbtrue[dt]->DrawCopy(Option);
 	    h_mt2lblbtrue_cut[dt]->DrawCopy("histosame");
 	    

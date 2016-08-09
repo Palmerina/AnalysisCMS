@@ -120,14 +120,13 @@ void MT2lblbHistos() {
 
       // Apply ttbar selection
       if (njet<2) continue;
+      if (nbjet30csvv2m < 1) continue;
       
         h_mt2lblbtrue[dt] -> Fill(mt2lblbtrue, eventW);	
       
       if (mlb1true <= 160 && mlb2true <= 160) {
 	h_mt2lblbtrue_cut[dt] -> Fill(mt2lblbtrue, eventW);
       }
-      else 
-	continue;
     }
 
    // h_mt2lblbtrue[dt] -> SetLineColor(HistoCol[dt]);
