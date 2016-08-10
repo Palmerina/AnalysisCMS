@@ -33,11 +33,13 @@ void MT2lblbStudies_merged() {
 
 	TString HistoName[2]={"_top", "_stop"};
 	int HistoCol[2] = {4, 2};
+	int HistoColSignif[50];
 	TString Legends[50];
 	int LineStyle[50];
 
 	for (int i=0; i<50; i++) {
 		LineStyle[i] = i+2;
+		HistoColSignif[i] = i+2;
 	}
 
 	for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
@@ -112,11 +114,11 @@ void MT2lblbStudies_merged() {
 
 			h_mt2lblbtrue_cut[dt][icut] -> SetLineColor(HistoCol[dt]);
 			h_mt2lblbInteg_cut[dt][icut] -> SetLineColor(HistoCol[dt]);
-			h_mt2lblbSignif_cut[icut] -> SetLineColor(1);
+			h_mt2lblbSignif_cut[icut] -> SetLineColor(HistoColSignif[icut]);
 
 			h_mt2lblbtrue_cut[dt][icut] ->SetLineStyle(LineStyle[icut]);
 			h_mt2lblbInteg_cut[dt][icut] ->SetLineStyle(LineStyle[icut]);
-			h_mt2lblbSignif_cut[icut] -> SetLineStyle(LineStyle[icut]);
+			h_mt2lblbSignif_cut[icut] -> SetLineStyle(1);
 
 			h_mt2lblbtrue_cut[dt][icut] ->SetLineWidth(2);
 			h_mt2lblbInteg_cut[dt][icut] ->SetLineWidth(2);
@@ -186,7 +188,7 @@ void MT2lblbStudies_merged() {
 		h_mt2lblbtrue[dt]->SetMaximum(1);
 		h_mt2lblbtrue[dt]->DrawCopy(Option);
 
-		TLegend *leg1 = new TLegend(0.3,0.1,0.6,0.6);
+		TLegend *leg1 = new TLegend(0.3,0.1,0.6,0.5);
 		leg1->AddEntry(h_mt2lblbtrue[0],"top","l");
 		leg1->AddEntry(h_mt2lblbtrue[1],"stop","l");
 
@@ -200,7 +202,6 @@ void MT2lblbStudies_merged() {
 			h_mt2lblbtrue_cut[dt][icut]->DrawCopy("histosame");
 
 			leg1->AddEntry(h_mt2lblbtrue_cut[0][icut],Legends[icut], "l");
-			leg1->AddEntry(h_mt2lblbtrue_cut[1][icut],Legends[icut], "l");
 
 		}
 
@@ -225,13 +226,20 @@ void MT2lblbStudies_merged() {
 		h_mt2lblbSignif->GetXaxis()->SetTitle("Significance");
 		h_mt2lblbSignif->DrawCopy("histosame");
 
+		TLegend *leg2 = new TLegend(0.1,0.5,0.4,0.9);
+		leg2->AddEntry(h_mt2lblbSignif,"no cut","l");
+
 		for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
 
 			int icut = (cut-150)/5;
 			h_mt2lblbSignif_cut[icut]->GetXaxis()->SetRange(1, 300);
 			h_mt2lblbSignif_cut[icut]->DrawCopy(Option);
 
+
+			leg2->AddEntry(h_mt2lblbSignif_cut[icut],Legends[icut], "l");
 		}
+
+		leg2->Draw();
 
 		Option= "histosame";
 	}   
