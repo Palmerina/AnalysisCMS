@@ -21,164 +21,221 @@
 
 void MT2lblbStudies_merged() {
 
-   TFile *HistogramFile = TFile::Open("MT2lblbHistos.root");
+	TFile *HistogramFile = TFile::Open("MT2lblbHistos.root");
 
 
-   TH1D* h_mt2lblbtrue[2];
-   TH1D* h_mt2lblbtrue_cut[2];
-   TH1D* h_mt2lblbInteg[2];
-   TH1D* h_mt2lblbInteg_cut[2];
-   TH1D* h_mt2lblbSignif;
-   TH1D* h_mt2lblbSignif_cut;
+	TH1D* h_mt2lblbtrue[2];
+	TH1D* h_mt2lblbtrue_cut[2][50];
+	TH1D* h_mt2lblbInteg[2];
+	TH1D* h_mt2lblbInteg_cut[2][50];
+	TH1D* h_mt2lblbSignif;
+	TH1D* h_mt2lblbSignif_cut[50];
 
-   TString HistoName[2]={"_top", "_stop"};
+	TString HistoName[2]={"_top", "_stop"};
+	int HistoCol[2] = {4, 2};
+	TString Legends[50];
+	int LineStyle[50];
 
+	for (int i=0; i<50; i++) {
+		LineStyle[i] = i+2;
+	}
 
-   float mt2lblbtrue_Int[2];
-   float mt2lblbtrue_cut_Int[2];
+	for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
 
-   for (int i  = 0; i<2; i++) {
+		int icut = (cut-150)/5;
+		char scut [50];
+		sprintf(scut, "_%.f", cut);
+		Legends[icut] = "mlbtrue <=  ";
+		Legends[icut].Append(scut);
 
-   
-	   h_mt2lblbtrue[i] = (TH1D*) HistogramFile->Get("h_mt2lblbtrue" + HistoName[i]);
-	   h_mt2lblbtrue_cut[i] = (TH1D*) HistogramFile->Get("h_mt2lblbtrue_cut" + HistoName[i]);
+	}
 
-	   h_mt2lblbInteg[i] = new TH1D("h_mt2lblbInteg" + HistoName[i], "h_mt2lblbInteg", 3000, 0, 3000); //2 histos para top y stop
-	   h_mt2lblbInteg_cut[i] = new TH1D("h_mt2lblbInteg_cut" + HistoName[i], "h_mt2lblbInteg_cut", 3000, 0, 3000); //2 histos para top y stop
-	   h_mt2lblbSignif = new TH1D("h_mt2lblbSignif", "h_mt2lblbSignif", 3000, 0, 3000); //2 histos para top y stop
-	   h_mt2lblbSignif_cut = new TH1D("h_mt2lblbSignif_cut", "h_mt2lblbSignif_cut", 3000, 0, 3000); //2 histos para top y stop
+	TCanvas *CC = new TCanvas("CC", "", 1200, 830);
+	CC->Divide(1, 3);
+	TPad *CC1 = (TPad*)CC->GetPad(1); //Ahi va el h_mt2mlblbtrue
+	CC1->SetLogy();CC1->SetGridx(); CC1->SetGridy(); 
+	TPad *CC2 = (TPad*)CC->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
+	CC2->SetLogy();CC2->SetGridx(); CC2->SetGridy(); 
+	TPad *CC3 = (TPad*)CC->GetPad(3); //Ahi va el h_mt2mlblbtrue_cut
+	CC3->SetGridx(); CC3->SetGridy(); 
 
-    }
-
-    TCanvas *CC = new TCanvas("CC", "", 1450, 800);
-    CC->Divide(1, 3);
-    TPad *CC1 = (TPad*)CC->GetPad(1); //Ahi va el h_mt2mlblbtrue
-    CC1->SetLogy();CC1->SetGridx(); CC1->SetGridy(); 
-    TPad *CC2 = (TPad*)CC->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
-    CC2->SetLogy();CC2->SetGridx(); CC2->SetGridy(); 
-    TPad *CC3 = (TPad*)CC->GetPad(3); //Ahi va el h_mt2mlblbtrue_cut
-    CC3->SetGridx(); CC3->SetGridy(); 
-
-    TString Option = "histo";
-
-    int HistoCol[2] = {4, 2};
+	TString Option = "histo";
 
 
+	float mt2lblbtrue_Int[2];
+	float mt2lblbtrue_cut_Int[2][50];
 
-   for (int dt  = 0; dt<2; dt++) {
-
-
-    mt2lblbtrue_Int[dt] = h_mt2lblbtrue[dt]->Integral();
-    h_mt2lblbtrue[dt]->Scale(1./mt2lblbtrue_Int[dt]); // normalization of the histogram
-
-    mt2lblbtrue_cut_Int[dt] = h_mt2lblbtrue_cut[dt]->Integral();
-    h_mt2lblbtrue_cut[dt]->Scale(1./mt2lblbtrue_Int[dt]); // normalization of the histogram
+	for (int i  = 0; i<2; i++) {
 
 
-    h_mt2lblbtrue[dt] -> SetLineColor(HistoCol[dt]);
-    h_mt2lblbtrue_cut[dt] -> SetLineColor(HistoCol[dt]);
-    h_mt2lblbInteg[dt] -> SetLineColor(HistoCol[dt]);
-    h_mt2lblbInteg_cut[dt] -> SetLineColor(HistoCol[dt]);
-    h_mt2lblbSignif -> SetLineColor(1);
-    h_mt2lblbSignif_cut -> SetLineColor(1);
+		h_mt2lblbtrue[i] = (TH1D*) HistogramFile->Get("h_mt2lblbtrue" + HistoName[i]);
+		h_mt2lblbInteg[i] = new TH1D("h_mt2lblbInteg" + HistoName[i], "h_mt2lblbInteg", 3000, 0, 3000); //2 histos para top y stop
+		h_mt2lblbSignif= new TH1D("h_mt2lblbSignif", "h_mt2lblbSignif", 3000, 0, 3000); //2 histos para top y stop
+		for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
 
-    h_mt2lblbtrue[dt] -> SetLineStyle(1);
-    h_mt2lblbtrue_cut[dt] ->SetLineStyle(2);
-    h_mt2lblbInteg[dt] -> SetLineStyle(1);
-    h_mt2lblbInteg_cut[dt] ->SetLineStyle(2);
-    h_mt2lblbSignif -> SetLineStyle(1);
-    h_mt2lblbSignif_cut -> SetLineStyle(2);
+			int icut = (cut-150)/5;
+			char scut [50];
+			sprintf(scut, "_%.f", cut);
+			h_mt2lblbtrue_cut[i][icut] = (TH1D*) HistogramFile -> Get("h_mt2lblbtrue_cut" + HistoName[i] + scut); //2 histos para top y stop
+			h_mt2lblbInteg_cut[i][icut] = new TH1D("h_mt2lblbInteg_cut" + HistoName[i] + scut, "h_mt2lblbInteg_cut" + HistoName[i] + scut, 3000, 0, 3000); //2 histos para top y stop
+			h_mt2lblbSignif_cut[icut] = new TH1D("h_mt2lblbSignif_cut" + HistoName[i] + scut, "h_mt2lblbSignif_cut" + HistoName[i] + scut, 3000, 0, 3000); //2 histos para top y stop
+		}
+	}
 
-    h_mt2lblbtrue[dt] -> SetLineWidth(2);
-    h_mt2lblbtrue_cut[dt] ->SetLineWidth(2);
-    h_mt2lblbInteg[dt] -> SetLineWidth(2);
-    h_mt2lblbInteg_cut[dt] ->SetLineWidth(2);
-    h_mt2lblbSignif -> SetLineWidth(2);
-    h_mt2lblbSignif_cut -> SetLineWidth(2);
+	for (int dt  = 0; dt<2; dt++) {
 
-}      
 
-    for (int hf = 0; hf<2; hf++) { // stop or top
+		mt2lblbtrue_Int[dt] = h_mt2lblbtrue[dt]->Integral();
+		h_mt2lblbtrue[dt]->Scale(1./mt2lblbtrue_Int[dt]); // normalization of the histogram
 
-  
- 	int nBinsX = h_mt2lblbtrue[hf]->GetNbinsX();
+
+		h_mt2lblbtrue[dt] -> SetLineColor(HistoCol[dt]);
+		h_mt2lblbInteg[dt] -> SetLineColor(HistoCol[dt]);
+		h_mt2lblbSignif -> SetLineColor(1);
+
+		h_mt2lblbtrue[dt] -> SetLineStyle(1);
+		h_mt2lblbInteg[dt] -> SetLineStyle(1);
+		h_mt2lblbSignif -> SetLineStyle(1);
+
+		h_mt2lblbtrue[dt] -> SetLineWidth(2);
+		h_mt2lblbInteg[dt] -> SetLineWidth(2);
+		h_mt2lblbSignif -> SetLineWidth(2);
+
+
+		for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
+
+			int icut = (cut-150)/5;
+
+			mt2lblbtrue_cut_Int[dt][icut] = h_mt2lblbtrue_cut[dt][icut]->Integral();
+			h_mt2lblbtrue_cut[dt][icut]->Scale(1./mt2lblbtrue_Int[dt]); // normalization of the histogram
+
+
+			h_mt2lblbtrue_cut[dt][icut] -> SetLineColor(HistoCol[dt]);
+			h_mt2lblbInteg_cut[dt][icut] -> SetLineColor(HistoCol[dt]);
+			h_mt2lblbSignif_cut[icut] -> SetLineColor(1);
+
+			h_mt2lblbtrue_cut[dt][icut] ->SetLineStyle(LineStyle[icut]);
+			h_mt2lblbInteg_cut[dt][icut] ->SetLineStyle(LineStyle[icut]);
+			h_mt2lblbSignif_cut[icut] -> SetLineStyle(LineStyle[icut]);
+
+			h_mt2lblbtrue_cut[dt][icut] ->SetLineWidth(2);
+			h_mt2lblbInteg_cut[dt][icut] ->SetLineWidth(2);
+			h_mt2lblbSignif_cut[icut] -> SetLineWidth(2);
+
+		}
+	}     
+
+
+	for (int hf = 0; hf<2; hf++) { // stop or top
+
+
+		int nBinsX = h_mt2lblbtrue[hf]->GetNbinsX();
+
+		for (int ib = 1; ib<=nBinsX; ib++) { // loop through the bins
+
+			float recursive_integral = h_mt2lblbtrue[hf]->Integral(ib, 3001);
+			h_mt2lblbInteg[hf]->SetBinContent(ib, recursive_integral); // asigna el valor ThisBinContent al bin ib
+
+
+			for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
+
+				int icut = (cut-150)/5;
+				float recursive_integral_cut = h_mt2lblbtrue_cut[hf][icut]->Integral(ib, 3001);
+				h_mt2lblbInteg_cut[hf][icut]->SetBinContent(ib, recursive_integral_cut/(mt2lblbtrue_cut_Int[hf][icut]/mt2lblbtrue_Int[hf])); 			}
+
+		}
+	}
+
+
+
+
+
+	int nBinsX = h_mt2lblbtrue[0]->GetNbinsX();
 
 	for (int ib = 1; ib<=nBinsX; ib++) { // loop through the bins
-    	// Asigna el valor 1 al primer bin y va restando el contenido del bin anterior a los siguientes
-    	        float recursive_integral = h_mt2lblbtrue[hf]->Integral(ib, 3001);
-      		h_mt2lblbInteg[hf]->SetBinContent(ib, recursive_integral); // asigna el valor ThisBinContent al bin ib
-    
-  
-    	        float recursive_integral_cut = h_mt2lblbtrue_cut[hf]->Integral(ib, 3001);
-      		h_mt2lblbInteg_cut[hf]->SetBinContent(ib, recursive_integral_cut/(mt2lblbtrue_cut_Int[hf]/mt2lblbtrue_Int[hf])); // asigna el valor ThisBinContent al bin ib
-   	
+
+		float	topBackground = mt2lblbtrue_Int[0] * h_mt2lblbInteg[0]->GetBinContent(ib); 
+		float	stopEvents = mt2lblbtrue_Int[1] * h_mt2lblbInteg[1]->GetBinContent(ib);
+		if (topBackground + stopEvents <= 0.) continue;
+		float	significance = stopEvents/(std::sqrt(stopEvents+topBackground));
+		h_mt2lblbSignif->SetBinContent(ib,significance); 
+
+
+		for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
+
+			int icut = (cut-150)/5;
+
+			float	topBackground_cut = mt2lblbtrue_cut_Int[0][icut] * h_mt2lblbInteg_cut[0][icut]->GetBinContent(ib); 
+			float	stopEvents_cut =  mt2lblbtrue_cut_Int[1][icut] * h_mt2lblbInteg_cut[1][icut]->GetBinContent(ib);
+			if (topBackground_cut + stopEvents_cut <= 0.) continue;
+			float	significance_cut = stopEvents_cut/(std::sqrt(stopEvents_cut+topBackground_cut));
+			h_mt2lblbSignif_cut[icut]->SetBinContent(ib,significance_cut); 
+
+		}
 
 	}
 
 
-    }
 
 
- 	int nBinsX = h_mt2lblbtrue[0]->GetNbinsX();
+	for (int dt = 0; dt<2; dt++) { // stop or top
 
-	for (int ib = 1; ib<=nBinsX; ib++) { // loop through the bins
-  
-     		float	topBackground = mt2lblbtrue_Int[0] * h_mt2lblbInteg[0]->GetBinContent(ib); 
-     		float	stopEvents = mt2lblbtrue_Int[1] * h_mt2lblbInteg[1]->GetBinContent(ib);
-		if (topBackground + stopEvents <= 0.) continue;
-		float	significance = stopEvents/(std::sqrt(stopEvents+topBackground));
-     		h_mt2lblbSignif->SetBinContent(ib,significance); 
-  
-   	
-     		float	topBackground_cut = mt2lblbtrue_cut_Int[0] * h_mt2lblbInteg_cut[0]->GetBinContent(ib); 
-     		float	stopEvents_cut =  mt2lblbtrue_cut_Int[1] * h_mt2lblbInteg_cut[1]->GetBinContent(ib);
-		if (topBackground_cut + stopEvents_cut <= 0.) continue;
-		float	significance_cut = stopEvents_cut/(std::sqrt(stopEvents_cut+topBackground_cut));
-     		h_mt2lblbSignif_cut->SetBinContent(ib,significance_cut); 
-      
-   	}
+		CC->cd(1); // se pone en el TPad 1 
+		h_mt2lblbtrue[dt]->GetXaxis()->SetRange(0, 300);
+		h_mt2lblbtrue[dt]->GetXaxis()->SetTitle("MT2lblb");
+		h_mt2lblbtrue[dt]->SetMaximum(1);
+		h_mt2lblbtrue[dt]->DrawCopy(Option);
 
-  
+		TLegend *leg1 = new TLegend(0.3,0.1,0.6,0.6);
+		leg1->AddEntry(h_mt2lblbtrue[0],"top","l");
+		leg1->AddEntry(h_mt2lblbtrue[1],"stop","l");
 
-    
-    for (int dt = 0; dt<2; dt++) { // stop or top
+		for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
 
-	    CC->cd(1); // se pone en el TPad 1 
-	    h_mt2lblbtrue[dt]->GetXaxis()->SetRange(0, 300);
-	    h_mt2lblbtrue[dt]->GetXaxis()->SetTitle("MT2lblb");
-	    h_mt2lblbtrue_cut[dt]->GetXaxis()->SetRange(0, 300);
-	    h_mt2lblbtrue[dt]->SetMaximum(1);
-	    h_mt2lblbtrue[dt]->DrawCopy(Option);
-	    h_mt2lblbtrue_cut[dt]->DrawCopy("histosame");
-	    
-	    TLegend *leg1 = new TLegend(0.3,0.1,0.4,0.4);
-	    leg1->AddEntry(h_mt2lblbtrue[0],"top","l");
-	    leg1->AddEntry(h_mt2lblbtrue[1],"stop","l");
-	    leg1->AddEntry(h_mt2lblbtrue_cut[0],"top with cut","l");
-	    leg1->AddEntry(h_mt2lblbtrue_cut[1],"stop with cut","l");
-	    leg1->Draw();
+			int icut = (cut-150)/5;
+			char scut [50];
+			sprintf(scut, "_%.f", cut);
 
-	    
-	    CC->cd(2); // se pone en el TPad 1 
-	    h_mt2lblbInteg[dt]->GetXaxis()->SetRange(1, 300);
-	    h_mt2lblbInteg[dt]->GetXaxis()->SetTitle("MT2lblb integral");
-	    h_mt2lblbInteg_cut[dt]->GetXaxis()->SetRange(1, 300);
-	    h_mt2lblbInteg[dt]->DrawCopy(Option);
-	    h_mt2lblbInteg_cut[dt]->DrawCopy("histosame");
-	    
+			h_mt2lblbtrue_cut[dt][icut]->GetXaxis()->SetRange(0, 300);
+			h_mt2lblbtrue_cut[dt][icut]->DrawCopy("histosame");
 
-	    
-	    CC->cd(3); // se pone en el TPad 1 
-	    h_mt2lblbSignif->GetXaxis()->SetRange(1, 300);
-	    h_mt2lblbSignif_cut->GetXaxis()->SetRange(1, 300);
-	    h_mt2lblbSignif->GetXaxis()->SetTitle("Significance");
-	    h_mt2lblbSignif_cut->DrawCopy(Option);
-	    h_mt2lblbSignif->DrawCopy("histosame");
-    
+			leg1->AddEntry(h_mt2lblbtrue_cut[0][icut],Legends[icut], "l");
+			leg1->AddEntry(h_mt2lblbtrue_cut[1][icut],Legends[icut], "l");
 
-	    Option= "histosame";
-    }   
+		}
+
+		leg1->Draw();
 
 
-    CC->Print("MT2lblbStudies_merged.png");
+		CC->cd(2); // se pone en el TPad 1 
+		h_mt2lblbInteg[dt]->GetXaxis()->SetRange(1, 300);
+		h_mt2lblbInteg[dt]->GetXaxis()->SetTitle("MT2lblb integral");
+		h_mt2lblbInteg[dt]->DrawCopy(Option);
+
+		for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
+
+			int icut = (cut-150)/5;
+			h_mt2lblbInteg_cut[dt][icut]->GetXaxis()->SetRange(1, 300);
+			h_mt2lblbInteg_cut[dt][icut]->DrawCopy("histosame");
+
+		}
+
+		CC->cd(3); // se pone en el TPad 1 
+		h_mt2lblbSignif->GetXaxis()->SetRange(1, 300);
+		h_mt2lblbSignif->GetXaxis()->SetTitle("Significance");
+		h_mt2lblbSignif->DrawCopy("histosame");
+
+		for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
+
+			int icut = (cut-150)/5;
+			h_mt2lblbSignif_cut[icut]->GetXaxis()->SetRange(1, 300);
+			h_mt2lblbSignif_cut[icut]->DrawCopy(Option);
+
+		}
+
+		Option= "histosame";
+	}   
+
+
+	CC->Print("MT2lblbStudies_merged.png");
 }
