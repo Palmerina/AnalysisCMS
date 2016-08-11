@@ -30,11 +30,9 @@ float cut = 135.0;
 
 TH1D *h_mt2bbtrue[2]; 
 TH1D *h_mt2bbtrue_cut[2]; 
-TH1D* h_mt2bbInteg[2];
-TH1D* h_mt2bbInteg_cut[2];
-TH1D* h_mt2bbSignif;
-TH1D* h_mt2bbSignif_cut;
 
+TH1D *h_mt2bb[2]; 
+TH1D *h_mt2bb_cut[2]; 
 
 TTree *GetMiniTree(TFile *MiniTreeFile) {
 
@@ -114,6 +112,8 @@ void MT2bbHistos() {
 		h_mt2bbtrue[dt] = new TH1D("h_mt2bbtrue" + Histoname[dt],"h_mt2bbtrue",   3000, 0, 3000); //2 histos para top y stop
 		h_mt2bbtrue_cut[dt] = new TH1D("h_mt2bbtrue_cut" + Histoname[dt], "h_mt2bbtrue_cut", 3000, 0, 3000); //2 histos para top y stop
 
+		h_mt2bb[dt] = new TH1D("h_mt2bb" + Histoname[dt],"h_mt2bb",   3000, 0, 3000); //2 histos para top y stop
+		h_mt2bb_cut[dt] = new TH1D("h_mt2bb_cut" + Histoname[dt], "h_mt2bb_cut", 3000, 0, 3000); //2 histos para top y stop
 
 		for (Int_t i = 0; i<nentries; i++) {
 
@@ -122,17 +122,27 @@ void MT2bbHistos() {
 			if (nbjet30csvv2m < 1) continue;
 
 			h_mt2bbtrue[dt] -> Fill(mt2bbtrue, eventW);	
+			h_mt2bb[dt] -> Fill(mt2bb, eventW);	
 
 			if (mlb1true <= cut && mlb2true <= cut) {
 				h_mt2bbtrue_cut[dt] -> Fill(mt2bbtrue, eventW);
 			}
-		}}      
+
+			if (mlb1 <= cut && mlb2 <= cut) {
+				h_mt2bb_cut[dt] -> Fill(mt2bb, eventW);
+			}
+
+		}
+	} 
+     
 	TFile *OutFile = new TFile("MT2bbHistos.root", "recreate");
 
 	for (int hf = 0; hf<2; hf++) { // stop or top
 
 		h_mt2bbtrue[hf]->Write();
 		h_mt2bbtrue_cut[hf]->Write();
+		h_mt2bb[hf]->Write();
+		h_mt2bb_cut[hf]->Write();
 	}
 
 	OutFile->Close(); 
