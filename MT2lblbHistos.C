@@ -30,6 +30,9 @@ float bjet2pt, bjet2phi, bjet2eta, bjet2mass, bjet2csvv2ivf;
 TH1D *h_mt2lblbtrue[2]; 
 TH1D *h_mt2lblbtrue_cut[2][50]; 
 
+TH1D *h_mt2lblb[2]; 
+TH1D *h_mt2lblb_cut[2][50]; 
+
 
 TTree *GetMiniTree(TFile *MiniTreeFile) {
 
@@ -89,6 +92,13 @@ TTree *GetMiniTree(TFile *MiniTreeFile) {
 
 void MT2lblbHistos() {
 
+	//cortes en mlb1true y mlb2true. Deben ser los mismos que en MT2lblbHistos.C
+	float low_cut = 120.0;
+	int low_icut = 120;
+	float high_cut = 150.0;
+	float step = 5.0;
+	int istep = 5;
+
 	TString FileName[2] = {"./minitrees/nominal/Stop/TTTo2L2Nu.root",
 		"./minitrees/nominal/Stop/T2tt_mStop500-525-550_mLSP1to425-325to450-1to475.root"};
 
@@ -109,13 +119,15 @@ void MT2lblbHistos() {
 		Int_t nentries = (Int_t) MiniTree->GetEntries();
 
 		h_mt2lblbtrue[dt] = new TH1D("h_mt2lblbtrue" + Histoname[dt],"h_mt2lblbtrue",   3000, 0, 3000); //2 histos para top y stop
+		h_mt2lblb[dt] = new TH1D("h_mt2lblb" + Histoname[dt],"h_mt2lblb",   3000, 0, 3000); //2 histos para top y stop
 
-		for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
+		for (float cut = low_cut; cut <= high_cut; cut += step) {
 
-			int icut = (cut-150)/5;
+			int icut = (cut-low_icut)/istep;
 			char scut [50];
 			sprintf(scut, "_%.f", cut);
 			h_mt2lblbtrue_cut[dt][icut] = new TH1D("h_mt2lblbtrue_cut" + Histoname[dt] + scut, "h_mt2lblbtrue_cut" + Histoname[dt] + scut, 3000, 0, 3000); //2 histos para top y stop
+			h_mt2lblb_cut[dt][icut] = new TH1D("h_mt2lblb_cut" + Histoname[dt] + scut, "h_mt2lblb_cut" + Histoname[dt] + scut, 3000, 0, 3000); //2 histos para top y stop
 		}
 		for (Int_t i = 0; i<nentries; i++) {
 
@@ -126,13 +138,18 @@ void MT2lblbHistos() {
 			if (nbjet30csvv2m < 1) continue;
 
 			h_mt2lblbtrue[dt] -> Fill(mt2lblbtrue, eventW);	
+			h_mt2lblb[dt] -> Fill(mt2lblb, eventW);	
 
 
-			for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
+			for (float cut = low_cut; cut <= high_cut; cut += step) {
 
-				int icut = (cut-150)/5;
+				int icut = (cut-low_icut)/istep;
 				if (mlb1true <= cut && mlb2true <= cut) {
 					h_mt2lblbtrue_cut[dt][icut] -> Fill(mt2lblbtrue, eventW);
+				}
+
+				if (mlb1 <= cut && mlb2 <= cut) {
+					h_mt2lblb_cut[dt][icut] -> Fill(mt2lblb, eventW);
 				}
 
 
@@ -144,9 +161,11 @@ void MT2lblbHistos() {
 	TFile *OutFile = new TFile("MT2lblbHistos.root", "recreate");
 	for (int dt = 0; dt<2; dt++) {
 		h_mt2lblbtrue[dt]->Write();
-		for (float cut = 150.0; cut <= 170.0; cut += 5.0) {
-			int icut = (cut-150)/5;
+		h_mt2lblb[dt]->Write();
+		for (float cut = low_cut; cut <= high_cut; cut += step) {
+			int icut = (cut-low_icut)/istep;
 			h_mt2lblbtrue_cut[dt][icut]->Write();
+			h_mt2lblb_cut[dt][icut]->Write();
 		}
 	}
 	OutFile->Close(); 
