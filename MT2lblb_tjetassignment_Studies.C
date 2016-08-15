@@ -66,11 +66,11 @@ void MT2lblb_tjetassignment_Studies() {
 		mt2lblb_match_Int[dt] = h_mt2lblb_match[dt]->Integral(1, 3001);
 		h_mt2lblb_match[dt]->Scale(1./mt2lblb_match_Int[dt]); // normalization of the histogram
 
-		h_mt2lblb_b[dt] -> SetLineColor(HistoCol[0]);
+		h_mt2lblb_b[dt] -> SetLineColor(2);
 		h_mt2lblb_b[dt] -> SetLineStyle(1);
 		h_mt2lblb_b[dt] -> SetLineWidth(2);
 
-		h_mt2lblb_notb[dt] -> SetLineColor(HistoCol[1]);
+		h_mt2lblb_notb[dt] -> SetLineColor(4);
 		h_mt2lblb_notb[dt] -> SetLineStyle(1);
 		h_mt2lblb_notb[dt] -> SetLineWidth(2);
 
@@ -89,6 +89,7 @@ void MT2lblb_tjetassignment_Studies() {
 
 	h_mt2lblb_match[0]->GetXaxis()->SetRange(1, 300);
 	h_mt2lblb_match[0]->GetXaxis()->SetTitle("mt2lblb top");
+	h_mt2lblb_match[0]->SetTitle("mt2lblb top");
 	h_mt2lblb_match[0]->DrawCopy("histo");
 
 	h_mt2lblb_b[0]->GetXaxis()->SetRange(1, 300);
@@ -101,9 +102,9 @@ void MT2lblb_tjetassignment_Studies() {
 	h_mt2lblb_notb[0]->DrawCopy(Option);
 
 	TLegend *leg1 = new TLegend(0.7,0.3,0.9,0.5);
-	leg1->AddEntry(h_mt2lblb_b[0],"mt2lblb tjet1assignment = 2 and tjet2assignment = 2","l");
-	leg1->AddEntry(h_mt2lblb_notb[0],"mt2lblb tjet1assignment = 1 and tjet2assignment = 1","l");
-	leg1->AddEntry(h_mt2lblb_match[0],"mt2lblb in any other case","l");
+	leg1->AddEntry(h_mt2lblb_match[0],"mt2lblb tjet1assignment = 2 and tjet2assignment = 2","l");
+	leg1->AddEntry(h_mt2lblb_b[0],"mt2lblb tjet1assignment = 1 and tjet2assignment = 1","l");
+	leg1->AddEntry(h_mt2lblb_notb[0],"mt2lblb in any other case","l");
 	leg1->Draw();
 
 
@@ -111,6 +112,7 @@ void MT2lblb_tjetassignment_Studies() {
 
 	h_mt2lblb_notb[1]->GetXaxis()->SetRange(1, 300);
 	h_mt2lblb_notb[1]->GetXaxis()->SetTitle("mt2lblb stop");
+	h_mt2lblb_notb[1]->SetTitle("mt2lblb stop");
 	h_mt2lblb_notb[1]->DrawCopy("histo");
 
 	h_mt2lblb_match[1]->GetXaxis()->SetRange(1, 300);
@@ -122,9 +124,9 @@ void MT2lblb_tjetassignment_Studies() {
 	h_mt2lblb_b[1]->DrawCopy(Option);
 
 	TLegend *leg2 = new TLegend(0.7,0.3,0.9,0.5);
-	leg2->AddEntry(h_mt2lblb_b[1],"mt2lblb tjet1assignment = 2 and tjet2assignment = 2","l");
-	leg2->AddEntry(h_mt2lblb_notb[1],"mt2lblb tjet1assignment = 1 and tjet2assignment = 1","l");
-	leg2->AddEntry(h_mt2lblb_match[1],"mt2lblb in any other case","l");
+	leg2->AddEntry(h_mt2lblb_match[1],"mt2lblb tjet1assignment = 2 and tjet2assignment = 2","l");
+	leg2->AddEntry(h_mt2lblb_b[1],"mt2lblb tjet1assignment = 1 and tjet2assignment = 1","l");
+	leg2->AddEntry(h_mt2lblb_notb[1],"mt2lblb in any other case","l");
 	leg2->Draw();
 
 
