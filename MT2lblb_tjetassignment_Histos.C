@@ -32,6 +32,11 @@ TH1D *h_mt2lblb_b[2]; // tjet1 asignment y tjet2assignment = 1
 TH1D *h_mt2lblb_notb[2]; // todos los demas casos
 
 
+TH1D *h_mt2lblbcomb_match[2]; // tjet1assignment y t2jetassignment = 2
+TH1D *h_mt2lblbcomb_b[2]; // tjet1 asignment y tjet2assignment = 1
+TH1D *h_mt2lblbcomb_notb[2]; // todos los demas casos
+
+
 
 TTree *GetMiniTree(TFile *MiniTreeFile) {
 
@@ -115,6 +120,10 @@ void MT2lblb_tjetassignment_Histos() {
 		h_mt2lblb_b[dt] = new TH1D("h_mt2lblb_b" + Histoname[dt],"h_mt2lblb_b",   3000, 0, 3000); //2 histos para top y stop
 		h_mt2lblb_notb[dt] = new TH1D("h_mt2lblb_notb" + Histoname[dt],"h_mt2lblb_notb",   3000, 0, 3000); //2 histos para top y stop
 
+		h_mt2lblbcomb_match[dt] = new TH1D("h_mt2lblbcomb_match" + Histoname[dt],"h_mt2lblbcomb_match",   3000, 0, 3000); //2 histos para top y stop
+		h_mt2lblbcomb_b[dt] = new TH1D("h_mt2lblbcomb_b" + Histoname[dt],"h_mt2lblbcomb_b",   3000, 0, 3000); //2 histos para top y stop
+		h_mt2lblbcomb_notb[dt] = new TH1D("h_mt2lblbcomb_notb" + Histoname[dt],"h_mt2lblbcomb_notb",   3000, 0, 3000); //2 histos para top y stop
+
 		for (Int_t i = 0; i<nentries; i++) {
 
 			MiniTree->GetEntry(i);
@@ -126,15 +135,18 @@ void MT2lblb_tjetassignment_Histos() {
 			if (tjet1assignment == 2 && tjet2assignment == 2) {
 
 				h_mt2lblb_match[dt] -> Fill(mt2lblb, eventW);	
+				h_mt2lblbcomb_match[dt] -> Fill(mt2lblbcomb, eventW);	
 			}
 
 			else if (tjet1assignment == 1 && tjet2assignment == 1) {
 
 				h_mt2lblb_b[dt] -> Fill(mt2lblb, eventW);	
+				h_mt2lblbcomb_b[dt] -> Fill(mt2lblbcomb, eventW);	
 			}
 
 			else {
 				h_mt2lblb_notb[dt] -> Fill(mt2lblb, eventW);	
+				h_mt2lblbcomb_notb[dt] -> Fill(mt2lblbcomb, eventW);	
 			}
 
 
@@ -149,6 +161,9 @@ void MT2lblb_tjetassignment_Histos() {
 		h_mt2lblb_match[dt]->Write();
 		h_mt2lblb_b[dt]->Write();
 		h_mt2lblb_notb[dt]->Write();
+		h_mt2lblbcomb_match[dt]->Write();
+		h_mt2lblbcomb_b[dt]->Write();
+		h_mt2lblbcomb_notb[dt]->Write();
 	}
 	OutFile->Close(); 
 }
