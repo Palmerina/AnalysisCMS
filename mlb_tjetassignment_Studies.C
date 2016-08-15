@@ -33,6 +33,15 @@ void mlb_tjetassignment_Studies() {
 	TH1D* h_mlb2_b[2];
 	TH1D* h_mlb2_match[2];
 
+
+	TH1D* h_mlb1comb_notb[2];
+	TH1D* h_mlb1comb_b[2];
+	TH1D* h_mlb1comb_match[2];
+
+	TH1D* h_mlb2comb_notb[2];
+	TH1D* h_mlb2comb_b[2];
+	TH1D* h_mlb2comb_match[2];
+
 	TString HistoName[2]={"_top", "_stop"};
 
 	float mlb1_notb_Int[2];
@@ -41,6 +50,14 @@ void mlb_tjetassignment_Studies() {
 	float mlb2_b_Int[2];
 	float mlb1_match_Int[2];
 	float mlb2_match_Int[2];
+
+
+	float mlb1comb_notb_Int[2];
+	float mlb2comb_notb_Int[2];
+	float mlb1comb_b_Int[2];
+	float mlb2comb_b_Int[2];
+	float mlb1comb_match_Int[2];
+	float mlb2comb_match_Int[2];
 
 	for (int i  = 0; i<2; i++) {
 
@@ -53,6 +70,15 @@ void mlb_tjetassignment_Studies() {
 		h_mlb2_notb[i] = (TH1D*) HistogramFile->Get("h_mlb2_notb" + HistoName[i]);
 		h_mlb2_match[i] = (TH1D*) HistogramFile->Get("h_mlb2_match" + HistoName[i]);
 
+
+		h_mlb1comb_b[i] = (TH1D*) HistogramFile->Get("h_mlb1comb_b" + HistoName[i]);
+		h_mlb1comb_notb[i] = (TH1D*) HistogramFile->Get("h_mlb1comb_notb" + HistoName[i]);
+		h_mlb1comb_match[i] = (TH1D*) HistogramFile->Get("h_mlb1comb_match" + HistoName[i]);
+
+		h_mlb2comb_b[i] = (TH1D*) HistogramFile->Get("h_mlb2comb_b" + HistoName[i]);
+		h_mlb2comb_notb[i] = (TH1D*) HistogramFile->Get("h_mlb2comb_notb" + HistoName[i]);
+		h_mlb2comb_match[i] = (TH1D*) HistogramFile->Get("h_mlb2comb_match" + HistoName[i]);
+
 	}
 
 	TCanvas *CC = new TCanvas("CC", "", 1450, 800);
@@ -61,6 +87,14 @@ void mlb_tjetassignment_Studies() {
 	CC1->SetGridx(); CC1->SetGridy(); 
 	TPad *CC2 = (TPad*)CC->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
 	CC2->SetGridx(); CC2->SetGridy(); 
+
+
+	TCanvas *CComb = new TCanvas("CComb", "", 1450, 800);
+	CComb->Divide(1, 2);
+	TPad *CComb1 = (TPad*)CComb->GetPad(1); //Ahi va el h_mt2mlblbtrue
+	CComb1->SetGridx(); CComb1->SetGridy(); 
+	TPad *CComb2 = (TPad*)CComb->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
+	CComb2->SetGridx(); CComb2->SetGridy(); 
 
 	TString Option = "histosame";
 
@@ -86,19 +120,19 @@ void mlb_tjetassignment_Studies() {
 		mlb2_match_Int[dt] = h_mlb2_match[dt]->Integral(1, 3001);
 		h_mlb2_match[dt]->Scale(1./mlb2_match_Int[dt]); // normalization of the histogram
 
-		h_mlb1_b[dt] -> SetLineColor(HistoCol[0]);
+		h_mlb1_b[dt] -> SetLineColor(2);
 		h_mlb1_b[dt] -> SetLineStyle(1);
 		h_mlb1_b[dt] -> SetLineWidth(2);
 
-		h_mlb2_b[dt] -> SetLineColor(HistoCol[0]);
+		h_mlb2_b[dt] -> SetLineColor(2);
 		h_mlb2_b[dt] -> SetLineStyle(2);
 		h_mlb2_b[dt] -> SetLineWidth(2);
 
-		h_mlb1_notb[dt] -> SetLineColor(HistoCol[1]);
+		h_mlb1_notb[dt] -> SetLineColor(4);
 		h_mlb1_notb[dt] -> SetLineStyle(1);
 		h_mlb1_notb[dt] -> SetLineWidth(2);
 
-		h_mlb2_notb[dt] -> SetLineColor(HistoCol[1]);
+		h_mlb2_notb[dt] -> SetLineColor(4);
 		h_mlb2_notb[dt] -> SetLineStyle(2);
 		h_mlb2_notb[dt] -> SetLineWidth(2);
 
@@ -109,6 +143,51 @@ void mlb_tjetassignment_Studies() {
 		h_mlb2_match[dt] -> SetLineColor(1);
 		h_mlb2_match[dt] ->SetLineStyle(2);
 		h_mlb2_match[dt] ->SetLineWidth(2);
+
+
+
+		mlb1comb_notb_Int[dt] = h_mlb1comb_notb[dt]->Integral(1, 3001);
+		h_mlb1comb_notb[dt]->Scale(1./mlb1comb_notb_Int[dt]); // normalization of the histogram
+
+		mlb2comb_notb_Int[dt] = h_mlb2comb_notb[dt]->Integral(1, 3001);
+		h_mlb2comb_notb[dt]->Scale(1./mlb2comb_notb_Int[dt]); // normalization of the histogram
+
+		mlb1comb_b_Int[dt] = h_mlb1comb_b[dt]->Integral(1, 3001);
+		h_mlb1comb_b[dt]->Scale(1./mlb1comb_b_Int[dt]); // normalization of the histogram
+
+		mlb2comb_b_Int[dt] = h_mlb2comb_b[dt]->Integral(1, 3001);
+		h_mlb2comb_b[dt]->Scale(1./mlb2comb_b_Int[dt]); // normalization of the histogram
+
+		mlb1comb_match_Int[dt] = h_mlb1comb_match[dt]->Integral(1, 3001);
+		h_mlb1comb_match[dt]->Scale(1./mlb1comb_match_Int[dt]); // normalization of the histogram
+
+		mlb2comb_match_Int[dt] = h_mlb2comb_match[dt]->Integral(1, 3001);
+		h_mlb2comb_match[dt]->Scale(1./mlb2comb_match_Int[dt]); // normalization of the histogram
+
+		h_mlb1comb_b[dt] -> SetLineColor(2);
+		h_mlb1comb_b[dt] -> SetLineStyle(1);
+		h_mlb1comb_b[dt] -> SetLineWidth(2);
+
+		h_mlb2comb_b[dt] -> SetLineColor(2);
+		h_mlb2comb_b[dt] -> SetLineStyle(2);
+		h_mlb2comb_b[dt] -> SetLineWidth(2);
+
+		h_mlb1comb_notb[dt] -> SetLineColor(4);
+		h_mlb1comb_notb[dt] -> SetLineStyle(1);
+		h_mlb1comb_notb[dt] -> SetLineWidth(2);
+
+		h_mlb2comb_notb[dt] -> SetLineColor(4);
+		h_mlb2comb_notb[dt] -> SetLineStyle(2);
+		h_mlb2comb_notb[dt] -> SetLineWidth(2);
+
+		h_mlb1comb_match[dt] -> SetLineColor(1);
+		h_mlb1comb_match[dt] ->SetLineStyle(1);
+		h_mlb1comb_match[dt] ->SetLineWidth(2);
+
+		h_mlb2comb_match[dt] -> SetLineColor(1);
+		h_mlb2comb_match[dt] ->SetLineStyle(2);
+		h_mlb2comb_match[dt] ->SetLineWidth(2);
+
 
 	}
 
@@ -121,6 +200,7 @@ void mlb_tjetassignment_Studies() {
 
 	h_mlb1_match[0]->GetXaxis()->SetRange(1, 300);
 	h_mlb1_match[0]->GetXaxis()->SetTitle("mlb top");
+	h_mlb1_match[0]->SetTitle("mlb top");
 	h_mlb1_match[0]->DrawCopy("histo");
 
 	h_mlb2_match[0]->GetXaxis()->SetRange(1, 300);
@@ -145,11 +225,11 @@ void mlb_tjetassignment_Studies() {
 	h_mlb2_notb[0]->DrawCopy(Option);
 
 	TLegend *leg1 = new TLegend(0.75,0.3,0.9,0.5);
-	leg1->AddEntry(h_mlb1_b[0],"mlb1 tjet1assignment = 0","l");
-	leg1->AddEntry(h_mlb1_notb[0],"mlb1 tjet1assignment = 1","l");
+	leg1->AddEntry(h_mlb1_notb[0],"mlb1 tjet1assignment = 0","l");
+	leg1->AddEntry(h_mlb1_b[0],"mlb1 tjet1assignment = 1","l");
 	leg1->AddEntry(h_mlb1_match[0],"mlb1 tjet1assignment = 2","l");
-	leg1->AddEntry(h_mlb2_b[0],"mlb2 tjet2assignment = 0","l");
-	leg1->AddEntry(h_mlb2_notb[0],"mlb2 tjet2assignment = 2","l");
+	leg1->AddEntry(h_mlb2_notb[0],"mlb2 tjet2assignment = 0","l");
+	leg1->AddEntry(h_mlb2_b[0],"mlb2 tjet2assignment = 1","l");
 	leg1->AddEntry(h_mlb2_match[0],"mlb2 tjet2assignment = 2","l");
 	leg1->Draw();
 
@@ -158,6 +238,7 @@ void mlb_tjetassignment_Studies() {
 
 	h_mlb1_match[1]->GetXaxis()->SetRange(1, 300);
 	h_mlb1_match[1]->GetXaxis()->SetTitle("mlb stop");
+	h_mlb1_match[1]->SetTitle("mlb stop");
 	h_mlb1_match[1]->DrawCopy("histo");
 
 	h_mlb2_match[1]->GetXaxis()->SetRange(1, 300);
@@ -181,20 +262,96 @@ void mlb_tjetassignment_Studies() {
 	h_mlb2_notb[1]->DrawCopy(Option);
 
 	TLegend *leg2 = new TLegend(0.75,0.3,0.9,0.5);
-	leg2->AddEntry(h_mlb1_b[1],"mlb1 tjet1assignment = 0","l");
-	leg2->AddEntry(h_mlb1_notb[1],"mlb1 tjet1assignment = 1","l");
+	leg2->AddEntry(h_mlb1_notb[1],"mlb1 tjet1assignment = 0","l");
+	leg2->AddEntry(h_mlb1_b[1],"mlb1 tjet1assignment = 1","l");
 	leg2->AddEntry(h_mlb1_match[1],"mlb1 tjet1assignment = 2","l");
-	leg2->AddEntry(h_mlb2_b[1],"mlb2 tjet2assignment = 0","l");
-	leg2->AddEntry(h_mlb2_notb[1],"mlb2 tjet2assignment = 2","l");
+	leg2->AddEntry(h_mlb2_notb[1],"mlb2 tjet2assignment = 0","l");
+	leg2->AddEntry(h_mlb2_b[1],"mlb2 tjet2assignment = 1","l");
 	leg2->AddEntry(h_mlb2_match[1],"mlb2 tjet2assignment = 2","l");
 	leg2->Draw();
 
 
 
 
+	CComb->cd(1); // se pone en el TPad 1 
+
+	h_mlb2comb_b[0]->GetXaxis()->SetRange(1, 300);
+	h_mlb2comb_b[0]->GetXaxis()->SetTitle("mlbcomb top");
+	h_mlb2comb_b[0]->SetTitle("mlbcomb top");
+	h_mlb2comb_b[0]->DrawCopy("histo");
+
+	h_mlb1comb_match[0]->GetXaxis()->SetRange(1, 300);
+	h_mlb1comb_match[0]->GetXaxis()->SetTitle("mlbcomb top");
+	h_mlb1comb_match[0]->DrawCopy(Option);
+
+	h_mlb2comb_match[0]->GetXaxis()->SetRange(1, 300);
+	h_mlb2comb_match[0]->GetXaxis()->SetTitle("mlbcomb top");
+	h_mlb2comb_match[0]->DrawCopy(Option);
+
+	h_mlb1comb_b[0]->GetXaxis()->SetRange(1, 300);
+	h_mlb1comb_b[0]->GetXaxis()->SetTitle("mlbcomb top");
+	h_mlb1comb_b[0]->DrawCopy(Option);
+
+
+	h_mlb1comb_notb[0]->GetXaxis()->SetRange(1, 300);
+	h_mlb1comb_notb[0]->GetXaxis()->SetTitle("mlbcomb top");
+	h_mlb1comb_notb[0]->DrawCopy(Option);
+
+	h_mlb2comb_notb[0]->GetXaxis()->SetRange(1, 300);
+	h_mlb2comb_notb[0]->GetXaxis()->SetTitle("mlbcomb top");
+	h_mlb2comb_notb[0]->DrawCopy(Option);
+
+	TLegend *leg3 = new TLegend(0.75,0.3,0.9,0.5);
+	leg3->AddEntry(h_mlb1comb_notb[0],"mlb1comb tjet1assignment = 0","l");
+	leg3->AddEntry(h_mlb1comb_b[0],"mlb1comb tjet1assignment = 1","l");
+	leg3->AddEntry(h_mlb1comb_match[0],"mlb1comb tjet1assignment = 2","l");
+	leg3->AddEntry(h_mlb2comb_notb[0],"mlb2comb tjet2assignment = 0","l");
+	leg3->AddEntry(h_mlb2comb_b[0],"mlb2comb tjet2assignment = 1","l");
+	leg3->AddEntry(h_mlb2comb_match[0],"mlb2comb tjet2assignment = 2","l");
+	leg3->Draw();
+
+
+	CComb->cd(2); // se pone en el TPad 1 
+
+	h_mlb1comb_match[1]->GetXaxis()->SetRange(1, 300);
+	h_mlb1comb_match[1]->GetXaxis()->SetTitle("mlbcomb stop");
+	h_mlb1comb_match[1]->SetTitle("mlbcomb stop");
+	h_mlb1comb_match[1]->DrawCopy("histo");
+
+	h_mlb2comb_match[1]->GetXaxis()->SetRange(1, 300);
+	h_mlb2comb_match[1]->GetXaxis()->SetTitle("mlbcomb stop");
+	h_mlb2comb_match[1]->DrawCopy(Option);
+
+	h_mlb1comb_b[1]->GetXaxis()->SetRange(1, 300);
+	h_mlb1comb_b[1]->GetXaxis()->SetTitle("mlbcomb stop");
+	h_mlb1comb_b[1]->DrawCopy(Option);
+
+	h_mlb2comb_b[1]->GetXaxis()->SetRange(1, 300);
+	h_mlb2comb_b[1]->GetXaxis()->SetTitle("mlbcomb stop");
+	h_mlb2comb_b[1]->DrawCopy(Option);
+
+	h_mlb1comb_notb[1]->GetXaxis()->SetRange(1, 300);
+	h_mlb1comb_notb[1]->GetXaxis()->SetTitle("mlbcomb stop");
+	h_mlb1comb_notb[1]->DrawCopy(Option);
+
+	h_mlb2comb_notb[1]->GetXaxis()->SetRange(1, 300);
+	h_mlb2comb_notb[1]->GetXaxis()->SetTitle("mlbcomb stop");
+	h_mlb2comb_notb[1]->DrawCopy(Option);
+
+	TLegend *leg4 = new TLegend(0.75,0.3,0.9,0.5);
+	leg4->AddEntry(h_mlb1comb_notb[1],"mlb1comb tjet1assignment = 0","l");
+	leg4->AddEntry(h_mlb1comb_b[1],"mlb1comb tjet1assignment = 1","l");
+	leg4->AddEntry(h_mlb1comb_match[1],"mlb1comb tjet1assignment = 2","l");
+	leg4->AddEntry(h_mlb2comb_notb[1],"mlb2comb tjet2assignment = 0","l");
+	leg4->AddEntry(h_mlb2comb_b[1],"mlb2comb tjet2assignment = 1","l");
+	leg4->AddEntry(h_mlb2comb_match[1],"mlb2comb tjet2assignment = 2","l");
+	leg4->Draw();
+
+
 
 
 
 	CC->Print("mlb_tjetassignment.png");
+	CComb->Print("mlbcomb_tjetassignment.png");
 }
 

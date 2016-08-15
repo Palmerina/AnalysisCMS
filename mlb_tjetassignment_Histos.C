@@ -36,6 +36,14 @@ TH1D *h_mlb2_notb[2]; //tjet2assignment = 0
 TH1D *h_mlb2_b[2]; //tjet2assignment = 1
 TH1D *h_mlb2_match[2]; //tjet2assignment = 2
 
+TH1D *h_mlb1comb_notb[2];//tjet1assignment = 0 
+TH1D *h_mlb1comb_b[2]; //tjet1assignment = 1
+TH1D *h_mlb1comb_match[2]; //tjet1assignment = 2
+
+TH1D *h_mlb2comb_notb[2]; //tjet2assignment = 0
+TH1D *h_mlb2comb_b[2]; //tjet2assignment = 1
+TH1D *h_mlb2comb_match[2]; //tjet2assignment = 2
+
 TTree *GetMiniTree(TFile *MiniTreeFile) {
 
 	TTree *MiniTree = (TTree*) MiniTreeFile->Get("latino"); 
@@ -120,6 +128,16 @@ void mlb_tjetassignment_Histos() {
 		h_mlb2_match[dt] = new TH1D("h_mlb2_match" + Histoname[dt],"h_mlb2_match",   3000, 0, 3000); //2 histos para top y stop
 
 
+		h_mlb1comb_notb[dt] = new TH1D("h_mlb1comb_notb" + Histoname[dt],"h_mlb1comb_notb",   3000, 0, 3000); //2 histos para top y stop
+		h_mlb1comb_b[dt] = new TH1D("h_mlb1comb_b" + Histoname[dt], "h_mlb1comb_notb", 3000, 0, 3000); //2 histos para top y stop
+		h_mlb1comb_match[dt] = new TH1D("h_mlb1comb_match" + Histoname[dt],"h_mlb1comb_match",   3000, 0, 3000); //2 histos para top y stop
+
+		h_mlb2comb_notb[dt] = new TH1D("h_mlb2comb_notb" + Histoname[dt],"h_mlb2comb_notb",   3000, 0, 3000); //2 histos para top y stop
+		h_mlb2comb_b[dt] = new TH1D("h_mlb2comb_b" + Histoname[dt], "h_mlb2comb_notb", 3000, 0, 3000); //2 histos para top y stop
+		h_mlb2comb_match[dt] = new TH1D("h_mlb2comb_match" + Histoname[dt],"h_mlb2comb_match",   3000, 0, 3000); //2 histos para top y stop
+
+
+
 
 		for (Int_t i = 0; i<nentries; i++) {
 
@@ -129,23 +147,29 @@ void mlb_tjetassignment_Histos() {
 
 			if (tjet1assignment == 0) {
 				h_mlb1_notb[dt] -> Fill(mlb1, eventW);
+				h_mlb1comb_notb[dt] -> Fill(mlb1comb, eventW);
 			}
 			if (tjet2assignment == 0) {
 				h_mlb2_notb[dt] -> Fill(mlb2, eventW);
+				h_mlb2comb_notb[dt] -> Fill(mlb2comb, eventW);
 			}
 
 			if (tjet1assignment == 1) {
 				h_mlb1_b[dt] -> Fill(mlb1, eventW);
+				h_mlb1comb_b[dt] -> Fill(mlb1comb, eventW);
 			}
 			if (tjet2assignment == 1) {
 				h_mlb2_b[dt] -> Fill(mlb2, eventW);
+				h_mlb2comb_b[dt] -> Fill(mlb2comb, eventW);
 			}
 
 			if (tjet1assignment == 2) {
 				h_mlb1_match[dt] -> Fill(mlb1, eventW);
+				h_mlb1comb_match[dt] -> Fill(mlb1comb, eventW);
 			}
 			if (tjet2assignment == 2) {
 				h_mlb2_match[dt] -> Fill(mlb2, eventW);
+				h_mlb2comb_match[dt] -> Fill(mlb2comb, eventW);
 			}
 
 
@@ -163,6 +187,15 @@ void mlb_tjetassignment_Histos() {
 		h_mlb2_notb[hf]->Write();
 		h_mlb2_b[hf]->Write();
 		h_mlb2_match[hf]->Write();
+
+
+		h_mlb1comb_notb[hf]->Write();
+		h_mlb1comb_b[hf]->Write();
+		h_mlb1comb_match[hf]->Write();
+
+		h_mlb2comb_notb[hf]->Write();
+		h_mlb2comb_b[hf]->Write();
+		h_mlb2comb_match[hf]->Write();
 
 	}
 
