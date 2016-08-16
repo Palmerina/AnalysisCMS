@@ -225,12 +225,12 @@ void mlb_tjetassignment_Studies() {
 	h_mlb2_notb[0]->DrawCopy(Option);
 
 	TLegend *leg1 = new TLegend(0.75,0.3,0.9,0.5);
-	leg1->AddEntry(h_mlb1_notb[0],"mlb1 tjet1assignment = 0","l");
-	leg1->AddEntry(h_mlb1_b[0],"mlb1 tjet1assignment = 1","l");
-	leg1->AddEntry(h_mlb1_match[0],"mlb1 tjet1assignment = 2","l");
-	leg1->AddEntry(h_mlb2_notb[0],"mlb2 tjet2assignment = 0","l");
-	leg1->AddEntry(h_mlb2_b[0],"mlb2 tjet2assignment = 1","l");
-	leg1->AddEntry(h_mlb2_match[0],"mlb2 tjet2assignment = 2","l");
+	leg1->AddEntry(h_mlb1_notb[0],"mlb1comb_notb","l");
+	leg1->AddEntry(h_mlb1_b[0],"mlb1comb_b","l");
+	leg1->AddEntry(h_mlb1_match[0],"mlb1comb_match","l");
+	leg1->AddEntry(h_mlb2_notb[0],"mlb2comb_notb","l");
+	leg1->AddEntry(h_mlb2_b[0],"mlb2comb_b","l");
+	leg1->AddEntry(h_mlb2_match[0],"mlb2comb_match","l");
 	leg1->Draw();
 
 
@@ -262,12 +262,12 @@ void mlb_tjetassignment_Studies() {
 	h_mlb2_notb[1]->DrawCopy(Option);
 
 	TLegend *leg2 = new TLegend(0.75,0.3,0.9,0.5);
-	leg2->AddEntry(h_mlb1_notb[1],"mlb1 tjet1assignment = 0","l");
-	leg2->AddEntry(h_mlb1_b[1],"mlb1 tjet1assignment = 1","l");
-	leg2->AddEntry(h_mlb1_match[1],"mlb1 tjet1assignment = 2","l");
-	leg2->AddEntry(h_mlb2_notb[1],"mlb2 tjet2assignment = 0","l");
-	leg2->AddEntry(h_mlb2_b[1],"mlb2 tjet2assignment = 1","l");
-	leg2->AddEntry(h_mlb2_match[1],"mlb2 tjet2assignment = 2","l");
+	leg2->AddEntry(h_mlb1_notb[1],"mlb1comb_notb","l");
+	leg2->AddEntry(h_mlb1_b[1],"mlb1comb_b","l");
+	leg2->AddEntry(h_mlb1_match[1],"mlb1comb_match","l");
+	leg2->AddEntry(h_mlb2_notb[1],"mlb2comb_notb","l");
+	leg2->AddEntry(h_mlb2_b[1],"mlb2comb_b","l");
+	leg2->AddEntry(h_mlb2_match[1],"mlb2comb_match","l");
 	leg2->Draw();
 
 
@@ -278,6 +278,7 @@ void mlb_tjetassignment_Studies() {
 	h_mlb1comb_b[0]->GetXaxis()->SetRange(1, 300);
 	h_mlb1comb_b[0]->GetXaxis()->SetTitle("mlbcomb top");
 	h_mlb1comb_b[0]->SetTitle("mlbcomb top");
+	h_mlb1comb_b[0]->SetMaximum(0.013);
 	h_mlb1comb_b[0]->DrawCopy("histo");
 
 	h_mlb2comb_b[0]->GetXaxis()->SetRange(1, 300);
@@ -302,12 +303,12 @@ void mlb_tjetassignment_Studies() {
 	h_mlb2comb_notb[0]->DrawCopy(Option);
 
 	TLegend *leg3 = new TLegend(0.75,0.3,0.9,0.5);
-	leg3->AddEntry(h_mlb1comb_notb[0],"mlb1comb tjet1assignment = 0","l");
-	leg3->AddEntry(h_mlb1comb_b[0],"mlb1comb tjet1assignment = 1","l");
-	leg3->AddEntry(h_mlb1comb_match[0],"mlb1comb tjet1assignment = 2","l");
-	leg3->AddEntry(h_mlb2comb_notb[0],"mlb2comb tjet2assignment = 0","l");
-	leg3->AddEntry(h_mlb2comb_b[0],"mlb2comb tjet2assignment = 1","l");
-	leg3->AddEntry(h_mlb2comb_match[0],"mlb2comb tjet2assignment = 2","l");
+	leg3->AddEntry(h_mlb1comb_notb[0],"mlb1comb_notb","l");
+	leg3->AddEntry(h_mlb1comb_b[0],"mlb1comb_b","l");
+	leg3->AddEntry(h_mlb1comb_match[0],"mlb1comb_match","l");
+	leg3->AddEntry(h_mlb2comb_notb[0],"mlb2comb_notb","l");
+	leg3->AddEntry(h_mlb2comb_b[0],"mlb2comb_b","l");
+	leg3->AddEntry(h_mlb2comb_match[0],"mlb2comb_match","l");
 	leg3->Draw();
 
 
@@ -339,12 +340,12 @@ void mlb_tjetassignment_Studies() {
 	h_mlb2comb_notb[1]->DrawCopy(Option);
 
 	TLegend *leg4 = new TLegend(0.75,0.3,0.9,0.5);
-	leg4->AddEntry(h_mlb1comb_notb[1],"mlb1comb tjet1assignment = 0","l");
-	leg4->AddEntry(h_mlb1comb_b[1],"mlb1comb tjet1assignment = 1","l");
-	leg4->AddEntry(h_mlb1comb_match[1],"mlb1comb tjet1assignment = 2","l");
-	leg4->AddEntry(h_mlb2comb_notb[1],"mlb2comb tjet2assignment = 0","l");
-	leg4->AddEntry(h_mlb2comb_b[1],"mlb2comb tjet2assignment = 1","l");
-	leg4->AddEntry(h_mlb2comb_match[1],"mlb2comb tjet2assignment = 2","l");
+	leg4->AddEntry(h_mlb1comb_notb[1],"mlb1comb_notb","l");
+	leg4->AddEntry(h_mlb1comb_b[1],"mlb1comb_b","l");
+	leg4->AddEntry(h_mlb1comb_match[1],"mlb1comb_match","l");
+	leg4->AddEntry(h_mlb2comb_notb[1],"mlb2comb_notb","l");
+	leg4->AddEntry(h_mlb2comb_b[1],"mlb2comb_b","l");
+	leg4->AddEntry(h_mlb2comb_match[1],"mlb2comb_match","l");
 	leg4->Draw();
 
 
