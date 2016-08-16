@@ -145,29 +145,29 @@ void mlb_tjetassignment_Histos() {
 			if (njet<2) continue;
 			if (nbjet30csvv2m < 1) continue;
 
-			if (tjet1assignment == 0) {
+			if (tjet2assignment == 0) {
 				h_mlb1_notb[dt] -> Fill(mlb1, eventW);
 				h_mlb1comb_notb[dt] -> Fill(mlb1comb, eventW);
 			}
-			if (tjet2assignment == 0) {
+			if (tjet1assignment == 0) {
 				h_mlb2_notb[dt] -> Fill(mlb2, eventW);
 				h_mlb2comb_notb[dt] -> Fill(mlb2comb, eventW);
 			}
 
-			if (tjet1assignment == 1) {
+			if (tjet2assignment == 1) {
 				h_mlb1_b[dt] -> Fill(mlb1, eventW);
 				h_mlb1comb_b[dt] -> Fill(mlb1comb, eventW);
 			}
-			if (tjet2assignment == 1) {
+			if (tjet1assignment == 1) {
 				h_mlb2_b[dt] -> Fill(mlb2, eventW);
 				h_mlb2comb_b[dt] -> Fill(mlb2comb, eventW);
 			}
 
-			if (tjet1assignment == 2) {
+			if (tjet2assignment == 2) {
 				h_mlb1_match[dt] -> Fill(mlb1, eventW);
 				h_mlb1comb_match[dt] -> Fill(mlb1comb, eventW);
 			}
-			if (tjet2assignment == 2) {
+			if (tjet1assignment == 2) {
 				h_mlb2_match[dt] -> Fill(mlb2, eventW);
 				h_mlb2comb_match[dt] -> Fill(mlb2comb, eventW);
 			}
