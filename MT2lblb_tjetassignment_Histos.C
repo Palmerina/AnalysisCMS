@@ -32,8 +32,8 @@ TH1D *h_mt2lblb_b[2]; // tjet1 asignment y tjet2assignment = 1
 TH1D *h_mt2lblb_notb[2]; // todos los demas casos
 
 
-TH1D *h_mt2lblbcomb_match[2]; // tjet1assignment y t2jetassignment = 2
-TH1D *h_mt2lblbcomb_b[2]; // tjet1 asignment y tjet2assignment = 1
+TH1D *h_mt2lblbcomb_match[2]; // tjet1assignment y t2jetassignment = 1
+TH1D *h_mt2lblbcomb_b[2]; // tjet1 asignment y tjet2assignment = 2
 TH1D *h_mt2lblbcomb_notb[2]; // todos los demas casos
 
 
@@ -135,13 +135,13 @@ void MT2lblb_tjetassignment_Histos() {
 			if (tjet1assignment == 2 && tjet2assignment == 2) {
 
 				h_mt2lblb_match[dt] -> Fill(mt2lblb, eventW);	
-				h_mt2lblbcomb_match[dt] -> Fill(mt2lblbcomb, eventW);	
+				h_mt2lblbcomb_b[dt] -> Fill(mt2lblbcomb, eventW);	
 			}
 
 			else if (tjet1assignment == 1 && tjet2assignment == 1) {
 
 				h_mt2lblb_b[dt] -> Fill(mt2lblb, eventW);	
-				h_mt2lblbcomb_b[dt] -> Fill(mt2lblbcomb, eventW);	
+				h_mt2lblbcomb_match[dt] -> Fill(mt2lblbcomb, eventW);	
 			}
 
 			else {
