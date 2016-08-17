@@ -134,14 +134,17 @@ void mlb2D_tjetassignment_Histos() {
 				h_mlbcomb_match[dt] -> Fill(mlb1comb, mlb2comb, eventW);
 			}
 
-			if (tjet1assignment==2 && tjet2assignment == 2) {
+			else if (tjet1assignment==2 && tjet2assignment == 2) {
 				h_mlb_match[dt] -> Fill(mlb1, mlb2, eventW);
 				h_mlbcomb_b[dt] -> Fill(mlb1, mlb2comb, eventW);
 			}
 
-			h_mlb_notb[dt] -> Fill(mlb1, mlb2, eventW);
-			h_mlbcomb_notb[dt] -> Fill(mlb1comb, mlb2comb, eventW);
+			else {
 
+				h_mlb_notb[dt] -> Fill(mlb1, mlb2, eventW);
+				h_mlbcomb_notb[dt] -> Fill(mlb1comb, mlb2comb, eventW);
+
+			}
 		}
 	} 
      
