@@ -72,9 +72,9 @@ void mlb2D_tjetassignment_Studies() {
 
 	CC->cd(1); // se pone en el TPad 1 
 
-	h_mlb_match[0]->GetXaxis()->SetRange(1, 300);
+	h_mlb_match[0]->GetXaxis()->SetRangeUser(1, 300);
 	h_mlb_match[0]->GetXaxis()->SetTitle("mlb1_match");
-	h_mlb_match[0]->GetYaxis()->SetRange(1, 300);
+	h_mlb_match[0]->GetYaxis()->SetRangeUser(1, 300);
 	h_mlb_match[0]->GetYaxis()->SetTitle("mlb2_match");
 	h_mlb_match[0]->SetTitle("mlb_match 2D  top");
 	h_mlb_match[0]->DrawCopy("box");
@@ -84,9 +84,9 @@ void mlb2D_tjetassignment_Studies() {
 
 	CC->cd(2); // se pone en el TPad 1 
 
-	h_mlb_b[0]->GetXaxis()->SetRange(1, 300);
+	h_mlb_b[0]->GetXaxis()->SetRangeUser(1, 300);
 	h_mlb_b[0]->GetXaxis()->SetTitle("mlb1_b");
-	h_mlb_b[0]->GetYaxis()->SetRange(1, 300);
+	h_mlb_b[0]->GetYaxis()->SetRangeUser(1, 300);
 	h_mlb_b[0]->GetYaxis()->SetTitle("mlb2_b");
 	h_mlb_b[0]->SetTitle("mlb_b 2D top");
 	h_mlb_b[0]->DrawCopy("box");
@@ -95,9 +95,9 @@ void mlb2D_tjetassignment_Studies() {
 	CC->cd(3); // se pone en el TPad 1 
 
 
-	h_mlb_notb[0]->GetXaxis()->SetRange(1, 300);
+	h_mlb_notb[0]->GetXaxis()->SetRangeUser(1, 300);
 	h_mlb_notb[0]->GetXaxis()->SetTitle("mlb1_notb");
-	h_mlb_notb[0]->GetYaxis()->SetRange(1, 300);
+	h_mlb_notb[0]->GetYaxis()->SetRangeUser(1, 300);
 	h_mlb_notb[0]->GetYaxis()->SetTitle("mlb2_notb");
 	h_mlb_notb[0]->SetTitle("mlb_notb top");
 	h_mlb_notb[0]->DrawCopy("box");
@@ -105,9 +105,9 @@ void mlb2D_tjetassignment_Studies() {
 
 	CComb->cd(1); // se pone en el TPad 1 
 
-	h_mlbcomb_match[0]->GetXaxis()->SetRange(1, 300);
+	h_mlbcomb_match[0]->GetXaxis()->SetRangeUser(1, 300);
 	h_mlbcomb_match[0]->GetXaxis()->SetTitle("mlb1comb_match");
-	h_mlbcomb_match[0]->GetYaxis()->SetRange(1, 300);
+	h_mlbcomb_match[0]->GetYaxis()->SetRangeUser(1, 300);
 	h_mlbcomb_match[0]->GetYaxis()->SetTitle("mlb2comb_match");
 	h_mlbcomb_match[0]->SetTitle("mlbcomb_match top");
 	h_mlbcomb_match[0]->DrawCopy("box");
@@ -116,9 +116,9 @@ void mlb2D_tjetassignment_Studies() {
 
 	CComb->cd(2); // se pone en el TPad 1 
 
-	h_mlbcomb_b[0]->GetXaxis()->SetRange(1, 300);
+	h_mlbcomb_b[0]->GetXaxis()->SetRangeUser(1, 300);
 	h_mlbcomb_b[0]->GetXaxis()->SetTitle("mlb1comb_b");
-	h_mlbcomb_b[0]->GetYaxis()->SetRange(1, 300);
+	h_mlbcomb_b[0]->GetYaxis()->SetRangeUser(1, 300);
 	h_mlbcomb_b[0]->GetYaxis()->SetTitle("mlb1comb_b");
 	h_mlbcomb_b[0]->SetTitle("mlbcomb_b top");
 	h_mlbcomb_b[0]->DrawCopy("box");
@@ -126,9 +126,9 @@ void mlb2D_tjetassignment_Studies() {
 
 	CComb->cd(3); // se pone en el TPad 1 
 
-	h_mlbcomb_notb[0]->GetXaxis()->SetRange(1, 300);
+	h_mlbcomb_notb[0]->GetXaxis()->SetRangeUser(1, 300);
 	h_mlbcomb_notb[0]->GetXaxis()->SetTitle("mlb1comb_notb");
-	h_mlbcomb_notb[0]->GetYaxis()->SetRange(1, 300);
+	h_mlbcomb_notb[0]->GetYaxis()->SetRangeUser(1, 300);
 	h_mlbcomb_notb[0]->GetYaxis()->SetTitle("mlb1comb_notb");
 	h_mlbcomb_notb[0]->SetTitle("mlbcomb_notb top");
 	h_mlbcomb_notb[0]->DrawCopy("box");

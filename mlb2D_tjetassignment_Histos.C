@@ -111,14 +111,14 @@ void mlb2D_tjetassignment_Histos() {
 
 		Int_t nentries = (Int_t) MiniTree->GetEntries();
 
-		h_mlb_notb[dt] = new TH2D("h_mlb_notb" + Histoname[dt],"h_mlb_notb", 3000, 0, 3000, 3000, 0, 3000); //2 histos para top y stop
-		h_mlb_b[dt] = new TH2D("h_mlb_b" + Histoname[dt], "h_mlb_notb", 3000, 0, 3000, 3000, 0, 3000); //2 histos para top y stop
-		h_mlb_match[dt] = new TH2D("h_mlb_match" + Histoname[dt],"h_mlb_match",   3000, 0, 3000, 3000, 0, 3000); //2 histos para top y stop
+		h_mlb_notb[dt] = new TH2D("h_mlb_notb" + Histoname[dt],"h_mlb_notb", 300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
+		h_mlb_b[dt] = new TH2D("h_mlb_b" + Histoname[dt], "h_mlb_notb", 300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
+		h_mlb_match[dt] = new TH2D("h_mlb_match" + Histoname[dt],"h_mlb_match",   300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
 
 
-		h_mlbcomb_notb[dt] = new TH2D("h_mlbcomb_notb" + Histoname[dt],"h_mlbcomb_notb",   3000, 0, 3000, 3000, 0, 3000); //2 histos para top y stop
-		h_mlbcomb_b[dt] = new TH2D("h_mlbcomb_b" + Histoname[dt], "h_mlbcomb_notb", 3000, 0, 3000, 3000, 0, 3000); //2 histos para top y stop
-		h_mlbcomb_match[dt] = new TH2D("h_mlbcomb_match" + Histoname[dt],"h_mlbcomb_match",   3000, 0, 3000, 3000, 0, 3000); //2 histos para top y stop
+		h_mlbcomb_notb[dt] = new TH2D("h_mlbcomb_notb" + Histoname[dt],"h_mlbcomb_notb",   300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
+		h_mlbcomb_b[dt] = new TH2D("h_mlbcomb_b" + Histoname[dt], "h_mlbcomb_notb", 300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
+		h_mlbcomb_match[dt] = new TH2D("h_mlbcomb_match" + Histoname[dt],"h_mlbcomb_match",   300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
 
 
 
@@ -129,11 +129,6 @@ void mlb2D_tjetassignment_Histos() {
 			if (njet<2) continue;
 			if (nbjet30csvv2m < 1) continue;
 
-			if (tjet1assignment==0 && tjet2assignment == 0) {
-				h_mlb_notb[dt] -> Fill(mlb1, mlb2, eventW);
-				h_mlbcomb_notb[dt] -> Fill(mlb1comb, mlb2comb, eventW);
-			}
-
 			if (tjet1assignment==1 && tjet2assignment == 1) {
 				h_mlb_b[dt] -> Fill(mlb1, mlb2, eventW);
 				h_mlbcomb_match[dt] -> Fill(mlb1comb, mlb2comb, eventW);
@@ -143,6 +138,9 @@ void mlb2D_tjetassignment_Histos() {
 				h_mlb_match[dt] -> Fill(mlb1, mlb2, eventW);
 				h_mlbcomb_b[dt] -> Fill(mlb1, mlb2comb, eventW);
 			}
+
+			h_mlb_notb[dt] -> Fill(mlb1, mlb2, eventW);
+			h_mlbcomb_notb[dt] -> Fill(mlb1comb, mlb2comb, eventW);
 
 		}
 	} 
