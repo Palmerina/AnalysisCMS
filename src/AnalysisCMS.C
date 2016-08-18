@@ -1456,321 +1456,326 @@ void AnalysisCMS::GetStopVar()
 			     }
 			     }*/
 
+
 			float valmax = -1.0;
+			bjetindex[0] = -1;
+			bjetindex[1] = -1;
 
 			for (int ijet=0; ijet<_njet; ijet++) {
-
-				if (AnalysisJets[ijet].csvv2ivf > valmax) {
-					bjetindex[1] = bjetindex[0];  // Pone el índice del valor superior anterior en bjetindex[1]
+				if (AnalysisJets[ijet].csvv2ivf >= valmax) {
 					bjetindex[0] = ijet;  // Actualiza el índice del valor máximo
 					valmax = AnalysisJets[ijet].csvv2ivf; // Actualiza el valor máximo
 				}
 			}
-
-		}
-
-		if (bjetindex[0] >= 0 && bjetindex[1] >= 0) {
-
-			_mllbb = (Lepton1.v + Lepton2.v + AnalysisJets[bjetindex[0]].v + AnalysisJets[bjetindex[1]].v).M();
-
-			_mt2bb = ComputeMT2(AnalysisJets[bjetindex[0]].v, AnalysisJets[bjetindex[1]].v, Lepton1.v + Lepton2.v + MET, 1);
-
-			_mt2lblb = ComputeMT2(AnalysisJets[bjetindex[0]].v + Lepton1.v, AnalysisJets[bjetindex[1]].v + Lepton2.v, MET);
-
-			double combinatorialMT2lblb = ComputeMT2(AnalysisJets[bjetindex[0]].v + Lepton2.v, AnalysisJets[bjetindex[1]].v + Lepton1.v, MET, 2);
-
-			if (combinatorialMT2lblb < _mt2lblb) { 
-
-				_mt2lblbcomb = _mt2lblb;
-				_mt2lblb = combinatorialMT2lblb;
-
-				_tjet1pt = AnalysisJets[bjetindex[1]].v.Pt();
-				_tjet1eta = AnalysisJets[bjetindex[1]].v.Eta();
-				_tjet1phi = AnalysisJets[bjetindex[1]].v.Phi();
-				_tjet1mass = std_vector_jet_mass->at(AnalysisJets[bjetindex[1]].index);
-				_tjet1csvv2ivf = AnalysisJets[bjetindex[1]].csvv2ivf;
-
-				_tjet2pt = AnalysisJets[bjetindex[0]].v.Pt();
-				_tjet2eta = AnalysisJets[bjetindex[0]].v.Eta();
-				_tjet2phi = AnalysisJets[bjetindex[0]].v.Phi();
-				_tjet2mass = std_vector_jet_mass->at(AnalysisJets[bjetindex[0]].index);
-				_tjet2csvv2ivf = AnalysisJets[bjetindex[0]].csvv2ivf;
-
-				_mlb1 = (AnalysisJets[bjetindex[1]].v + Lepton1.v).M();
-				_mlb2 = (AnalysisJets[bjetindex[0]].v + Lepton2.v).M();
-
-				_mlb1comb = (AnalysisJets[bjetindex[0]].v + Lepton1.v).M();
-				_mlb2comb = (AnalysisJets[bjetindex[1]].v + Lepton2.v).M();
-
-			} else {
-
-				_mt2lblbcomb = combinatorialMT2lblb;
-
-				_tjet1pt = AnalysisJets[bjetindex[0]].v.Pt();
-				_tjet1eta = AnalysisJets[bjetindex[0]].v.Eta();
-				_tjet1phi = AnalysisJets[bjetindex[0]].v.Phi();
-				_tjet1mass = std_vector_jet_mass->at(AnalysisJets[bjetindex[0]].index);
-				_tjet1csvv2ivf = AnalysisJets[bjetindex[0]].csvv2ivf;
-
-				_tjet2pt = AnalysisJets[bjetindex[1]].v.Pt();
-				_tjet2eta = AnalysisJets[bjetindex[1]].v.Eta();
-				_tjet2phi = AnalysisJets[bjetindex[1]].v.Phi();
-				_tjet2mass = std_vector_jet_mass->at(AnalysisJets[bjetindex[1]].index);
-				_tjet2csvv2ivf = AnalysisJets[bjetindex[1]].csvv2ivf;
-
-				_mlb1 = (AnalysisJets[bjetindex[0]].v + Lepton1.v).M();
-				_mlb2 = (AnalysisJets[bjetindex[1]].v + Lepton2.v).M();
-
-				_mlb1comb = (AnalysisJets[bjetindex[1]].v + Lepton1.v).M();
-				_mlb2comb = (AnalysisJets[bjetindex[0]].v + Lepton2.v).M();
-
+			valmax = -1.0;
+			for (int ijet=0; ijet<_njet; ijet++) {
+				if (ijet != bjetindex[0] && AnalysisJets[ijet].csvv2ivf >= valmax) {
+					bjetindex[1] = ijet;  // Actualiza el índice del segundo valor máximo
+					valmax = AnalysisJets[ijet].csvv2ivf; // Actualiza el valor máximo
+				}
 			}
 
+			if (bjetindex[0] >= 0 && bjetindex[1] >= 0) {
+				_mllbb = (Lepton1.v + Lepton2.v + AnalysisJets[bjetindex[0]].v + AnalysisJets[bjetindex[1]].v).M();
+
+				_mt2bb = ComputeMT2(AnalysisJets[bjetindex[0]].v, AnalysisJets[bjetindex[1]].v, Lepton1.v + Lepton2.v + MET, 1);
+
+				_mt2lblb = ComputeMT2(AnalysisJets[bjetindex[0]].v + Lepton1.v, AnalysisJets[bjetindex[1]].v + Lepton2.v, MET);
+
+				double combinatorialMT2lblb = ComputeMT2(AnalysisJets[bjetindex[0]].v + Lepton2.v, AnalysisJets[bjetindex[1]].v + Lepton1.v, MET, 2);
+
+				if (combinatorialMT2lblb < _mt2lblb) { 
+
+					_mt2lblbcomb = _mt2lblb;
+					_mt2lblb = combinatorialMT2lblb;
+
+					_tjet1pt = AnalysisJets[bjetindex[1]].v.Pt();
+					_tjet1eta = AnalysisJets[bjetindex[1]].v.Eta();
+					_tjet1phi = AnalysisJets[bjetindex[1]].v.Phi();
+					_tjet1mass = std_vector_jet_mass->at(AnalysisJets[bjetindex[1]].index);
+					_tjet1csvv2ivf = AnalysisJets[bjetindex[1]].csvv2ivf;
+
+					_tjet2pt = AnalysisJets[bjetindex[0]].v.Pt();
+					_tjet2eta = AnalysisJets[bjetindex[0]].v.Eta();
+					_tjet2phi = AnalysisJets[bjetindex[0]].v.Phi();
+					_tjet2mass = std_vector_jet_mass->at(AnalysisJets[bjetindex[0]].index);
+					_tjet2csvv2ivf = AnalysisJets[bjetindex[0]].csvv2ivf;
+
+					_mlb1 = (AnalysisJets[bjetindex[1]].v + Lepton1.v).M();
+					_mlb2 = (AnalysisJets[bjetindex[0]].v + Lepton2.v).M();
+
+					_mlb1comb = (AnalysisJets[bjetindex[0]].v + Lepton1.v).M();
+					_mlb2comb = (AnalysisJets[bjetindex[1]].v + Lepton2.v).M();
+
+				} else {
+
+					_mt2lblbcomb = combinatorialMT2lblb;
+
+					_tjet1pt = AnalysisJets[bjetindex[0]].v.Pt();
+					_tjet1eta = AnalysisJets[bjetindex[0]].v.Eta();
+					_tjet1phi = AnalysisJets[bjetindex[0]].v.Phi();
+					_tjet1mass = std_vector_jet_mass->at(AnalysisJets[bjetindex[0]].index);
+					_tjet1csvv2ivf = AnalysisJets[bjetindex[0]].csvv2ivf;
+
+					_tjet2pt = AnalysisJets[bjetindex[1]].v.Pt();
+					_tjet2eta = AnalysisJets[bjetindex[1]].v.Eta();
+					_tjet2phi = AnalysisJets[bjetindex[1]].v.Phi();
+					_tjet2mass = std_vector_jet_mass->at(AnalysisJets[bjetindex[1]].index);
+					_tjet2csvv2ivf = AnalysisJets[bjetindex[1]].csvv2ivf;
+
+					_mlb1 = (AnalysisJets[bjetindex[0]].v + Lepton1.v).M();
+					_mlb2 = (AnalysisJets[bjetindex[1]].v + Lepton2.v).M();
+
+					_mlb1comb = (AnalysisJets[bjetindex[1]].v + Lepton1.v).M();
+					_mlb2comb = (AnalysisJets[bjetindex[0]].v + Lepton2.v).M();
+
+				}
+
+			}
 		}
 	}
-}
 
-if (!_analysis.EqualTo("Stop")) return;
-if (!_ismc) return;
+	if (!_analysis.EqualTo("Stop")) return;
+	if (!_ismc) return;
 
-// Top quark reco
-int lepIndex[2] = {-999, -999}, bIndex[2] = {-999, -999};
-int nCandidateBJets = 0;
-int CandidateBJetIndex[50];
-float CandidateBDeltaTopMass[50][2];
-for (int cb = 0; cb<50; cb++) {
-	for (int iw = 0; iw<2; iw++) {
-		CandidateBJetIndex[cb] = -1;
-		CandidateBDeltaTopMass[cb][iw] = 999.;
+	// Top quark reco
+	int lepIndex[2] = {-999, -999}, bIndex[2] = {-999, -999};
+	int nCandidateBJets = 0;
+	int CandidateBJetIndex[50];
+	float CandidateBDeltaTopMass[50][2];
+	for (int cb = 0; cb<50; cb++) {
+		for (int iw = 0; iw<2; iw++) {
+			CandidateBJetIndex[cb] = -1;
+			CandidateBDeltaTopMass[cb][iw] = 999.;
+		}
 	}
-}
 
-for (int wb = std_vector_VBoson_pt->size()-1; wb>=0; wb--) {
-	if (std_vector_VBoson_pt->at(wb)>-999.) {
+	for (int wb = std_vector_VBoson_pt->size()-1; wb>=0; wb--) {
+		if (std_vector_VBoson_pt->at(wb)>-999.) {
 
-		int Wid = std_vector_VBoson_pid->at(wb);
-		int IdxW = (Wid+24)/48;
+			int Wid = std_vector_VBoson_pid->at(wb);
+			int IdxW = (Wid+24)/48;
 
-		if (lepIndex[IdxW]==-999) {
+			if (lepIndex[IdxW]==-999) {
 
-			TLorentzVector WBoson; 
-			WBoson.SetPtEtaPhiM(std_vector_VBoson_pt->at(wb), std_vector_VBoson_eta->at(wb), std_vector_VBoson_phi->at(wb), std_vector_VBoson_mass->at(wb));
+				TLorentzVector WBoson; 
+				WBoson.SetPtEtaPhiM(std_vector_VBoson_pt->at(wb), std_vector_VBoson_eta->at(wb), std_vector_VBoson_phi->at(wb), std_vector_VBoson_mass->at(wb));
 
-			for (int lp = 0; lp<std_vector_leptonGen_pt->size(); lp++) {
-				if (std_vector_leptonGen_pt->at(lp)>-999. && Wid*std_vector_leptonGen_pid->at(lp)<0 && lepIndex[IdxW]<0) {
+				for (int lp = 0; lp<std_vector_leptonGen_pt->size(); lp++) {
+					if (std_vector_leptonGen_pt->at(lp)>-999. && Wid*std_vector_leptonGen_pid->at(lp)<0 && lepIndex[IdxW]<0) {
 
-					float LeptonMass = 0.000511;
-					if (fabs(std_vector_leptonGen_pid->at(lp))==13) LeptonMass = 0.1056583715;
+						float LeptonMass = 0.000511;
+						if (fabs(std_vector_leptonGen_pid->at(lp))==13) LeptonMass = 0.1056583715;
 
-					TLorentzVector ChargedLepton;
-					ChargedLepton.SetPtEtaPhiM(std_vector_leptonGen_pt->at(lp), std_vector_leptonGen_eta->at(lp), std_vector_leptonGen_phi->at(lp), LeptonMass);
+						TLorentzVector ChargedLepton;
+						ChargedLepton.SetPtEtaPhiM(std_vector_leptonGen_pt->at(lp), std_vector_leptonGen_eta->at(lp), std_vector_leptonGen_phi->at(lp), LeptonMass);
 
-					for (int nt = 0; nt<std_vector_neutrinoGen_pt->size(); nt++) {
-						if (std_vector_neutrinoGen_pt->at(nt)>-999. && lepIndex[IdxW]<0) {
+						for (int nt = 0; nt<std_vector_neutrinoGen_pt->size(); nt++) {
+							if (std_vector_neutrinoGen_pt->at(nt)>-999. && lepIndex[IdxW]<0) {
 
-							TLorentzVector CandidateNeutrino;
-							CandidateNeutrino.SetPtEtaPhiM(std_vector_neutrinoGen_pt->at(nt), std_vector_neutrinoGen_eta->at(nt), std_vector_neutrinoGen_phi->at(nt), 0.);
+								TLorentzVector CandidateNeutrino;
+								CandidateNeutrino.SetPtEtaPhiM(std_vector_neutrinoGen_pt->at(nt), std_vector_neutrinoGen_eta->at(nt), std_vector_neutrinoGen_phi->at(nt), 0.);
 
-							float ThisDeltaR = WBoson.DeltaR(ChargedLepton+CandidateNeutrino);
-							if (ThisDeltaR<0.00001) {
+								float ThisDeltaR = WBoson.DeltaR(ChargedLepton+CandidateNeutrino);
+								if (ThisDeltaR<0.00001) {
 
-								lepIndex[IdxW] = lp;
+									lepIndex[IdxW] = lp;
 
-								//cout << " Now look for the b quark (no partons in 74X)" << endl;
-								for (int rj = 0; rj<_njet; rj++) {
+									//cout << " Now look for the b quark (no partons in 74X)" << endl;
+									for (int rj = 0; rj<_njet; rj++) {
 
-									if (fabs(std_vector_jet_HadronFlavour->at(AnalysisJets[rj].index))==5 && 
-											(fabs(std_vector_jet_PartonFlavour->at(AnalysisJets[rj].index))!=5 || 
-											 std_vector_jet_PartonFlavour->at(AnalysisJets[rj].index)*Wid>0) ) {
-										for (int gj = 0; gj<std_vector_jetGen_pt->size(); gj++){
+										if (fabs(std_vector_jet_HadronFlavour->at(AnalysisJets[rj].index))==5 && 
+												(fabs(std_vector_jet_PartonFlavour->at(AnalysisJets[rj].index))!=5 || 
+												 std_vector_jet_PartonFlavour->at(AnalysisJets[rj].index)*Wid>0) ) {
+											for (int gj = 0; gj<std_vector_jetGen_pt->size(); gj++){
 
-											if (std_vector_jetGen_pt->at(gj)>8.) {
+												if (std_vector_jetGen_pt->at(gj)>8.) {
 
-												TLorentzVector BottomQuark;
-												BottomQuark.SetPtEtaPhiM(std_vector_jetGen_pt->at(gj), std_vector_jetGen_eta->at(gj), std_vector_jetGen_phi->at(gj), 4.18);
-												float TopMass = (WBoson+BottomQuark).M();
-												float DeltaTopMass = fabs(TopMass-173.34);
+													TLorentzVector BottomQuark;
+													BottomQuark.SetPtEtaPhiM(std_vector_jetGen_pt->at(gj), std_vector_jetGen_eta->at(gj), std_vector_jetGen_phi->at(gj), 4.18);
+													float TopMass = (WBoson+BottomQuark).M();
+													float DeltaTopMass = fabs(TopMass-173.34);
 
-												if (DeltaTopMass<250. && (AnalysisJets[rj].v).DeltaR(BottomQuark)<0.3) {
+													if (DeltaTopMass<250. && (AnalysisJets[rj].v).DeltaR(BottomQuark)<0.3) {
 
-													bool NewCandidateJet = true;
-													for (int cb = 0; cb<nCandidateBJets; cb++) {
-														if (CandidateBJetIndex[cb]==rj) {
+														bool NewCandidateJet = true;
+														for (int cb = 0; cb<nCandidateBJets; cb++) {
+															if (CandidateBJetIndex[cb]==rj) {
 
-															CandidateBDeltaTopMass[cb][IdxW] = DeltaTopMass;
-															NewCandidateJet = false;
+																CandidateBDeltaTopMass[cb][IdxW] = DeltaTopMass;
+																NewCandidateJet = false;
+
+															}
+														}
+
+														if (NewCandidateJet) {
+
+															CandidateBJetIndex[nCandidateBJets] = rj;
+															CandidateBDeltaTopMass[nCandidateBJets][IdxW] = DeltaTopMass;
+															nCandidateBJets++;
 
 														}
-													}
-
-													if (NewCandidateJet) {
-
-														CandidateBJetIndex[nCandidateBJets] = rj;
-														CandidateBDeltaTopMass[nCandidateBJets][IdxW] = DeltaTopMass;
-														nCandidateBJets++;
 
 													}
 
 												}
-
 											}
-										}
 
+										}
 									}
+
 								}
 
 							}
-
 						}
+
 					}
+				}
+
+			}
+
+		}
+	}
+
+	float MinMassDistance = 999999.;
+	for (int b0 = 0; b0<nCandidateBJets; b0++) {
+		for (int b1 = 0; b1<nCandidateBJets; b1++) {
+			if (b0!=b1) {
+
+				float MassDistance = sqrt( pow(CandidateBDeltaTopMass[b0][0], 2) +
+						pow(CandidateBDeltaTopMass[b1][1], 2));
+
+				if (MassDistance<MinMassDistance) {
+
+					bIndex[0] = CandidateBJetIndex[b0];
+					bIndex[1] = CandidateBJetIndex[b1];
+					MinMassDistance = MassDistance;
 
 				}
-			}
 
-		}
+			} else if (nCandidateBJets==1) {
 
-	}
-}
+				int giw = -1;
+				for (int iw = 0; iw<2; iw++) {
+					if (CandidateBDeltaTopMass[b0][iw]<MinMassDistance) {
 
-float MinMassDistance = 999999.;
-for (int b0 = 0; b0<nCandidateBJets; b0++) {
-	for (int b1 = 0; b1<nCandidateBJets; b1++) {
-		if (b0!=b1) {
+						giw = iw;
+						MinMassDistance = CandidateBDeltaTopMass[b0][iw];
 
-			float MassDistance = sqrt( pow(CandidateBDeltaTopMass[b0][0], 2) +
-					pow(CandidateBDeltaTopMass[b1][1], 2));
-
-			if (MassDistance<MinMassDistance) {
-
-				bIndex[0] = CandidateBJetIndex[b0];
-				bIndex[1] = CandidateBJetIndex[b1];
-				MinMassDistance = MassDistance;
-
-			}
-
-		} else if (nCandidateBJets==1) {
-
-			int giw = -1;
-			for (int iw = 0; iw<2; iw++) {
-				if (CandidateBDeltaTopMass[b0][iw]<MinMassDistance) {
-
-					giw = iw;
-					MinMassDistance = CandidateBDeltaTopMass[b0][iw];
-
+					}
 				}
+
+				if (giw>=0) bIndex[giw] = CandidateBJetIndex[b0];
+
 			}
-
-			if (giw>=0) bIndex[giw] = CandidateBJetIndex[b0];
-
-		}
-	}
-}
-
-int IdxB1 = -999, IdxB2 = -999;
-
-if (lepIndex[0]>=0) {
-
-	TLorentzVector LepGen1;
-	LepGen1.SetPtEtaPhiM(std_vector_leptonGen_pt->at(lepIndex[0]), std_vector_leptonGen_eta->at(lepIndex[0]), std_vector_leptonGen_phi->at(lepIndex[0]), 0.1); // Mass does not matter here
-
-	float DeltaRLep1LepGen1 = (Lepton1.v).DeltaR(LepGen1);
-	float DeltaRLep2LepGen1 = (Lepton2.v).DeltaR(LepGen1);
-
-	if (std_vector_lepton_ch->at(Lepton1.index)<0 && DeltaRLep1LepGen1<0.1) {
-		if (bIndex[0]>=0) {
-
-			_bjet1pt = AnalysisJets[bIndex[0]].v.Pt();
-			_bjet1eta = AnalysisJets[bIndex[0]].v.Eta();
-			_bjet1phi = AnalysisJets[bIndex[0]].v.Phi();
-			_bjet1mass = std_vector_jet_mass->at(AnalysisJets[bIndex[0]].index);
-			_bjet1csvv2ivf = AnalysisJets[bIndex[0]].csvv2ivf;
-			IdxB1 = bIndex[0];
-
-			if (_tjet1pt==_bjet1pt) _tjet1assignment = 2;
-			if (_tjet2pt==_bjet1pt) _tjet2assignment = 1;
-
-			_mlb1true = (AnalysisJets[IdxB1].v + Lepton1.v).M();
-			_mlb2truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
-
 		}
 	}
 
-	if (std_vector_lepton_ch->at(Lepton2.index)<0 && DeltaRLep2LepGen1<0.1) {
-		if (bIndex[0]>=0) {
+	int IdxB1 = -999, IdxB2 = -999;
 
-			_bjet2pt = AnalysisJets[bIndex[0]].v.Pt();
-			_bjet2eta = AnalysisJets[bIndex[0]].v.Eta();
-			_bjet2phi = AnalysisJets[bIndex[0]].v.Phi();
-			_bjet2mass = std_vector_jet_mass->at(AnalysisJets[bIndex[0]].index);
-			_bjet2csvv2ivf = AnalysisJets[bIndex[0]].csvv2ivf;	
-			IdxB2 = bIndex[0];
+	if (lepIndex[0]>=0) {
 
-			if (_tjet1pt==_bjet2pt) _tjet1assignment = 1;
-			if (_tjet2pt==_bjet2pt) _tjet2assignment = 2;
+		TLorentzVector LepGen1;
+		LepGen1.SetPtEtaPhiM(std_vector_leptonGen_pt->at(lepIndex[0]), std_vector_leptonGen_eta->at(lepIndex[0]), std_vector_leptonGen_phi->at(lepIndex[0]), 0.1); // Mass does not matter here
 
-			_mlb2true = (AnalysisJets[IdxB2].v + Lepton2.v).M();
-			_mlb1truecomb = (AnalysisJets[IdxB2].v + Lepton1.v).M();
+		float DeltaRLep1LepGen1 = (Lepton1.v).DeltaR(LepGen1);
+		float DeltaRLep2LepGen1 = (Lepton2.v).DeltaR(LepGen1);
 
+		if (std_vector_lepton_ch->at(Lepton1.index)<0 && DeltaRLep1LepGen1<0.1) {
+			if (bIndex[0]>=0) {
+
+				_bjet1pt = AnalysisJets[bIndex[0]].v.Pt();
+				_bjet1eta = AnalysisJets[bIndex[0]].v.Eta();
+				_bjet1phi = AnalysisJets[bIndex[0]].v.Phi();
+				_bjet1mass = std_vector_jet_mass->at(AnalysisJets[bIndex[0]].index);
+				_bjet1csvv2ivf = AnalysisJets[bIndex[0]].csvv2ivf;
+				IdxB1 = bIndex[0];
+
+				if (_tjet1pt==_bjet1pt) _tjet1assignment = 2;
+				if (_tjet2pt==_bjet1pt) _tjet2assignment = 1;
+
+				_mlb1true = (AnalysisJets[IdxB1].v + Lepton1.v).M();
+				_mlb2truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
+
+			}
 		}
+
+		if (std_vector_lepton_ch->at(Lepton2.index)<0 && DeltaRLep2LepGen1<0.1) {
+			if (bIndex[0]>=0) {
+
+				_bjet2pt = AnalysisJets[bIndex[0]].v.Pt();
+				_bjet2eta = AnalysisJets[bIndex[0]].v.Eta();
+				_bjet2phi = AnalysisJets[bIndex[0]].v.Phi();
+				_bjet2mass = std_vector_jet_mass->at(AnalysisJets[bIndex[0]].index);
+				_bjet2csvv2ivf = AnalysisJets[bIndex[0]].csvv2ivf;	
+				IdxB2 = bIndex[0];
+
+				if (_tjet1pt==_bjet2pt) _tjet1assignment = 1;
+				if (_tjet2pt==_bjet2pt) _tjet2assignment = 2;
+
+				_mlb2true = (AnalysisJets[IdxB2].v + Lepton2.v).M();
+				_mlb1truecomb = (AnalysisJets[IdxB2].v + Lepton1.v).M();
+
+			}
+		}
+
 	}
 
-}
+	if (lepIndex[1]>=0) {
 
-if (lepIndex[1]>=0) {
+		TLorentzVector LepGen2;
+		LepGen2.SetPtEtaPhiM(std_vector_leptonGen_pt->at(lepIndex[1]), std_vector_leptonGen_eta->at(lepIndex[1]), std_vector_leptonGen_phi->at(lepIndex[1]), 0.1); // Mass does not matter here
 
-	TLorentzVector LepGen2;
-	LepGen2.SetPtEtaPhiM(std_vector_leptonGen_pt->at(lepIndex[1]), std_vector_leptonGen_eta->at(lepIndex[1]), std_vector_leptonGen_phi->at(lepIndex[1]), 0.1); // Mass does not matter here
+		float DeltaRLep1LepGen2 = (Lepton1.v).DeltaR(LepGen2);
+		float DeltaRLep2LepGen2 = (Lepton2.v).DeltaR(LepGen2);
 
-	float DeltaRLep1LepGen2 = (Lepton1.v).DeltaR(LepGen2);
-	float DeltaRLep2LepGen2 = (Lepton2.v).DeltaR(LepGen2);
+		if (std_vector_lepton_ch->at(Lepton1.index)>0 && DeltaRLep1LepGen2<0.1) {
+			if (bIndex[1]>=0) {
 
-	if (std_vector_lepton_ch->at(Lepton1.index)>0 && DeltaRLep1LepGen2<0.1) {
-		if (bIndex[1]>=0) {
+				_bjet1pt = AnalysisJets[bIndex[1]].v.Pt();
+				_bjet1eta = AnalysisJets[bIndex[1]].v.Eta();
+				_bjet1phi = AnalysisJets[bIndex[1]].v.Phi();
+				_bjet1mass = std_vector_jet_mass->at(AnalysisJets[bIndex[1]].index);
+				_bjet1csvv2ivf = AnalysisJets[bIndex[1]].csvv2ivf;
+				IdxB1 = bIndex[1];
 
-			_bjet1pt = AnalysisJets[bIndex[1]].v.Pt();
-			_bjet1eta = AnalysisJets[bIndex[1]].v.Eta();
-			_bjet1phi = AnalysisJets[bIndex[1]].v.Phi();
-			_bjet1mass = std_vector_jet_mass->at(AnalysisJets[bIndex[1]].index);
-			_bjet1csvv2ivf = AnalysisJets[bIndex[1]].csvv2ivf;
-			IdxB1 = bIndex[1];
+				if (_tjet1pt==_bjet1pt) _tjet1assignment = 2;
+				if (_tjet2pt==_bjet1pt) _tjet2assignment = 1;
 
-			if (_tjet1pt==_bjet1pt) _tjet1assignment = 2;
-			if (_tjet2pt==_bjet1pt) _tjet2assignment = 1;
+				_mlb1true = (AnalysisJets[IdxB1].v + Lepton1.v).M();
+				_mlb2truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
 
-			_mlb1true = (AnalysisJets[IdxB1].v + Lepton1.v).M();
-			_mlb2truecomb = (AnalysisJets[IdxB1].v + Lepton2.v).M();
-
+			}
 		}
+
+		if (std_vector_lepton_ch->at(Lepton2.index)>0 && DeltaRLep2LepGen2<0.1) {
+			if (bIndex[1]>=0) {
+
+				_bjet2pt = AnalysisJets[bIndex[1]].v.Pt();
+				_bjet2eta = AnalysisJets[bIndex[1]].v.Eta();
+				_bjet2phi = AnalysisJets[bIndex[1]].v.Phi();
+				_bjet2mass = std_vector_jet_mass->at(AnalysisJets[bIndex[1]].index);
+				_bjet2csvv2ivf = AnalysisJets[bIndex[1]].csvv2ivf;	
+				IdxB2 = bIndex[1];
+
+				if (_tjet1pt==_bjet2pt) _tjet1assignment = 1;
+				if (_tjet2pt==_bjet2pt) _tjet2assignment = 2;
+
+				_mlb2true = (AnalysisJets[IdxB2].v + Lepton2.v).M();
+				_mlb1truecomb = (AnalysisJets[IdxB2].v + Lepton1.v).M();
+
+			}
+		}
+
 	}
 
-	if (std_vector_lepton_ch->at(Lepton2.index)>0 && DeltaRLep2LepGen2<0.1) {
-		if (bIndex[1]>=0) {
+	if (IdxB1>=0 && IdxB2>=0) {
 
-			_bjet2pt = AnalysisJets[bIndex[1]].v.Pt();
-			_bjet2eta = AnalysisJets[bIndex[1]].v.Eta();
-			_bjet2phi = AnalysisJets[bIndex[1]].v.Phi();
-			_bjet2mass = std_vector_jet_mass->at(AnalysisJets[bIndex[1]].index);
-			_bjet2csvv2ivf = AnalysisJets[bIndex[1]].csvv2ivf;	
-			IdxB2 = bIndex[1];
+		_mt2bbtrue = ComputeMT2(AnalysisJets[IdxB1].v, AnalysisJets[IdxB2].v, Lepton1.v + Lepton2.v + MET, 1);
+		_mt2lblbtrue = ComputeMT2(AnalysisJets[IdxB1].v + Lepton1.v, AnalysisJets[IdxB2].v + Lepton2.v, MET, 2);
 
-			if (_tjet1pt==_bjet2pt) _tjet1assignment = 1;
-			if (_tjet2pt==_bjet2pt) _tjet2assignment = 2;
+		_mt2lblbmatch = ComputeMT2(AnalysisJets[IdxB2].v + Lepton1.v, AnalysisJets[IdxB1].v + Lepton2.v, MET, 2);
 
-			_mlb2true = (AnalysisJets[IdxB2].v + Lepton2.v).M();
-			_mlb1truecomb = (AnalysisJets[IdxB2].v + Lepton1.v).M();
-
-		}
 	}
-
-}
-
-if (IdxB1>=0 && IdxB2>=0) {
-
-	_mt2bbtrue = ComputeMT2(AnalysisJets[IdxB1].v, AnalysisJets[IdxB2].v, Lepton1.v + Lepton2.v + MET, 1);
-	_mt2lblbtrue = ComputeMT2(AnalysisJets[IdxB1].v + Lepton1.v, AnalysisJets[IdxB2].v + Lepton2.v, MET, 2);
-
-	_mt2lblbmatch = ComputeMT2(AnalysisJets[IdxB2].v + Lepton1.v, AnalysisJets[IdxB1].v + Lepton2.v, MET, 2);
-
-}
 
 }
