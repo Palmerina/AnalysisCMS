@@ -1151,8 +1151,8 @@ void AnalysisCMS::OpenMinitree()
 	minitree->Branch("mc",             &_mc,             "mc/F");
 	minitree->Branch("m2l",            &_m2l,            "m2l/F");
 	minitree->Branch("mpmet",          &_mpmet,          "mpmet/F");
-	minitree->Branch("metPfType1",     &metPfType1,      "metPfType1/F");
-	minitree->Branch("metPfType1Phi",  &metPfType1Phi,   "metPfType1Phi/F");
+	minitree->Branch("metPfType1",     &pfType1Met,      "metPfType1/F");
+	minitree->Branch("metPfType1Phi",  &pfType1Metphi,   "metPfType1Phi/F");
 	minitree->Branch("metTtrk",        &metTtrk,         "metTtrk/F");
 	minitree->Branch("metTtrkPhi",     &metTtrkPhi,      "metTtrkPhi/F");
 	minitree->Branch("mth",            &mth,             "mth/F");
