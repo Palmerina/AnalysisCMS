@@ -1221,6 +1221,12 @@ void AnalysisCMS::OpenMinitree()
 		minitree->Branch("tjet2mass",       &_tjet2mass,       "tjet2mass/F");
 		minitree->Branch("tjet2csvv2ivf",   &_tjet2csvv2ivf,   "tjet2csvv2ivf/F");
 		minitree->Branch("tjet2assignment", &_tjet2assignment, "tjet2assignment/F");
+		minitree->Branch("neutrinompx",     &_neutrinompx,     "neutrinompx/F");
+		minitree->Branch("neutrinompy",     &_neutrinompy,     "neutrinompy/F");
+		minitree->Branch("neutrinompz",     &_neutrinompz,     "neutrinompz/F");
+		minitree->Branch("neutrinoppx",     &_neutrinoppx,     "neutrinoppx/F");
+		minitree->Branch("neutrinoppy",     &_neutrinoppy,     "neutrinoppy/F");
+		minitree->Branch("neutrinoppz",     &_neutrinoppz,     "neutrinoppz/F");
 	}
 }
 
@@ -1578,6 +1584,22 @@ void AnalysisCMS::GetStopVar()
 
 								float ThisDeltaR = WBoson.DeltaR(ChargedLepton+CandidateNeutrino);
 								if (ThisDeltaR<0.00001) {
+									
+									if (IdxW == 0) { //Viene del W-
+
+										neutrinompx = CandidateNeutrino.Px()
+										neutrinompy = CandidateNeutrino.Py()
+										neutrinompz = CandidateNeutrino.Pz()
+
+									}
+
+									if (IdxW == 1) { //Viene del W-
+
+										neutrinoppx = CandidateNeutrino.Px()
+										neutrinoppy = CandidateNeutrino.Py()
+										neutrinoppz = CandidateNeutrino.Pz()
+
+									}
 
 									lepIndex[IdxW] = lp;
 
