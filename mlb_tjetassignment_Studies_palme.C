@@ -23,7 +23,6 @@ void mlb_tjetassignment_Studies_palme() {
 
 	TFile *HistogramFile = TFile::Open("mlb_tjetassignmentHistos_palme.root");
 
-
 	TH1D* h_mlb1_notb[2];
 
 	TH1D* h_mlb2_notb[2];
@@ -44,21 +43,16 @@ void mlb_tjetassignment_Studies_palme() {
 
 	for (int i  = 0; i<2; i++) {
 
-
 		h_mlb1_notb[i] = (TH1D*) HistogramFile->Get("h_mlb1_notb" + HistoName[i]);
-
 		h_mlb2_notb[i] = (TH1D*) HistogramFile->Get("h_mlb2_notb" + HistoName[i]);
 
-
 		h_mlb1true_notb[i] = (TH1D*) HistogramFile->Get("h_mlb1true_notb" + HistoName[i]);
-
 		h_mlb2true_notb[i] = (TH1D*) HistogramFile->Get("h_mlb2true_notb" + HistoName[i]);
 
 	}
 
-	TCanvas *CC = new TCanvas("CC", "", 800, 800);
-	TPad *CC1 = (TPad*)CC->GetPad(1); //Ahi va el h_mt2mlblbtrue
-	CC1->SetGridx(); CC1->SetGridy(); 
+	TCanvas *CC = new TCanvas("CC", "", 1000, 800);
+	CC->SetGridx(); CC->SetGridy(); 
 
 
 	TString Option = "histosame";
@@ -106,11 +100,13 @@ void mlb_tjetassignment_Studies_palme() {
 
 
 
-	CC->cd(1); // se pone en el TPad 1 
+	CC->cd(); // se pone en el TPad 1 
 
 
 	h_mlb1_notb[0]->GetXaxis()->SetRange(1, 300);
+	h_mlb1_notb[0]->SetMaximum(0.018);
 	h_mlb1_notb[0]->GetXaxis()->SetTitle("mlb top");
+	h_mlb1_notb[0]->SetTitle("mlb con tjetassignment=0");
 	h_mlb1_notb[0]->DrawCopy("histo");
 
 	h_mlb2_notb[0]->GetXaxis()->SetRange(1, 300);
