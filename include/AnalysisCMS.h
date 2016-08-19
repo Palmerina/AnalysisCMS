@@ -276,6 +276,12 @@ class AnalysisCMS : public AnalysisBase
   float                  _tjet2mass;
   float                  _tjet2csvv2ivf;
   float                  _tjet2assignment;
+  float                  _neutrinompx;
+  float                  _neutrinompy;
+  float                  _neutrinompz;
+  float                  _neutrinoppx;
+  float                  _neutrinoppy;
+  float                  _neutrinoppz;
 
 
   Long64_t               _nentries;

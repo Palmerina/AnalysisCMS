@@ -1424,6 +1424,13 @@ void AnalysisCMS::GetStopVar()
 	_bjet1csvv2ivf   = _bjet2csvv2ivf   = _tjet1csvv2ivf = _tjet2csvv2ivf = -999.;
 	_tjet1assignment = _tjet2assignment = 0.;
 
+	_neutrinompx = -999.0;
+	_neutrinompy = -999.0;
+	_neutrinompz = -999.0;
+	_neutrinoppx = -999.0;
+	_neutrinoppy = -999.0;
+	_neutrinoppz = -999.0;
+
 	double minDeltaPhiMetJet = 999.;
 
 	for (int ijet=0; ijet<_njet; ijet++) {
@@ -1587,17 +1594,17 @@ void AnalysisCMS::GetStopVar()
 									
 									if (IdxW == 0) { //Viene del W-
 
-										neutrinompx = CandidateNeutrino.Px()
-										neutrinompy = CandidateNeutrino.Py()
-										neutrinompz = CandidateNeutrino.Pz()
+										_neutrinompx = CandidateNeutrino.Px();
+										_neutrinompy = CandidateNeutrino.Py();
+										_neutrinompz = CandidateNeutrino.Pz();
 
 									}
 
-									if (IdxW == 1) { //Viene del W-
+									if (IdxW == 1) { //Viene del W+
 
-										neutrinoppx = CandidateNeutrino.Px()
-										neutrinoppy = CandidateNeutrino.Py()
-										neutrinoppz = CandidateNeutrino.Pz()
+										_neutrinoppx = CandidateNeutrino.Px();
+										_neutrinoppy = CandidateNeutrino.Py();
+										_neutrinoppz = CandidateNeutrino.Pz();
 
 									}
 
