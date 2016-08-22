@@ -17,7 +17,7 @@
 #include <fstream>
 #include <iostream>
 
-float eventW, metPfType1;
+float eventW, pfType1Met;
 float njet, channel, nbjet30csvv2l, nbjet30csvv2m, nbjet30csvv2t;
 float mt2ll, mt2bb, mt2bbtrue, mt2lblb, mt2lblbcomb, mt2lblbtrue;
 float mlb1, mlb1true, mlb1comb, mlb1truecomb;
@@ -37,7 +37,6 @@ TTree *GetMiniTree(TFile *MiniTreeFile) {
 	TTree *MiniTree = (TTree*) MiniTreeFile->Get("latino"); 
 
 	MiniTree->SetBranchAddress("eventW",          &eventW);
-	MiniTree->SetBranchAddress("metPfType1",      &metType1Met);
 	MiniTree->SetBranchAddress("njet",            &njet);
 	MiniTree->SetBranchAddress("channel",         &channel);
 
@@ -90,6 +89,7 @@ TTree *GetMiniTree(TFile *MiniTreeFile) {
 	MiniTree->SetBranchAddress("neutrinoppx",     &neutrinoppx);
 	MiniTree->SetBranchAddress("neutrinoppy",     &neutrinoppy);
 	MiniTree->SetBranchAddress("neutrinoppy",     &neutrinoppy);
+	MiniTree->SetBranchAddress("pfType1Met",      &pfType1Met);
 
 	return MiniTree;
 
@@ -103,13 +103,12 @@ void neutrinoMET_Histos_palme() {
 
 
 
-	TString Option = "histo";
 	TString Histoname[2] = {"_top", "_stop"};
 
-	int HistoCol[2] = {4, 2};
 
 	TLorentzVector neutrinom;
 	TLorentzVector neutrinop;
+
 
 	float neutrinoMET;
 	float MET;
@@ -126,7 +125,7 @@ void neutrinoMET_Histos_palme() {
 
 		Int_t nentries = (Int_t) MiniTree->GetEntries();
 
-		h_neutrinoMET[dt] = new TH2D("h_neutrinoMET" + Histoname[dt],"h_neutrinoMET", 3000, 0, 3000, 3000, 0, 3000); //2 histos para top y stop
+		h_neutrinoMET[dt] = new TH2D("h_neutrinoMET" + Histoname[dt],"h_neutrinoMET", 300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
 		//h_neutrinoPhi[dt] = new TH2D("h_neutrinoPhi" + Histoname[dt],"h_neutrinoPhi", 3000, 0, 3000, 3000, 0, 3000); //2 histos para top y stop
 
 		for (Int_t i = 0; i<nentries; i++) {
@@ -136,9 +135,12 @@ void neutrinoMET_Histos_palme() {
 			// Apply ttbar selection
 			if (njet<2) continue;
 			if (nbjet30csvv2m < 1) continue;
+
+			neutrinom.SetPxPyPzE(neutrinompx, neutrinompy, neutrinompz, 0.);
+			neutrinop.SetPxPyPzE(neutrinoppx, neutrinoppy, neutrinoppz, 0.);
 			
 			neutrinoMET = (neutrinom + neutrinop).Pt();
-			MET = metPfType1;
+			MET = pfType1Met;
 
 		//	neutrinoPhi = (neutrinom + neutrinop).Phi();
 		//	Phi = metPfType1;
@@ -148,15 +150,16 @@ void neutrinoMET_Histos_palme() {
 
 			if (dt == 0) {
 
-				if (mt2ll < 120.0 && mt2lblb < 200) {
+				if (mt2ll < 120.0 && mt2lblb < 200.0) {
 
 					h_neutrinoMET[dt] -> Fill(neutrinoMET, MET, eventW);	
 				//	h_neutrinoPhi[dt] -> Fill(neutrinoPhi, Phi, eventW);	
 				}
-				else {	
-					h_neutrinoMET[dt] -> Fill(neutrinoMET, MET, eventW);	
-				//	h_neutrinoPhi[dt] -> Fill(neutrinoPhi, Phi, eventW);	
-				}
+			}
+
+			else {	
+				h_neutrinoMET[dt] -> Fill(neutrinoMET, MET, eventW);	
+			//	h_neutrinoPhi[dt] -> Fill(neutrinoPhi, Phi, eventW);	
 			}
 
 		}      
