@@ -17,7 +17,7 @@
 #include <fstream>
 #include <iostream>
 
-float eventW, pfType1Met;
+float eventW, pfType1Met, pfType1Metphi;
 float njet, channel, nbjet30csvv2l, nbjet30csvv2m, nbjet30csvv2t;
 float mt2ll, mt2bb, mt2bbtrue, mt2lblb, mt2lblbcomb, mt2lblbtrue;
 float mlb1, mlb1true, mlb1comb, mlb1truecomb;
@@ -30,6 +30,7 @@ float neutrinompx, neutrinompy, neutrinompz, neutrinoppx, neutrinoppy, neutrinop
 
 
 TH2D *h_neutrinoMET[2]; 
+TH2D *h_neutrinoPhi[2]; 
 
 
 TTree *GetMiniTree(TFile *MiniTreeFile) {
@@ -90,6 +91,7 @@ TTree *GetMiniTree(TFile *MiniTreeFile) {
 	MiniTree->SetBranchAddress("neutrinoppy",     &neutrinoppy);
 	MiniTree->SetBranchAddress("neutrinoppy",     &neutrinoppy);
 	MiniTree->SetBranchAddress("pfType1Met",      &pfType1Met);
+	MiniTree->SetBranchAddress("pfType1Metphi",   &pfType1Metphi);
 
 	return MiniTree;
 
@@ -113,8 +115,8 @@ void neutrinoMET_Histos_palme() {
 	float neutrinoMET;
 	float MET;
 
-//	float neutrinoPhi;
-//	float Phi;
+	float neutrinoPhi;
+	float Phi;
 
 
 	for (int dt = 0; dt<2; dt++) {
@@ -126,7 +128,7 @@ void neutrinoMET_Histos_palme() {
 		Int_t nentries = (Int_t) MiniTree->GetEntries();
 
 		h_neutrinoMET[dt] = new TH2D("h_neutrinoMET" + Histoname[dt],"h_neutrinoMET", 300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
-		//h_neutrinoPhi[dt] = new TH2D("h_neutrinoPhi" + Histoname[dt],"h_neutrinoPhi", 3000, 0, 3000, 3000, 0, 3000); //2 histos para top y stop
+		h_neutrinoPhi[dt] = new TH2D("h_neutrinoPhi" + Histoname[dt],"h_neutrinoPhi", 300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
 
 		for (Int_t i = 0; i<nentries; i++) {
 
@@ -142,15 +144,15 @@ void neutrinoMET_Histos_palme() {
 			neutrinoMET = (neutrinom + neutrinop).Pt();
 			MET = pfType1Met;
 
-		//	neutrinoPhi = (neutrinom + neutrinop).Phi();
-		//	Phi = metPfType1;
+			neutrinoPhi = (neutrinom + neutrinop).Phi();
+			Phi = pfType1Metphi;
 
 
 
 			if (mt2ll < 120.0 && mt2lblb < 200.0) {
 
 				h_neutrinoMET[dt] -> Fill(neutrinoMET, MET, eventW);	
-			//	h_neutrinoPhi[dt] -> Fill(neutrinoPhi, Phi, eventW);	
+				h_neutrinoPhi[dt] -> Fill(neutrinoPhi, Phi, eventW);	
 			}
 
 
