@@ -145,22 +145,14 @@ void neutrinoMET_Histos_palme() {
 		//	neutrinoPhi = (neutrinom + neutrinop).Phi();
 		//	Phi = metPfType1;
 
-			cout << "neutrinoMET: " << neutrinoMET << endl;
-			cout << "MET:         " << MET << endl;
 
-			if (dt == 0) {
 
-				if (mt2ll < 120.0 && mt2lblb < 200.0) {
+			if (mt2ll < 120.0 && mt2lblb < 200.0) {
 
-					h_neutrinoMET[dt] -> Fill(neutrinoMET, MET, eventW);	
-				//	h_neutrinoPhi[dt] -> Fill(neutrinoPhi, Phi, eventW);	
-				}
-			}
-
-			else {	
 				h_neutrinoMET[dt] -> Fill(neutrinoMET, MET, eventW);	
 			//	h_neutrinoPhi[dt] -> Fill(neutrinoPhi, Phi, eventW);	
 			}
+
 
 		}      
 	}
