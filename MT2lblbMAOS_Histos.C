@@ -18,7 +18,7 @@
 
 float eventW, metPfType1;
 float njet, channel, nbjet30csvv2l, nbjet30csvv2m, nbjet30csvv2t;
-float mt2ll, mt2bb, mt2bbtrue, mt2lblb, mt2lblbcomb, mt2lblbMAOS;
+float mt2ll, mt2bb, mt2bbtrue, mt2lblb, mt2lblbcomb, mt2lblbMAOS, mt2lblbMAOScomb;
 float mlb1, mlb1true, mlb1comb, mlb1truecomb;
 float mlb2, mlb2true, mlb2comb, mlb2truecomb;
 float tjet1pt, tjet1phi, tjet1eta, tjet1mass, tjet1csvv2ivf, tjet1assignment;
@@ -49,6 +49,7 @@ TTree *GetMiniTree(TFile *MiniTreeFile) {
 	MiniTree->SetBranchAddress("mt2bb",           &mt2bb);
 	MiniTree->SetBranchAddress("mt2lblb",         &mt2lblb);
 	MiniTree->SetBranchAddress("mt2lblbMAOS",     &mt2lblbMAOS);
+	MiniTree->SetBranchAddress("mt2lblbMAOScomb", &mt2lblbMAOScomb);
 	MiniTree->SetBranchAddress("mt2bbtrue",       &mt2bbtrue);
 	MiniTree->SetBranchAddress("mt2lblbcomb",     &mt2lblbcomb);
 	MiniTree->SetBranchAddress("mt2lblb",     &mt2lblb);
@@ -121,9 +122,22 @@ void MT2lblbMAOS_Histos() {
 			if (njet<2) continue;
 			if (nbjet30csvv2m < 1) continue;
 
-			h_mt2lblb[dt] -> Fill(mt2lblb, eventW);	
-			h_mt2lblbMAOS[dt] -> Fill(mt2lblbMAOS, eventW);	
+			if (mlb1 <= 160.0 && mlb2 <= 160.0) {
 
+				h_mt2lblb[dt] -> Fill(mt2lblb, eventW);	
+
+				if (mt2lblbMAOS <= mt2lblbMAOScomb) {
+				
+					h_mt2lblbMAOS[dt] -> Fill(mt2lblbMAOS, eventW);	
+
+				}
+
+				else {
+
+					h_mt2lblbMAOS[dt] -> Fill(mt2lblbMAOScomb, eventW);	
+				}
+
+			}
 		}      
 	}
 
