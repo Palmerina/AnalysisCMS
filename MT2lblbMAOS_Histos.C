@@ -122,24 +122,29 @@ void MT2lblbMAOS_Histos() {
 			if (njet<2) continue;
 			if (nbjet30csvv2m < 1) continue;
 
-			if (mlb1 <= 160.0 && mlb2 <= 160.0) {
 
+			if (mlb1 <= 160.0 && mlb2 <= 160.0) {
 				h_mt2lblb[dt] -> Fill(mt2lblb, eventW);	
 
 				if (mt2lblbMAOS <= mt2lblbMAOScomb) {
-				
+
 					h_mt2lblbMAOS[dt] -> Fill(mt2lblbMAOS, eventW);	
-
 				}
+			}
 
-				else {
+			else if (mlb1comb <= 160.0 && mlb2comb <= 160.0) {
+
+				if (mt2lblbMAOS > mt2lblbMAOScomb) {
 
 					h_mt2lblbMAOS[dt] -> Fill(mt2lblbMAOScomb, eventW);	
-				}
 
+				}
 			}
-		}      
+		}
+
 	}
+
+
 
 	TFile *OutFile = new TFile("MT2lblbMAOS_Histos.root", "recreate");
 	for (int dt = 0; dt<2; dt++) {
