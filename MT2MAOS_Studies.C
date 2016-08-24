@@ -45,7 +45,7 @@ void MT2MAOS_Studies() {
 
 	for (int dt = 0; dt < 2; dt++) {
 		h_mt2ll_mt2lblbMAOS[dt] = (TH2D*) HistogramFile->Get("h_mt2ll_mt2lblbMAOS" + HistoName[dt]);
-		h_mt2ll_mt2lblbMAOS_cut[dt] = (TH2D*) HistogramFile->Get("h_mt2bb_mt2lblbMAOS_cut" + HistoName[dt]);
+		h_mt2ll_mt2lblbMAOS_cut[dt] = (TH2D*) HistogramFile->Get("h_mt2ll_mt2lblbMAOS_cut" + HistoName[dt]);
 	
 	}
 
@@ -121,15 +121,12 @@ void MT2MAOS_Studies() {
 
 		CCstop->cd(dt+1); // se pone en el TPad 1 
 
-		cout << "after cd(dt+1)" << endl;
 
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetXaxis()->SetRangeUser(1, 300);
-		cout << dt << endl;
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetXaxis()->SetTitle("mt2ll");
-		cout << dt<<"2" << endl;
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetYaxis()->SetRangeUser(1, 300);
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetYaxis()->SetTitle("mt2lblbMAOS_cut");
-		h_mt2ll_mt2lblbMAOS_cut[dt]->SetTitle("mt2bb_mt2lblbMAOS_cut top");
+		h_mt2ll_mt2lblbMAOS_cut[dt]->SetTitle("mt2ll_mt2lblbMAOS" + HistoName[dt] + " with mlb <= 160");
 		h_mt2ll_mt2lblbMAOS_cut[dt]->DrawCopy("box");
 
 
@@ -139,7 +136,7 @@ void MT2MAOS_Studies() {
 		h_mt2ll_mt2lblbMAOS[dt]->GetXaxis()->SetTitle("mt2ll");
 		h_mt2ll_mt2lblbMAOS[dt]->GetYaxis()->SetRangeUser(1, 300);
 		h_mt2ll_mt2lblbMAOS[dt]->GetYaxis()->SetTitle("mt2lblbMAOS");
-		h_mt2ll_mt2lblbMAOS[dt]->SetTitle("mt2ll_mt2lblbMAOS top");
+		h_mt2ll_mt2lblbMAOS[dt]->SetTitle("mt2ll_mt2lblbMAOS" + HistoName[dt]);
 		h_mt2ll_mt2lblbMAOS[dt]->DrawCopy("box");
 
 	}
