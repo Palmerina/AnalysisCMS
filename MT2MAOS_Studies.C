@@ -121,8 +121,12 @@ void MT2MAOS_Studies() {
 
 		CCstop->cd(dt+1); // se pone en el TPad 1 
 
+		cout << "after cd(dt+1)" << endl;
+
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetXaxis()->SetRangeUser(1, 300);
+		cout << dt << endl;
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetXaxis()->SetTitle("mt2ll");
+		cout << dt<<"2" << endl;
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetYaxis()->SetRangeUser(1, 300);
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetYaxis()->SetTitle("mt2lblbMAOS_cut");
 		h_mt2ll_mt2lblbMAOS_cut[dt]->SetTitle("mt2bb_mt2lblbMAOS_cut top");
