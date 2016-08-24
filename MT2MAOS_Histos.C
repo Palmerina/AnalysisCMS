@@ -19,8 +19,8 @@
 float eventW, metPfType1;
 float njet, channel, nbjet30csvv2l, nbjet30csvv2m, nbjet30csvv2t;
 float mt2ll, mt2llMAOS, mt2lltrue, mt2lblb, mt2lblbMAOS, mt2lblbcomb, mt2lblbMAOScomb, mt2lblbtrue, mt2lblbMAOStrue;
-float mlb1, mlb1true, mlb1comb, mlb1truecomb;
-float mlb2, mlb2true, mlb2comb, mlb2truecomb;
+float mlb1, mlb1true, mlb1comb;
+float mlb2, mlb2true, mlb2comb;
 float tjet1pt, tjet1phi, tjet1eta, tjet1mass, tjet1csvv2ivf, tjet1assignment;
 float tjet2pt, tjet2phi, tjet2eta, tjet2mass, tjet2csvv2ivf, tjet2assignment;
 float bjet1pt, bjet1phi, bjet1eta, bjet1mass, bjet1csvv2ivf;
@@ -65,8 +65,6 @@ TTree *GetMiniTree(TFile *MiniTreeFile) {
 	MiniTree->SetBranchAddress("mlb2comb",        &mlb2comb);
 	MiniTree->SetBranchAddress("mlb1true",        &mlb1true);
 	MiniTree->SetBranchAddress("mlb2true",        &mlb2true);
-	MiniTree->SetBranchAddress("mlb1truecomb",    &mlb1truecomb);
-	MiniTree->SetBranchAddress("mlb2truecomb",    &mlb2truecomb);
 
 	MiniTree->SetBranchAddress("bjet1pt",         &bjet1pt);        
 	MiniTree->SetBranchAddress("bjet1eta",        &bjet1eta);       
@@ -140,20 +138,46 @@ void MT2MAOS_Histos() {
 				h_mt2ll_mt2llMAOS -> Fill(mt2ll, mt2llMAOS, eventW);
 				h_mt2ll_mt2lblbMAOStrue -> Fill(mt2ll, mt2lblbMAOStrue, eventW);
 				h_mt2lblbtrue_mt2lblbMAOStrue -> Fill(mt2lblbtrue, mt2lblbMAOStrue, eventW);
-				h_mt2lblb_mt2lblbMAOS -> Fill(mt2lblb, mt2lblbMAOS, eventW);
 
+				if (mt2lblbMAOS <= mt2lblbMAOScomb) {
+
+					h_mt2lblb_mt2lblbMAOS -> Fill(mt2lblb, mt2lblbMAOS, eventW);
+
+				}
+
+				else {
+
+					h_mt2lblb_mt2lblbMAOS -> Fill(mt2lblb, mt2lblbMAOScomb, eventW);
+
+				}
 			}
 
-			h_mt2ll_mt2lblbMAOS[dt] -> Fill(mt2ll, mt2lblbMAOS, eventW);
 
-			if (mlb1 <= 160 && mlb2 <= 160) {
+			if (mt2lblbMAOS <= mt2lblbMAOScomb) {
 
-				h_mt2ll_mt2lblbMAOS_cut[dt] -> Fill(mt2ll, mt2lblbMAOS, eventW);
+				h_mt2ll_mt2lblbMAOS[dt] -> Fill(mt2ll, mt2lblbMAOS, eventW);
+
+				if (mlb1 <= 160 && mlb2 <= 160) {
+
+					h_mt2ll_mt2lblbMAOS_cut[dt] -> Fill(mt2ll, mt2lblbMAOS, eventW);
+				}
+			}
+
+			else {
+
+				h_mt2ll_mt2lblbMAOS[dt] -> Fill(mt2ll, mt2lblbMAOScomb, eventW);
+
+				if (mlb1comb <= 160 && mlb2comb <= 160) {
+
+					h_mt2ll_mt2lblbMAOS_cut[dt] -> Fill(mt2ll, mt2lblbMAOScomb, eventW);
+				}
 
 			}
 		}
-	} 
-     
+
+	}
+
+
 	TFile *OutFile = new TFile("MT2MAOS_Histos.root", "recreate");
 
 	h_mt2ll_mt2llMAOS->Write();

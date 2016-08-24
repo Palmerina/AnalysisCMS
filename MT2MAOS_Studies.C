@@ -77,9 +77,9 @@ void MT2MAOS_Studies() {
 
 	CC->cd(1); // se pone en el TPad 1 
 
-	h_mt2lblbtrue_mt2lblbMAOStrue->GetXaxis()->SetRangeUser(1, 300);
+	h_mt2lblbtrue_mt2lblbMAOStrue->GetXaxis()->SetRangeUser(1, 600);
 	h_mt2lblbtrue_mt2lblbMAOStrue->GetXaxis()->SetTitle("mt2lblbtrue");
-	h_mt2lblbtrue_mt2lblbMAOStrue->GetYaxis()->SetRangeUser(1, 300);
+	h_mt2lblbtrue_mt2lblbMAOStrue->GetYaxis()->SetRangeUser(1, 600);
 	h_mt2lblbtrue_mt2lblbMAOStrue->GetYaxis()->SetTitle("mt2lblbMAOStrue");
 	h_mt2lblbtrue_mt2lblbMAOStrue->SetTitle("mt2lblbtrue_mt2lblbMAOStrue 2D  top");
 	h_mt2lblbtrue_mt2lblbMAOStrue->DrawCopy("box");
@@ -91,7 +91,7 @@ void MT2MAOS_Studies() {
 
 	h_mt2ll_mt2lblbMAOStrue->GetXaxis()->SetRangeUser(1, 300);
 	h_mt2ll_mt2lblbMAOStrue->GetXaxis()->SetTitle("mt2ll");
-	h_mt2ll_mt2lblbMAOStrue->GetYaxis()->SetRangeUser(1, 300);
+	h_mt2ll_mt2lblbMAOStrue->GetYaxis()->SetRangeUser(1, 600);
 	h_mt2ll_mt2lblbMAOStrue->GetYaxis()->SetTitle("mt2lblbMAOStrue");
 	h_mt2ll_mt2lblbMAOStrue->SetTitle("mt2ll_mt2lblbMAOStrue 2D top");
 	h_mt2ll_mt2lblbMAOStrue->DrawCopy("box");
@@ -110,9 +110,9 @@ void MT2MAOS_Studies() {
 
 	CC->cd(4); // se pone en el TPad 1 
 
-	h_mt2lblb_mt2lblbMAOS->GetXaxis()->SetRangeUser(1, 300);
+	h_mt2lblb_mt2lblbMAOS->GetXaxis()->SetRangeUser(1, 600);
 	h_mt2lblb_mt2lblbMAOS->GetXaxis()->SetTitle("mt2lblb");
-	h_mt2lblb_mt2lblbMAOS->GetYaxis()->SetRangeUser(1, 300);
+	h_mt2lblb_mt2lblbMAOS->GetYaxis()->SetRangeUser(1, 600);
 	h_mt2lblb_mt2lblbMAOS->GetYaxis()->SetTitle("mt2lblbMAOS");
 	h_mt2lblb_mt2lblbMAOS->SetTitle("mt2lblb_mt2lblbMAOS top");
 	h_mt2lblb_mt2lblbMAOS->DrawCopy("box");
@@ -124,7 +124,7 @@ void MT2MAOS_Studies() {
 
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetXaxis()->SetRangeUser(1, 300);
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetXaxis()->SetTitle("mt2ll");
-		h_mt2ll_mt2lblbMAOS_cut[dt]->GetYaxis()->SetRangeUser(1, 300);
+		h_mt2ll_mt2lblbMAOS_cut[dt]->GetYaxis()->SetRangeUser(1, 600);
 		h_mt2ll_mt2lblbMAOS_cut[dt]->GetYaxis()->SetTitle("mt2lblbMAOS_cut");
 		h_mt2ll_mt2lblbMAOS_cut[dt]->SetTitle("mt2ll_mt2lblbMAOS" + HistoName[dt] + " with mlb <= 160");
 		h_mt2ll_mt2lblbMAOS_cut[dt]->DrawCopy("box");
@@ -134,7 +134,7 @@ void MT2MAOS_Studies() {
 
 		h_mt2ll_mt2lblbMAOS[dt]->GetXaxis()->SetRangeUser(1, 300);
 		h_mt2ll_mt2lblbMAOS[dt]->GetXaxis()->SetTitle("mt2ll");
-		h_mt2ll_mt2lblbMAOS[dt]->GetYaxis()->SetRangeUser(1, 300);
+		h_mt2ll_mt2lblbMAOS[dt]->GetYaxis()->SetRangeUser(1, 600);
 		h_mt2ll_mt2lblbMAOS[dt]->GetYaxis()->SetTitle("mt2lblbMAOS");
 		h_mt2ll_mt2lblbMAOS[dt]->SetTitle("mt2ll_mt2lblbMAOS" + HistoName[dt]);
 		h_mt2ll_mt2lblbMAOS[dt]->DrawCopy("box");
