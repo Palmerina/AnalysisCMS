@@ -115,6 +115,10 @@ TLorentzVector Lepton[2], Bottom[2], LepB[2][2];
 
 TH2D *h_neutrino1_pxy[2];
 TH2D *h_neutrino2_pxy[2];
+TH1D *h_mt2ll_minitrees[2];
+TH1D *h_mt2ll_S0_TW05[2];
+TH1D *h_mt2lblb_minitrees[2];
+TH1D *h_mt2lblb_S0_TW05[2];
 
 
 Mt2Result ComputeMt2Top(Mt2::LorentzVector& Lepton1,  Mt2::LorentzVector& Lepton2,
@@ -168,8 +172,8 @@ void MT2top(bool TestStandardMt2 = false) {
 	//TString FileName[2] = {"/afs/cern.ch/user/p/palmerin/public/TTTo2L2Nu.root",
 	//"/afs/cern.ch/user/p/palmerin/public/T2tt_mStop500-525-550_mLSP1to425-325to450-1to475.root"};
 
-	TString FileName[2] = {"minitrees/minitreesLuca/TTTo2L2Nu_test.root",
-		"minitrees/minitreesLuca/T2tt_mStop500-525-550_mLSP1to425-325to450-1to475.root"};
+	TString FileName[2] = {"minitrees/minitreesLuca/TTTo2L2Nu.root",
+		"minitrees/minitreesLuca/T2tt_mStop600-950_mLSP1to450.root"};
 
 	TString Histoname[2]={"_top", "_stop"};
 
@@ -178,6 +182,10 @@ void MT2top(bool TestStandardMt2 = false) {
 
 		h_neutrino1_pxy[dt] = new TH2D("h_neutrino1_pxy" + Histoname[dt],"h_neutrino1_pxy" + Histoname[dt], 300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
 		h_neutrino2_pxy[dt] = new TH2D("h_neutrino2_pxy" + Histoname[dt],"h_neutrino2_pxy" + Histoname[dt], 300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
+		h_mt2ll_minitrees[dt] = new TH1D("h_mt2ll_minitrees" + Histoname[dt],"h_mt2ll_minitrees" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+		h_mt2ll_S0_TW05[dt] = new TH1D("h_mt2ll_S0_TW05" + Histoname[dt],"h_mt2ll_S0_TW05" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+		h_mt2lblb_minitrees[dt] = new TH1D("h_mt2lblb_minitrees" + Histoname[dt],"h_mt2lblb_minitrees" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+		h_mt2lblb_S0_TW05[dt] = new TH1D("h_mt2lblb_S0_TW05" + Histoname[dt],"h_mt2lblb_S0_TW05" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
 
 		TFile *MiniTreeFile = TFile::Open(FileName[dt]);
 
@@ -224,7 +232,7 @@ void MT2top(bool TestStandardMt2 = false) {
 			Mt2Result Mt2Strategy0p0 = ComputeMt2Top(Lepton1, Lepton2, Bottom1, Bottom2, pT_Miss, m_invis_mass, 0, 0.);
 
 
-			std::cout << "Test mt2ll " << mt2ll << " " << mT2ll << " " << Mt2Strategy0p0.Mt2ll << std::endl;
+			//std::cout << "Test mt2ll " << mt2ll << " " << mT2ll << " " << Mt2Strategy0p0.Mt2ll << std::endl;
 
 			// Then cross check mt2lblb
 			Mt2::LorentzTransverseVector visUA(Mt2::TwoVector(LepB[0][0].Px(), LepB[0][0].Py()), LepB[0][0].M());
@@ -233,47 +241,154 @@ void MT2top(bool TestStandardMt2 = false) {
 			const double mT2lblb = Mt2Calcolator.mt2_332(visUA, visUB, pT_Miss, m_invis_mass);
 
 			Mt2Result Mt2Strategy0p999 = ComputeMt2Top(Lepton1, Lepton2, Bottom1, Bottom2, pT_Miss, m_invis_mass, 0, 999.);
+			Mt2Result Mt2Strategy0p05 = ComputeMt2Top(Lepton1, Lepton2, Bottom1, Bottom2, pT_Miss, m_invis_mass, 0, 0.5);
 
-			std::cout << "Test mt2lblb " << mt2lblb << " " << mt2lblbcomb << " " << mT2lblb << " " << Mt2Strategy0p999.Mt2lblb << std::endl;
-			std::cout << "Test mlb     " << mlb1 << " " << mlb2 << " " << Mt2Strategy0p999.Mlb1 << " " << Mt2Strategy0p999.Mlb2 << std::endl;
+			//cout << "peso 999: " << Mt2Strategy0p999.Mt2lblb << endl;
+			//std::cout << "Test mt2lblb " << mt2lblb << " " << mt2lblbcomb << " " << mT2lblb << " " << Mt2Strategy0p999.Mt2lblb << std::endl;
+			//std::cout << "Test mlb     " << mlb1 << " " << mlb2 << " " << Mt2Strategy0p999.Mlb1 << " " << Mt2Strategy0p999.Mlb2 << std::endl;
 
 			h_neutrino1_pxy[dt] -> Fill(neutrino1px-Mt2Strategy0p999.Neu1Px, neutrino1py-Mt2Strategy0p999.Neu1Py, eventW);
-			h_neutrino2_pxy[dt] -> Fill(neutrino2px-Mt2Strategy0p999.Neu2Px, neutrino2py-Mt2Strategy0p999.Neu2Py, eventW);
-			cout<< neutrino1px-Mt2Strategy0p999.Neu1Px<<endl;
+			h_neutrino2_pxy[dt] -> Fill(fabs(neutrino2px-Mt2Strategy0p999.Neu2Px), fabs(neutrino2py-Mt2Strategy0p999.Neu2Py), eventW);
+
+			if (mlb1 <= 160.0 && mlb2 <= 160.0) {
+			
+				h_mt2ll_minitrees[dt] -> Fill(mt2ll, eventW);
+				h_mt2ll_S0_TW05[dt] -> Fill(Mt2Strategy0p05.Mt2ll, eventW);
+				h_mt2lblb_minitrees[dt] -> Fill(mt2lblb, eventW);
+				h_mt2lblb_S0_TW05[dt] -> Fill(Mt2Strategy0p05.Mt2lblb, eventW);
+				cout << "mt2ll minitrees: " << mt2ll << endl;
+			//	cout << "mt2lblb minitrees: " << mt2lblb << endl;
+			//	cout << "Mt2ll S0_TW05: " <<Mt2Strategy0p05.Mt2ll << endl;
+			//	cout << "Mt2lblb S0_TW05: " << Mt2Strategy0p05.Mt2lblb << endl;
+			}
 		}
 
-		// Here we can study different mt2ll-mt2lblb minimisations
 
-		TCanvas *CC = new TCanvas("CC", "", 1000, 800);
-		CC->Divide(1, 2);
-		TPad *CC1 = (TPad*)CC->GetPad(1); //Ahi va el h_mt2mlblbtrue
-		CC1->SetGridx(); CC1->SetGridy(); 
-		TPad *CC2 = (TPad*)CC->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
-		CC2->SetGridx(); CC2->SetGridy(); 
-
-		for (int dt = 0; dt < 2; dt++) {
-
-			CC->cd(1); // se pone en el TPad 1 
-
-			h_neutrino1_pxy[dt]->GetXaxis()->SetRangeUser(1, 300);
-			h_neutrino1_pxy[dt]->GetXaxis()->SetTitle("neutrino 1_pxy");
-			h_neutrino1_pxy[dt]->GetYaxis()->SetRangeUser(1, 400);
-			h_neutrino1_pxy[dt]->GetYaxis()->SetTitle("1_pxy");
-			h_neutrino1_pxy[dt]->SetTitle("1_pxy" + Histoname[dt]);
-			h_neutrino1_pxy[dt]->DrawCopy("box");
-
-			CC->cd(2); // se pone en el TPad 1 
-
-			h_neutrino2_pxy[dt]->GetXaxis()->SetRangeUser(1, 300);
-			h_neutrino2_pxy[dt]->GetXaxis()->SetTitle("neutrino 2_pxy");
-			h_neutrino2_pxy[dt]->GetYaxis()->SetRangeUser(1, 400);
-			h_neutrino2_pxy[dt]->GetYaxis()->SetTitle("2_pxy");
-			h_neutrino2_pxy[dt]->SetTitle("2_pxy" + Histoname[dt]);
-			h_neutrino2_pxy[dt]->DrawCopy("box");
-
-		}	
-
-		CC->Print("MT2top_neutrino_pxy.png");
 	}
+	// Here we can study different mt2ll-mt2lblb minimisations
+
+	TCanvas *CC = new TCanvas("CC", "", 1000, 800);
+	CC->Divide(2, 2);
+	TPad *CC1 = (TPad*)CC->GetPad(1); //Ahi va el h_mt2mlblbtrue
+	CC1->SetGridx(); CC1->SetGridy(); 
+	TPad *CC2 = (TPad*)CC->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
+	CC2->SetGridx(); CC2->SetGridy(); 
+	TPad *CC3 = (TPad*)CC->GetPad(3); //Ahi va el h_mt2mlblbtrue
+	CC3->SetGridx(); CC3->SetGridy(); 
+	TPad *CC4 = (TPad*)CC->GetPad(4); //Ahi va el h_mt2mlblbtrue
+	CC4->SetGridx(); CC4->SetGridy(); 
+
+	TCanvas *CCmt2ll = new TCanvas("CCmt2ll", "", 1000, 800);
+	CCmt2ll->Divide(1, 2);
+	TPad *CC1mt2ll = (TPad*)CCmt2ll->GetPad(1); //Ahi va el h_mt2mlblbtrue
+	CC1mt2ll->SetLogx(); CC1mt2ll->SetGridx(); CC1mt2ll->SetGridy(); 
+	TPad *CC2mt2ll = (TPad*)CCmt2ll->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
+	CC2mt2ll->SetLogx(); CC2mt2ll->SetGridx(); CC2mt2ll->SetGridy(); 
+	/*TPad *CC3mt2ll = (TPad*)CCmt2ll->GetPad(3); //Ahi va el h_mt2mlblbtrue
+	CC3mt2ll->SetGridx(); CC3mt2ll->SetGridy(); 
+	TPad *CC4mt2ll = (TPad*)CCmt2ll->GetPad(4); //Ahi va el h_mt2mlblbtrue
+	CC4mt2ll->SetGridx(); CC4mt2ll->SetGridy(); 
+	TPad *CC5mt2ll = (TPad*)CCmt2ll->GetPad(5); //Ahi va el h_mt2mlblbtrue
+	CC5mt2ll->SetGridx(); CC5mt2ll->SetGridy(); 
+	TPad *CC6mt2ll = (TPad*)CCmt2ll->GetPad(6); //Ahi va el h_mt2mlblbtrue
+	CC6mt2ll->SetGridx(); CC6mt2ll->SetGridy(); 
+
+	TCanvas *CCmt2lblb = new TCanvas("CCmt2lblb", "", 1000, 800);
+	CCmt2lblb->Divide(2, 3);
+	TPad *CC1mt2lblb = (TPad*)CCmt2lblb->GetPad(1); //Ahi va el h_mt2mlblbtrue
+	CC1mt2lblb->SetGridx(); CC1mt2lblb->SetGridy(); 
+	TPad *CC2mt2lblb = (TPad*)CCmt2lblb->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
+	CC2mt2lblb->SetGridx(); CC2mt2lblb->SetGridy(); 
+	TPad *CC3mt2lblb = (TPad*)CCmt2lblb->GetPad(3); //Ahi va el h_mt2mlblbtrue
+	CC3mt2lblb->SetGridx(); CC3mt2lblb->SetGridy(); 
+	TPad *CC4mt2lblb = (TPad*)CCmt2lblb->GetPad(4); //Ahi va el h_mt2mlblbtrue
+	CC4mt2lblb->SetGridx(); CC4mt2lblb->SetGridy(); 
+	TPad *CC5mt2lblb = (TPad*)CCmt2lblb->GetPad(5); //Ahi va el h_mt2mlblbtrue
+	CC5mt2lblb->SetGridx(); CC5mt2lblb->SetGridy(); 
+	TPad *CC6mt2lblb = (TPad*)CCmt2lblb->GetPad(6); //Ahi va el h_mt2mlblbtrue
+	CC6mt2lblb->SetGridx(); CC6mt2lblb->SetGridy(); 
+*/
+
+	int HistoCol[2] = {4, 2};
+	int HistoStyle[2] = {1, 2};
+
+	TString Option = "histo";
+
+	for (int dt = 0; dt < 2; dt++) {
+
+		h_mt2ll_minitrees[dt] -> SetLineColor(HistoCol[dt]);
+		h_mt2ll_minitrees[dt] -> SetLineStyle(1);
+		h_mt2ll_minitrees[dt] -> SetLineWidth(2);
+		h_mt2ll_S0_TW05[dt] -> SetLineColor(HistoCol[dt]);
+		h_mt2ll_S0_TW05[dt] -> SetLineStyle(2);
+		h_mt2ll_S0_TW05[dt] -> SetLineWidth(2);
+
+		h_mt2lblb_minitrees[dt] -> SetLineColor(HistoCol[dt]);
+		h_mt2lblb_minitrees[dt] -> SetLineStyle(1);
+		h_mt2lblb_minitrees[dt] -> SetLineWidth(2);
+		h_mt2lblb_S0_TW05[dt] -> SetLineColor(HistoCol[dt]);
+		h_mt2lblb_S0_TW05[dt] -> SetLineStyle(2);
+		h_mt2lblb_S0_TW05[dt] -> SetLineWidth(2);
+
+		CC->cd(dt+1); // se pone en el TPad 1 
+
+		h_neutrino1_pxy[dt]->GetXaxis()->SetRangeUser(1, 300);
+		h_neutrino1_pxy[dt]->GetXaxis()->SetTitle("neutrino1 px_minitree - px_calc");
+		h_neutrino1_pxy[dt]->GetYaxis()->SetRangeUser(1, 300);
+		h_neutrino1_pxy[dt]->GetYaxis()->SetTitle("neutrino1 py_minitree - py_calc");
+		h_neutrino1_pxy[dt]->SetTitle("neutrino1" + Histoname[dt]);
+		h_neutrino1_pxy[dt]->DrawCopy("box");
+
+		CC->cd(dt+3); // se pone en el TPad 1 
+
+		h_neutrino2_pxy[dt]->GetXaxis()->SetRangeUser(1, 300);
+		h_neutrino2_pxy[dt]->GetXaxis()->SetTitle("neutrino2 px_minitree - px_calc");
+		h_neutrino2_pxy[dt]->GetYaxis()->SetRangeUser(1, 300);
+		h_neutrino2_pxy[dt]->GetYaxis()->SetTitle("neutrino2 py_minitree - py_calc");
+		h_neutrino2_pxy[dt]->SetTitle("neutrino2" + Histoname[dt]);
+		h_neutrino2_pxy[dt]->DrawCopy("box");
+
+		CCmt2ll->cd(1); // se pone en el TPad 1 
+
+		h_mt2ll_minitrees[dt]->GetXaxis()->SetRangeUser(1, 300);
+		h_mt2ll_minitrees[dt]->GetXaxis()->SetTitle("Mt2ll");
+	//	h_mt2ll_minitrees[dt]->GetYaxis()->SetRangeUser(1, 300);
+		h_mt2ll_minitrees[dt]->SetTitle("Mt2ll");
+		h_mt2ll_minitrees[dt]->DrawCopy(Option);
+		h_mt2ll_S0_TW05[dt]->GetXaxis()->SetRangeUser(1, 300);
+	//	h_mt2ll_S0_TW05[dt]->GetYaxis()->SetRangeUser(1, 300);
+		h_mt2ll_S0_TW05[dt]->DrawCopy("histosame");
+
+		TLegend *leg1 = new TLegend(0.3,0.1,0.5,0.4);
+		leg1->AddEntry(h_mt2ll_minitrees[0],"minitree top","l");
+		leg1->AddEntry(h_mt2ll_minitrees[1],"minitree stop","l");
+		leg1->AddEntry(h_mt2ll_S0_TW05[0],"Strategy=0, TopWeight=0.5 top","l");
+		leg1->AddEntry(h_mt2ll_S0_TW05[1],"Strategy=0, TopWeight=0.5 stop","l");
+		leg1->Draw();
+
+		CCmt2ll->cd(2); // se pone en el TPad 1 
+
+		h_mt2lblb_minitrees[dt]->GetXaxis()->SetRangeUser(1, 300);
+		h_mt2lblb_minitrees[dt]->GetXaxis()->SetTitle("Mt2lblb");
+	//	h_mt2lblb_minitrees[dt]->GetYaxis()->SetRangeUser(1, 300);
+		h_mt2lblb_minitrees[dt]->SetTitle("Mt2lblb");
+		h_mt2lblb_minitrees[dt]->DrawCopy(Option);
+		h_mt2lblb_S0_TW05[dt]->GetXaxis()->SetRangeUser(1, 300);
+	//	h_mt2lblb_S0_TW05[dt]->GetYaxis()->SetRangeUser(1, 300);
+		h_mt2lblb_S0_TW05[dt]->DrawCopy("histosame");
+			
+		TLegend *leg2 = new TLegend(0.3,0.1,0.5,0.4);
+		leg2->AddEntry(h_mt2lblb_minitrees[0],"minitree top","l");
+		leg2->AddEntry(h_mt2lblb_minitrees[1],"minitree stop","l");
+		leg2->AddEntry(h_mt2lblb_S0_TW05[0],"Strategy=0, TopWeight=0.5 top","l");
+		leg2->AddEntry(h_mt2lblb_S0_TW05[1],"Strategy=0, TopWeight=0.5 stop","l");
+		leg2->Draw();
+
+		Option = "histosame";
+
+	}	
+
+	CC->Print("MT2top_neutrino_pxy.png");
+	CCmt2ll->Print("MT2top_S0_TW05.png");
 
 }
