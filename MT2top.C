@@ -160,6 +160,8 @@ Mt2Result ComputeMt2Top(Mt2::LorentzVector& Lepton1,  Mt2::LorentzVector& Lepton
 		Mt2::TwoVector& ptmiss, double mEachInvisible, 
 		int Mt2TopStrategy, float Mt2TopWeight) {
 
+	cout << "ComputeMt2Top"<< endl;
+
 	double Mt2W[2], Mt2Top[2], NeuAPx[2], NeuAPy[2], NeuBPx[2], NeuBPy[2];
 
 	const double mT2Total1 = Mt2TopCalcolator.mt2_Top(Lepton1, Lepton2, Bottom1, Bottom2, ptmiss, mEachInvisible, Mt2TopStrategy, Mt2TopWeight);
@@ -203,28 +205,38 @@ Mt2Result ComputeMt2Top(Mt2::LorentzVector& Lepton1,  Mt2::LorentzVector& Lepton
 
 void MT2top(bool TestStandardMt2 = false) {
 
+	cout << "MT2top" << endl;
+
 	//TString FileName[2] = {"/afs/cern.ch/user/p/palmerin/public/TTTo2L2Nu.root",
 	//"/afs/cern.ch/user/p/palmerin/public/T2tt_mStop500-525-550_mLSP1to425-325to450-1to475.root"};
 
 	TString FileName[2] = {"minitrees/minitreesLuca/TTTo2L2Nu.root",
 		"minitrees/minitreesLuca/T2tt_mStop600-950_mLSP1to450.root"};
 
+	cout << "FileName" << endl;
+
 	TString Histoname[2]={"_top", "_stop"};
 
 	for (int i=0; i<50; i++) {
 		LineStyle[i] = i+2;
 		HistoColSignif[i] = i+2;
+
+		cout << "LineStyle: " << LineStyle[i] << endl;
+		cout << "HistoColSignif: " << HistoColSignif[i] << endl;
+		
 	}
 
 	for (float cut = low_cut; cut <= high_cut; cut += step) {
 
 		int icut = (cut-low_icut)/istep;
 		char scut [50];
-		sprintf(scut, "_%.f", cut);
+		sprintf(scut, "%.f", cut);
 		Legends[icut] = "mt2ll <=  ";
 		Legends[icut].Append(scut);
 
+		cout << "Legend: " << Legends[icut] << endl;
 	}
+
 
 	for (int dt = 0; dt<2; dt++) {
 
@@ -260,6 +272,8 @@ void MT2top(bool TestStandardMt2 = false) {
 			h_mt2lblb_S0_TW05_Integ_cut[dt][icut] = new TH1D("h_mt2lblb_S0_TW05_Integ_cut" + Histoname[dt] + scut,"h_mt2lblb_S0_TW05_Integ_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
 			h_mt2lblb_minitrees_Signif_cut[icut] = new TH1D("h_mt2lblb_minitrees_Signif_cut" + Histoname[dt] + scut,"h_mt2lblb_minitrees_Signif_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
 			h_mt2lblb_S0_TW05_Signif_cut[icut] = new TH1D("h_mt2lblb_S0_TW05_Signif_cut" + Histoname[dt] + scut,"h_mt2lblb_S0_TW05_Signif_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
+			cout << "new TH1D" << endl;
+
 		}
 
 
