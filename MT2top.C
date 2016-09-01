@@ -144,15 +144,14 @@ float mt2lblb_S0_TW05_Int_cut[2][50];
 
 
 
-float low_cut = 100.0;
-int low_icut = 100;
-float high_cut = 300.0;
-float step = 20.0;
-int istep = 20;
+int low_icut = 200;
+int high_icut = 300;
+int istep = 30;
 
 int HistoColSignif[50];
-TString Legends[50];
-int LineStyle[50];
+TString Legends_mini[2][50];
+TString Legends_S0_TW05[2][50];
+int LineStyle[2]={1,2};
 
 
 Mt2Result ComputeMt2Top(Mt2::LorentzVector& Lepton1,  Mt2::LorentzVector& Lepton2,
@@ -218,25 +217,35 @@ void MT2top(bool TestStandardMt2 = false) {
 	TString Histoname[2]={"_top", "_stop"};
 
 	for (int i=0; i<50; i++) {
-		LineStyle[i] = i+2;
 		HistoColSignif[i] = i+2;
-
-		cout << "LineStyle: " << LineStyle[i] << endl;
-		cout << "HistoColSignif: " << HistoColSignif[i] << endl;
 		
 	}
 
-	for (float cut = low_cut; cut <= high_cut; cut += step) {
+	for (int dt = 0; dt<2; dt++) {
+		for (int cut = low_icut; cut <= high_icut; cut += istep) {
 
-		int icut = (cut-low_icut)/istep;
-		char scut [50];
-		sprintf(scut, "%.f", cut);
-		Legends[icut] = "mt2ll <=  ";
-		Legends[icut].Append(scut);
+			int icut = (cut-low_icut)/istep;
+			char scut [50];
+			sprintf(scut, "%.d", cut);
+			Legends_mini[dt][icut] = "Mt2lblb (minitrees) with mt2ll<=";
+			Legends_mini[dt][icut].Append(scut);
+			Legends_mini[dt][icut].Append(Histoname[dt]);
 
-		cout << "Legend: " << Legends[icut] << endl;
+		}
 	}
+	
+	for (int dt = 0; dt<2; dt++) {
+		for (int cut = low_icut; cut <= high_icut; cut += istep) {
 
+			int icut = (cut-low_icut)/istep;
+			char scut [50];
+			sprintf(scut, "%.d", cut);
+			Legends_S0_TW05[dt][icut] = "Mt2lblb (Strategy 0, TopWeight 0.5) with mt2ll<=";
+			Legends_S0_TW05[dt][icut].Append(scut);
+			Legends_S0_TW05[dt][icut].Append(Histoname[dt]);
+
+		}
+	}
 
 	for (int dt = 0; dt<2; dt++) {
 
@@ -258,7 +267,7 @@ void MT2top(bool TestStandardMt2 = false) {
 		h_mt2lblb_minitrees_Signif = new TH1D("h_mt2lblb_minitrees_Signif" + Histoname[dt],"h_mt2lblb_minitrees_Signif" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
 		h_mt2lblb_S0_TW05_Signif = new TH1D("h_mt2lblb_S0_TW05_Signif" + Histoname[dt],"h_mt2lblb_S0_TW05_Signif" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
 
-		for (float cut = low_cut; cut <= high_cut; cut += step) {
+		for (int cut = low_icut; cut <= high_icut; cut += istep) {
 
 			int icut = (cut-low_icut)/istep;
 			char scut [50];
@@ -355,10 +364,10 @@ void MT2top(bool TestStandardMt2 = false) {
 				//cout << "Mt2lblb S0_TW05: " << Mt2Strategy0p05.Mt2lblb << endl;
 			}
 
-			for (float cut = low_cut; cut <= high_cut; cut += step) {
+			for (int cut = low_icut; cut <= high_icut; cut += istep) {
 
 				int icut = (cut-low_icut)/istep;
-				if (mt2ll <= cut) {
+				if (mt2ll <= float(cut)) {
 
 					h_mt2lblb_minitrees_cut[dt][icut] -> Fill(mt2lblb, eventW);
 					h_mt2lblb_S0_TW05_cut[dt][icut] -> Fill(Mt2Strategy0p05.Mt2lblb, eventW);
@@ -387,7 +396,7 @@ void MT2top(bool TestStandardMt2 = false) {
 		mt2lblb_S0_TW05_Int[dt] = h_mt2lblb_S0_TW05[dt]->Integral(1, 3001);
 		h_mt2lblb_S0_TW05[dt]->Scale(1./mt2lblb_S0_TW05_Int[dt]); // normalization of the histogram
 
-		for (float cut = low_cut; cut <= high_cut; cut += step) {
+		for (int cut = low_icut; cut <= high_icut; cut += istep) {
 
 			int icut = (cut-low_icut)/istep;
 
@@ -427,7 +436,7 @@ void MT2top(bool TestStandardMt2 = false) {
 			float recursive_integral_mt2lblb_S0_TW05 = h_mt2lblb_S0_TW05[hf]->Integral(ib, 3001);
 			h_mt2lblb_S0_TW05_Integ[hf]->SetBinContent(ib, recursive_integral_mt2lblb_S0_TW05); // asigna el valor ThisBinContent al bin ib
 
-			for (float cut = low_cut; cut <= high_cut; cut += step) {
+			for (int cut = low_icut; cut <= high_icut; cut += istep) {
 
 				int icut = (cut-low_icut)/istep;
 
@@ -470,19 +479,19 @@ void MT2top(bool TestStandardMt2 = false) {
 		float	significance_mt2lblb_S0_TW05 = stopEvents_mt2lblb_S0_TW05/(std::sqrt(stopEvents_mt2lblb_S0_TW05+topBackground_mt2lblb_S0_TW05));
 		h_mt2lblb_S0_TW05_Signif->SetBinContent(ib,significance_mt2lblb_S0_TW05); 
 
-		for (float cut = low_cut; cut <= high_cut; cut += step) {
+		for (int cut = low_icut; cut <= high_icut; cut += istep) {
 
 			int icut = (cut-low_icut)/istep;
 
 			float	topBackground_mt2lblb_minitrees_cut = mt2lblb_minitrees_Int_cut[0][icut] * h_mt2lblb_minitrees_Integ_cut[0][icut]->GetBinContent(ib); 
-			float	stopEvents_mt2lblb_minitrees_cut = mt2lblb_minitrees_Int_cut[icut][1] * h_mt2lblb_minitrees_Integ_cut[1][icut]->GetBinContent(ib);
+			float	stopEvents_mt2lblb_minitrees_cut = mt2lblb_minitrees_Int_cut[1][icut] * h_mt2lblb_minitrees_Integ_cut[1][icut]->GetBinContent(ib);
 			if (topBackground_mt2lblb_minitrees_cut + stopEvents_mt2lblb_minitrees_cut <= 0.) continue;
 			float	significance_mt2lblb_minitrees_cut = stopEvents_mt2lblb_minitrees_cut/(std::sqrt(stopEvents_mt2lblb_minitrees_cut+topBackground_mt2lblb_minitrees_cut));
 			h_mt2lblb_minitrees_Signif_cut[icut]->SetBinContent(ib,significance_mt2lblb_minitrees_cut); 
 
 
 			float	topBackground_mt2lblb_S0_TW05_cut = mt2lblb_S0_TW05_Int_cut[0][icut] * h_mt2lblb_S0_TW05_Integ_cut[0][icut]->GetBinContent(ib); 
-			float	stopEvents_mt2lblb_S0_TW05_cut = mt2lblb_S0_TW05_Int_cut[icut][1] * h_mt2lblb_S0_TW05_Integ_cut[1][icut]->GetBinContent(ib);
+			float	stopEvents_mt2lblb_S0_TW05_cut = mt2lblb_S0_TW05_Int_cut[1][icut] * h_mt2lblb_S0_TW05_Integ_cut[1][icut]->GetBinContent(ib);
 			if (topBackground_mt2lblb_S0_TW05_cut + stopEvents_mt2lblb_S0_TW05_cut <= 0.) continue;
 			float	significance_mt2lblb_S0_TW05_cut = stopEvents_mt2lblb_S0_TW05_cut/(std::sqrt(stopEvents_mt2lblb_S0_TW05_cut+topBackground_mt2lblb_S0_TW05_cut));
 			h_mt2lblb_S0_TW05_Signif_cut[icut]->SetBinContent(ib,significance_mt2lblb_S0_TW05_cut); 
@@ -523,8 +532,8 @@ void MT2top(bool TestStandardMt2 = false) {
 	CC6mt2ll->SetGridx(); CC6mt2ll->SetGridy(); 
 
 
-	TCanvas *CCcut = new TCanvas("CCcut", "", 1000, 800);
-	CCcut->Divide(1, 3);
+	TCanvas *CCcut = new TCanvas("CCcut", "", 1500, 800);
+	CCcut->Divide(2, 2);
 	TPad *CCcut1 = (TPad*)CCcut->GetPad(1); //Ahi va el h_mt2mlblbtrue
 	CCcut1->SetLogy(); CCcut1->SetGridx(); CCcut1->SetGridy(); 
 	TPad *CCcut2 = (TPad*)CCcut->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
@@ -569,28 +578,29 @@ void MT2top(bool TestStandardMt2 = false) {
 	leg6->AddEntry(h_mt2lblb_S0_TW05_Signif,"Strategy=0, TopWeight=0.5","l");
 
 
-	TLegend *legcut1 = new TLegend(0.6,0.1,0.9,0.4);
-	TLegend *legcut2 = new TLegend(0.6,0.1,0.9,0.4);
-	TLegend *legcut3 = new TLegend(0.4,0.1,0.7,0.4);
+	TLegend *legcut1 = new TLegend(0.1,0.1,0.5,0.5);
+	TLegend *legcut2 = new TLegend(0.1,0.1,0.5,0.5);
+	TLegend *legcut3 = new TLegend(0.4,0.5,0.9,0.9);
 
-	for (float cut = low_cut; cut <= high_cut; cut += step) {
+	legcut1->AddEntry(h_mt2lblb_minitrees_cut[1][0], Legends_mini[1][0],"l");
+	legcut1->AddEntry(h_mt2lblb_S0_TW05_cut[1][0], Legends_S0_TW05[1][0],"l");
+	legcut2->AddEntry(h_mt2lblb_minitrees_Integ_cut[1][0], Legends_mini[1][0],"l");
+	legcut2->AddEntry(h_mt2lblb_S0_TW05_Integ_cut[1][0], Legends_S0_TW05[1][0],"l");
+
+	for (int cut = low_icut; cut <= high_icut; cut += istep) {
 
 		int icut = (cut-low_icut)/istep;
 
-		legcut1->AddEntry(h_mt2lblb_minitrees_cut[0][icut], Legends[icut],"l");
-		legcut1->AddEntry(h_mt2lblb_minitrees_cut[1][icut], Legends[icut],"l");
-		legcut1->AddEntry(h_mt2lblb_S0_TW05_cut[0][icut], Legends[icut],"l");
-		legcut1->AddEntry(h_mt2lblb_S0_TW05_cut[1][icut], Legends[icut],"l");
+		legcut1->AddEntry(h_mt2lblb_minitrees_cut[0][icut], Legends_mini[0][icut],"l");
+		legcut1->AddEntry(h_mt2lblb_S0_TW05_cut[0][icut], Legends_S0_TW05[0][icut],"l");
 
 
-		legcut2->AddEntry(h_mt2lblb_minitrees_Integ_cut[0][icut], Legends[icut],"l");
-		legcut2->AddEntry(h_mt2lblb_minitrees_Integ_cut[1][icut], Legends[icut],"l");
-		legcut2->AddEntry(h_mt2lblb_S0_TW05_Integ_cut[0][icut], Legends[icut],"l");
-		legcut2->AddEntry(h_mt2lblb_S0_TW05_Integ_cut[1][icut], Legends[icut],"l");
+		legcut2->AddEntry(h_mt2lblb_minitrees_Integ_cut[0][icut], Legends_mini[0][icut],"l");
+		legcut2->AddEntry(h_mt2lblb_S0_TW05_Integ_cut[0][icut], Legends_S0_TW05[0][icut],"l");
 
 
-		legcut3->AddEntry(h_mt2lblb_minitrees_Signif_cut[icut], Legends[icut],"l");
-		legcut3->AddEntry(h_mt2lblb_S0_TW05_Signif_cut[icut], Legends[icut],"l");
+		legcut3->AddEntry(h_mt2lblb_minitrees_Signif_cut[icut], Legends_mini[0][icut],"l");
+		legcut3->AddEntry(h_mt2lblb_S0_TW05_Signif_cut[icut], Legends_S0_TW05[0][icut],"l");
 
 	}
 
@@ -640,17 +650,17 @@ void MT2top(bool TestStandardMt2 = false) {
 		h_mt2lblb_S0_TW05_Signif -> SetLineWidth(2);
 
 
-		for (float cut = low_cut; cut <= high_cut; cut += step) {
+		for (int cut = low_icut; cut <= high_icut; cut += istep) {
 
 			int icut = (cut-low_icut)/istep;
 
 
-			h_mt2lblb_minitrees_cut[dt][icut] -> SetLineColor(HistoCol[dt]);
-			h_mt2lblb_minitrees_Integ_cut[dt][icut] -> SetLineColor(HistoCol[dt]);
+			h_mt2lblb_minitrees_cut[dt][icut] -> SetLineColor(HistoColSignif[icut]);
+			h_mt2lblb_minitrees_Integ_cut[dt][icut] -> SetLineColor(HistoColSignif[icut]);
 			h_mt2lblb_minitrees_Signif_cut[icut] -> SetLineColor(HistoColSignif[icut]);
 
-			h_mt2lblb_S0_TW05_cut[dt][icut] ->SetLineStyle(LineStyle[icut]);
-			h_mt2lblb_S0_TW05_Integ_cut[dt][icut] ->SetLineStyle(LineStyle[icut]);
+			h_mt2lblb_S0_TW05_cut[dt][icut] ->SetLineStyle(LineStyle[dt]);
+			h_mt2lblb_S0_TW05_Integ_cut[dt][icut] ->SetLineStyle(LineStyle[dt]);
 			h_mt2lblb_S0_TW05_Signif_cut[icut] -> SetLineStyle(1);
 
 
@@ -747,17 +757,17 @@ void MT2top(bool TestStandardMt2 = false) {
 		leg6->Draw();
 
 
-		for (float cut = low_cut; cut <= high_cut; cut += step) {
+		for (int cut = low_icut; cut <= high_icut; cut += istep) {
 
 			int icut = (cut-low_icut)/istep;
 
 			CCcut->cd(1); // se pone en el TPad 1 
 
-			h_mt2lblb_minitrees_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_minitrees_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 900);
 			h_mt2lblb_minitrees_cut[dt][icut]->GetXaxis()->SetTitle("Mt2lblb");
 			h_mt2lblb_minitrees_cut[dt][icut]->SetTitle("Mt2lblb with cut in Mt2ll");
 			h_mt2lblb_minitrees_cut[dt][icut]->DrawCopy(Option);
-			h_mt2lblb_S0_TW05_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_S0_TW05_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 900);
 			h_mt2lblb_S0_TW05_cut[dt][icut]->DrawCopy("histosame");
 
 			legcut1->Draw();
@@ -765,11 +775,11 @@ void MT2top(bool TestStandardMt2 = false) {
 
 			CCcut->cd(2); // se pone en el TPad 1 
 
-			h_mt2lblb_minitrees_Integ_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_minitrees_Integ_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 900);
 			h_mt2lblb_minitrees_Integ_cut[dt][icut]->GetXaxis()->SetTitle("Mt2lblb Integ");
 			h_mt2lblb_minitrees_Integ_cut[dt][icut]->SetTitle("Mt2lblb Integ with cut in Mt2ll");
 			h_mt2lblb_minitrees_Integ_cut[dt][icut]->DrawCopy(Option);
-			h_mt2lblb_S0_TW05_Integ_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_S0_TW05_Integ_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 900);
 			h_mt2lblb_S0_TW05_Integ_cut[dt][icut]->DrawCopy("histosame");
 
 			legcut2->Draw();
@@ -777,11 +787,12 @@ void MT2top(bool TestStandardMt2 = false) {
 
 			CCcut->cd(3); // se pone en el TPad 1 
 
-			h_mt2lblb_minitrees_Signif_cut[icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_minitrees_Signif_cut[icut]->GetXaxis()->SetRangeUser(1, 900);
+			h_mt2lblb_minitrees_Signif_cut[icut]->GetYaxis()->SetRangeUser(0, 0.02);
 			h_mt2lblb_minitrees_Signif_cut[icut]->GetXaxis()->SetTitle("Mt2lblb Significance");
 			h_mt2lblb_minitrees_Signif_cut[icut]->SetTitle("Mt2lblb Significance with cut in Mt2ll");
 			h_mt2lblb_minitrees_Signif_cut[icut]->DrawCopy(Option);
-			h_mt2lblb_S0_TW05_Signif_cut[icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_S0_TW05_Signif_cut[icut]->GetXaxis()->SetRangeUser(1, 900);
 			h_mt2lblb_S0_TW05_Signif_cut[icut]->DrawCopy("histosame");
 
 			legcut3->Draw();
