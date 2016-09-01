@@ -115,11 +115,59 @@ TLorentzVector Lepton[2], Bottom[2], LepB[2][2];
 
 TH2D *h_neutrino1_pxy[2];
 TH2D *h_neutrino2_pxy[2];
-TH1D *h_mt2ll_minitrees[2];
-TH1D *h_mt2ll_S0_TW05[2];
-TH1D *h_mt2lblb_minitrees[2];
-TH1D *h_mt2lblb_S0_TW05[2];
 
+TH1D *h_mt2ll_minitrees[2];
+TH1D *h_mt2ll_minitrees_Integ[2];
+TH1D *h_mt2ll_minitrees_Signif;
+TH1D *h_mt2ll_S0_TW05[2];
+TH1D *h_mt2ll_S0_TW05_Integ[2];
+TH1D *h_mt2ll_S0_TW05_Signif;
+TH1D *h_mt2lblb_minitrees[2];
+TH1D *h_mt2lblb_minitrees_Integ[2];
+TH1D *h_mt2lblb_minitrees_Signif;
+TH1D *h_mt2lblb_minitrees_cut[2][50]; // cut en mt2ll
+TH1D *h_mt2lblb_minitrees_Integ_cut[2][50];
+TH1D *h_mt2lblb_minitrees_Signif_cut[50];
+TH1D *h_mt2lblb_S0_TW05[2];
+TH1D *h_mt2lblb_S0_TW05_Integ[2];
+TH1D *h_mt2lblb_S0_TW05_Signif;
+TH1D *h_mt2lblb_S0_TW05_cut[2][50];
+TH1D *h_mt2lblb_S0_TW05_Integ_cut[2][50];
+TH1D *h_mt2lblb_S0_TW05_Signif_cut[50];
+
+float mt2ll_minitrees_Int[2];
+float mt2lblb_minitrees_Int[2];
+float mt2lblb_minitrees_Int_cut[2][50];
+float mt2ll_S0_TW05_Int[2];
+float mt2lblb_S0_TW05_Int[2];
+float mt2lblb_S0_TW05_Int_cut[2][50];
+
+
+
+float low_cut = 100.0;
+int low_icut = 100;
+float high_cut = 300.0;
+float step = 20.0;
+int istep = 20;
+
+int HistoColSignif[50];
+TString Legends[50];
+int LineStyle[50];
+
+for (int i=0; i<50; i++) {
+	LineStyle[i] = i+2;
+	HistoColSignif[i] = i+2;
+}
+
+for (float cut = low_cut; cut <= high_cut; cut += step) {
+
+	int icut = (cut-low_icut)/istep;
+	char scut [50];
+	sprintf(scut, "_%.f", cut);
+	Legends[icut] = "mt2ll <=  ";
+	Legends[icut].Append(scut);
+
+}
 
 Mt2Result ComputeMt2Top(Mt2::LorentzVector& Lepton1,  Mt2::LorentzVector& Lepton2,
 		Mt2::LorentzVector& Bottom1,  Mt2::LorentzVector& Bottom2,
@@ -182,10 +230,39 @@ void MT2top(bool TestStandardMt2 = false) {
 
 		h_neutrino1_pxy[dt] = new TH2D("h_neutrino1_pxy" + Histoname[dt],"h_neutrino1_pxy" + Histoname[dt], 300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
 		h_neutrino2_pxy[dt] = new TH2D("h_neutrino2_pxy" + Histoname[dt],"h_neutrino2_pxy" + Histoname[dt], 300, 0, 3000, 300, 0, 3000); //2 histos para top y stop
+
 		h_mt2ll_minitrees[dt] = new TH1D("h_mt2ll_minitrees" + Histoname[dt],"h_mt2ll_minitrees" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
 		h_mt2ll_S0_TW05[dt] = new TH1D("h_mt2ll_S0_TW05" + Histoname[dt],"h_mt2ll_S0_TW05" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
 		h_mt2lblb_minitrees[dt] = new TH1D("h_mt2lblb_minitrees" + Histoname[dt],"h_mt2lblb_minitrees" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
 		h_mt2lblb_S0_TW05[dt] = new TH1D("h_mt2lblb_S0_TW05" + Histoname[dt],"h_mt2lblb_S0_TW05" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+
+		h_mt2ll_minitrees_Integ[dt] = new TH1D("h_mt2ll_minitrees_Integ" + Histoname[dt],"h_mt2ll_minitrees_Integ" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+		h_mt2ll_S0_TW05_Integ[dt] = new TH1D("h_mt2ll_S0_TW05_Integ" + Histoname[dt],"h_mt2ll_S0_TW05_Integ" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+		h_mt2lblb_minitrees_Integ[dt] = new TH1D("h_mt2lblb_minitrees_Integ" + Histoname[dt],"h_mt2lblb_minitrees_Integ" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+		h_mt2lblb_S0_TW05_Integ[dt] = new TH1D("h_mt2lblb_S0_TW05_Integ" + Histoname[dt],"h_mt2lblb_S0_TW05_Integ" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+
+		h_mt2ll_minitrees_Signif = new TH1D("h_mt2ll_minitrees_Signif" + Histoname[dt],"h_mt2ll_minitrees_Signif" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+		h_mt2ll_S0_TW05_Signif = new TH1D("h_mt2ll_S0_TW05_Signif" + Histoname[dt],"h_mt2ll_S0_TW05_Signif" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+		h_mt2lblb_minitrees_Signif = new TH1D("h_mt2lblb_minitrees_Signif" + Histoname[dt],"h_mt2lblb_minitrees_Signif" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+		h_mt2lblb_S0_TW05_Signif = new TH1D("h_mt2lblb_S0_TW05_Signif" + Histoname[dt],"h_mt2lblb_S0_TW05_Signif" + Histoname[dt], 300, 0, 3000); //2 histos para top y stop
+
+		for (float cut = low_cut; cut <= high_cut; cut += step) {
+
+			int icut = (cut-low_icut)/istep;
+			char scut [50];
+			sprintf(scut, "_%.f", cut);
+
+			h_mt2lblb_minitrees_cut[dt][icut] = new TH1D("h_mt2lblb_minitrees_cut" + Histoname[dt] + scut,"h_mt2lblb_minitrees_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
+
+			h_mt2lblb_S0_TW05_cut[dt][icut] = new TH1D("h_mt2lblb_S0_TW05_cut" + Histoname[dt] + scut,"h_mt2lblb_S0_TW05_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
+
+			h_mt2lblb_minitrees_Integ_cut[dt][icut] = new TH1D("h_mt2lblb_minitrees_Integ_cut" + Histoname[dt] + scut,"h_mt2lblb_minitrees_Integ_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
+			h_mt2lblb_S0_TW05_Integ_cut[dt][icut] = new TH1D("h_mt2lblb_S0_TW05_Integ_cut" + Histoname[dt] + scut,"h_mt2lblb_S0_TW05_Integ_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
+			h_mt2lblb_minitrees_Signif_cut[icut] = new TH1D("h_mt2lblb_minitrees_Signif_cut" + Histoname[dt] + scut,"h_mt2lblb_minitrees_Signif_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
+			h_mt2lblb_S0_TW05_Signif_cut[icut] = new TH1D("h_mt2lblb_S0_TW05_Signif_cut" + Histoname[dt] + scut,"h_mt2lblb_S0_TW05_Signif_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
+		}
+
+
 
 		TFile *MiniTreeFile = TFile::Open(FileName[dt]);
 
@@ -193,8 +270,10 @@ void MT2top(bool TestStandardMt2 = false) {
 
 		Int_t nentries = (Int_t) MiniTree->GetEntries();
 
+
 		for (Int_t i = 0; i<nentries; i++) {
 
+			cout << "eventW" <<Histoname[dt] << eventW << endl;
 			MiniTree->GetEntry(i);
 
 			// Apply ttbar selection
@@ -241,7 +320,7 @@ void MT2top(bool TestStandardMt2 = false) {
 			const double mT2lblb = Mt2Calcolator.mt2_332(visUA, visUB, pT_Miss, m_invis_mass);
 
 			Mt2Result Mt2Strategy0p999 = ComputeMt2Top(Lepton1, Lepton2, Bottom1, Bottom2, pT_Miss, m_invis_mass, 0, 999.);
-			Mt2Result Mt2Strategy0p05 = ComputeMt2Top(Lepton1, Lepton2, Bottom1, Bottom2, pT_Miss, m_invis_mass, 0, 0.5);
+			Mt2Result Mt2Strategy0p05 = ComputeMt2Top(Lepton1, Lepton2, Bottom1, Bottom2, pT_Miss, m_invis_mass, 0, 500.0);
 
 			//cout << "peso 999: " << Mt2Strategy0p999.Mt2lblb << endl;
 			//std::cout << "Test mt2lblb " << mt2lblb << " " << mt2lblbcomb << " " << mT2lblb << " " << Mt2Strategy0p999.Mt2lblb << std::endl;
@@ -251,20 +330,156 @@ void MT2top(bool TestStandardMt2 = false) {
 			h_neutrino2_pxy[dt] -> Fill(fabs(neutrino2px-Mt2Strategy0p999.Neu2Px), fabs(neutrino2py-Mt2Strategy0p999.Neu2Py), eventW);
 
 			if (mlb1 <= 160.0 && mlb2 <= 160.0) {
-			
+
 				h_mt2ll_minitrees[dt] -> Fill(mt2ll, eventW);
 				h_mt2ll_S0_TW05[dt] -> Fill(Mt2Strategy0p05.Mt2ll, eventW);
 				h_mt2lblb_minitrees[dt] -> Fill(mt2lblb, eventW);
 				h_mt2lblb_S0_TW05[dt] -> Fill(Mt2Strategy0p05.Mt2lblb, eventW);
-				cout << "mt2ll minitrees: " << mt2ll << endl;
-			//	cout << "mt2lblb minitrees: " << mt2lblb << endl;
-			//	cout << "Mt2ll S0_TW05: " <<Mt2Strategy0p05.Mt2ll << endl;
-			//	cout << "Mt2lblb S0_TW05: " << Mt2Strategy0p05.Mt2lblb << endl;
+				//cout << "mt2ll minitrees: " << mt2ll << endl;
+				//cout << "mt2lblb minitrees: " << mt2lblb << endl;
+				//cout << "Mt2ll S0_TW05: " <<Mt2Strategy0p05.Mt2ll << endl;
+				//cout << "Mt2lblb S0_TW05: " << Mt2Strategy0p05.Mt2lblb << endl;
+			}
+
+			for (float cut = low_cut; cut <= high_cut; cut += step) {
+
+				int icut = (cut-low_icut)/istep;
+				if (mt2ll <= cut) {
+
+					h_mt2lblb_minitrees_cut[dt][icut] -> Fill(mt2lblb, eventW);
+					h_mt2lblb_S0_TW05_cut[dt][icut] -> Fill(Mt2Strategy0p05.Mt2lblb, eventW);
+
+				}
+
+
 			}
 		}
 
 
 	}
+
+	for (int dt  = 0; dt<2; dt++) {
+
+
+		mt2ll_minitrees_Int[dt] = h_mt2ll_minitrees[dt]->Integral(1, 3001);
+		h_mt2ll_minitrees[dt]->Scale(1./mt2ll_minitrees_Int[dt]); // normalization of the histogram
+
+		mt2ll_S0_TW05_Int[dt] = h_mt2ll_S0_TW05[dt]->Integral(1, 3001);
+		h_mt2ll_S0_TW05[dt]->Scale(1./mt2ll_S0_TW05_Int[dt]); // normalization of the histogram
+
+		mt2lblb_minitrees_Int[dt] = h_mt2lblb_minitrees[dt]->Integral(1, 3001);
+		h_mt2lblb_minitrees[dt]->Scale(1./mt2lblb_minitrees_Int[dt]); // normalization of the histogram
+
+		mt2lblb_S0_TW05_Int[dt] = h_mt2lblb_S0_TW05[dt]->Integral(1, 3001);
+		h_mt2lblb_S0_TW05[dt]->Scale(1./mt2lblb_S0_TW05_Int[dt]); // normalization of the histogram
+
+		for (float cut = low_cut; cut <= high_cut; cut += step) {
+
+			int icut = (cut-low_icut)/istep;
+
+			mt2lblb_minitrees_Int_cut[dt][icut] = h_mt2lblb_minitrees_cut[dt][icut]->Integral(1, 3001);
+			h_mt2lblb_minitrees_cut[dt][icut]->Scale(1./mt2lblb_minitrees_Int_cut[dt][icut]); // normalization of the histogram
+
+			mt2lblb_S0_TW05_Int_cut[dt][icut] = h_mt2lblb_S0_TW05_cut[dt][icut]->Integral(1, 3001);
+			h_mt2lblb_S0_TW05_cut[dt][icut]->Scale(1./mt2lblb_S0_TW05_Int_cut[dt][icut]); // normalization of the histogram
+
+
+		}
+
+
+	}
+
+
+	int nBinsX = h_mt2ll_minitrees[0]->GetNbinsX();
+
+	for (int hf = 0; hf<2; hf++) { // stop or top
+
+
+		for (int ib = 1; ib<=nBinsX; ib++) { // loop through the bins
+
+			float recursive_integral_mt2ll_minitrees = h_mt2ll_minitrees[hf]->Integral(ib, 3001);
+			h_mt2ll_minitrees_Integ[hf]->SetBinContent(ib, recursive_integral_mt2ll_minitrees); // asigna el valor ThisBinContent al bin ib
+
+
+			float recursive_integral_mt2ll_S0_TW05 = h_mt2ll_S0_TW05[hf]->Integral(ib, 3001);
+			h_mt2ll_S0_TW05_Integ[hf]->SetBinContent(ib, recursive_integral_mt2ll_S0_TW05); // asigna el valor ThisBinContent al bin ib
+
+
+
+			float recursive_integral_mt2lblb_minitrees = h_mt2lblb_minitrees[hf]->Integral(ib, 3001);
+			h_mt2lblb_minitrees_Integ[hf]->SetBinContent(ib, recursive_integral_mt2lblb_minitrees); // asigna el valor ThisBinContent al bin ib
+
+
+			float recursive_integral_mt2lblb_S0_TW05 = h_mt2lblb_S0_TW05[hf]->Integral(ib, 3001);
+			h_mt2lblb_S0_TW05_Integ[hf]->SetBinContent(ib, recursive_integral_mt2lblb_S0_TW05); // asigna el valor ThisBinContent al bin ib
+
+			for (float cut = low_cut; cut <= high_cut; cut += step) {
+
+				int icut = (cut-low_icut)/istep;
+
+				float recursive_integral_mt2lblb_minitrees_cut = h_mt2lblb_minitrees_cut[hf][icut]->Integral(ib, 3001);
+				h_mt2lblb_minitrees_Integ_cut[hf][icut]->SetBinContent(ib, recursive_integral_mt2lblb_minitrees_cut); // asigna el valor ThisBinContent al bin ib
+
+				float recursive_integral_mt2lblb_S0_TW05_cut = h_mt2lblb_S0_TW05_cut[hf][icut]->Integral(ib, 3001);
+				h_mt2lblb_S0_TW05_Integ_cut[hf][icut]->SetBinContent(ib, recursive_integral_mt2lblb_S0_TW05_cut); // asigna el valor ThisBinContent al bin ib
+
+
+			}
+		}
+	}
+
+
+
+	for (int ib = 1; ib<=nBinsX; ib++) { // loop through the bins
+
+		float	topBackground_mt2ll_minitrees = mt2ll_minitrees_Int[0] * h_mt2ll_minitrees_Integ[0]->GetBinContent(ib); 
+		float	stopEvents_mt2ll_minitrees = mt2ll_minitrees_Int[1] * h_mt2ll_minitrees_Integ[1]->GetBinContent(ib);
+		if (topBackground_mt2ll_minitrees + stopEvents_mt2ll_minitrees <= 0.) continue;
+		float	significance_mt2ll_minitrees = stopEvents_mt2ll_minitrees/(std::sqrt(stopEvents_mt2ll_minitrees+topBackground_mt2ll_minitrees));
+		h_mt2ll_minitrees_Signif->SetBinContent(ib,significance_mt2ll_minitrees); 
+
+		float	topBackground_mt2lblb_minitrees = mt2lblb_minitrees_Int[0] * h_mt2lblb_minitrees_Integ[0]->GetBinContent(ib); 
+		float	stopEvents_mt2lblb_minitrees = mt2lblb_minitrees_Int[1] * h_mt2lblb_minitrees_Integ[1]->GetBinContent(ib);
+		if (topBackground_mt2lblb_minitrees + stopEvents_mt2lblb_minitrees <= 0.) continue;
+		float	significance_mt2lblb_minitrees = stopEvents_mt2lblb_minitrees/(std::sqrt(stopEvents_mt2lblb_minitrees+topBackground_mt2lblb_minitrees));
+		h_mt2lblb_minitrees_Signif->SetBinContent(ib,significance_mt2lblb_minitrees); 
+
+		float	topBackground_mt2ll_S0_TW05 = mt2ll_S0_TW05_Int[0] * h_mt2ll_S0_TW05_Integ[0]->GetBinContent(ib); 
+		float	stopEvents_mt2ll_S0_TW05 = mt2ll_S0_TW05_Int[1] * h_mt2ll_S0_TW05_Integ[1]->GetBinContent(ib);
+		if (topBackground_mt2ll_S0_TW05 + stopEvents_mt2ll_S0_TW05 <= 0.) continue;
+		float	significance_mt2ll_S0_TW05 = stopEvents_mt2ll_S0_TW05/(std::sqrt(stopEvents_mt2ll_S0_TW05+topBackground_mt2ll_S0_TW05));
+		h_mt2ll_S0_TW05_Signif->SetBinContent(ib,significance_mt2ll_S0_TW05); 
+
+		float	topBackground_mt2lblb_S0_TW05 = mt2lblb_S0_TW05_Int[0] * h_mt2lblb_S0_TW05_Integ[0]->GetBinContent(ib); 
+		float	stopEvents_mt2lblb_S0_TW05 = mt2lblb_S0_TW05_Int[1] * h_mt2lblb_S0_TW05_Integ[1]->GetBinContent(ib);
+		if (topBackground_mt2lblb_S0_TW05 + stopEvents_mt2lblb_S0_TW05 <= 0.) continue;
+		float	significance_mt2lblb_S0_TW05 = stopEvents_mt2lblb_S0_TW05/(std::sqrt(stopEvents_mt2lblb_S0_TW05+topBackground_mt2lblb_S0_TW05));
+		h_mt2lblb_S0_TW05_Signif->SetBinContent(ib,significance_mt2lblb_S0_TW05); 
+
+		for (float cut = low_cut; cut <= high_cut; cut += step) {
+
+			int icut = (cut-low_icut)/istep;
+
+			float	topBackground_mt2lblb_minitrees_cut = mt2lblb_minitrees_Int_cut[0][icut] * h_mt2lblb_minitrees_Integ_cut[0][icut]->GetBinContent(ib); 
+			float	stopEvents_mt2lblb_minitrees_cut = mt2lblb_minitrees_Int_cut[icut][1] * h_mt2lblb_minitrees_Integ_cut[1][icut]->GetBinContent(ib);
+			if (topBackground_mt2lblb_minitrees_cut + stopEvents_mt2lblb_minitrees_cut <= 0.) continue;
+			float	significance_mt2lblb_minitrees_cut = stopEvents_mt2lblb_minitrees_cut/(std::sqrt(stopEvents_mt2lblb_minitrees_cut+topBackground_mt2lblb_minitrees_cut));
+			h_mt2lblb_minitrees_Signif_cut[icut]->SetBinContent(ib,significance_mt2lblb_minitrees_cut); 
+
+
+			float	topBackground_mt2lblb_S0_TW05_cut = mt2lblb_S0_TW05_Int_cut[0][icut] * h_mt2lblb_S0_TW05_Integ_cut[0][icut]->GetBinContent(ib); 
+			float	stopEvents_mt2lblb_S0_TW05_cut = mt2lblb_S0_TW05_Int_cut[icut][1] * h_mt2lblb_S0_TW05_Integ_cut[1][icut]->GetBinContent(ib);
+			if (topBackground_mt2lblb_S0_TW05_cut + stopEvents_mt2lblb_S0_TW05_cut <= 0.) continue;
+			float	significance_mt2lblb_S0_TW05_cut = stopEvents_mt2lblb_S0_TW05_cut/(std::sqrt(stopEvents_mt2lblb_S0_TW05_cut+topBackground_mt2lblb_S0_TW05_cut));
+			h_mt2lblb_S0_TW05_Signif_cut[icut]->SetBinContent(ib,significance_mt2lblb_S0_TW05_cut); 
+
+		}
+
+	}
+
+
+
+
 	// Here we can study different mt2ll-mt2lblb minimisations
 
 	TCanvas *CC = new TCanvas("CC", "", 1000, 800);
@@ -278,41 +493,93 @@ void MT2top(bool TestStandardMt2 = false) {
 	TPad *CC4 = (TPad*)CC->GetPad(4); //Ahi va el h_mt2mlblbtrue
 	CC4->SetGridx(); CC4->SetGridy(); 
 
-	TCanvas *CCmt2ll = new TCanvas("CCmt2ll", "", 1000, 800);
-	CCmt2ll->Divide(1, 2);
+	TCanvas *CCmt2ll = new TCanvas("CCmt2ll", "", 1200, 800);
+	CCmt2ll->Divide(2, 3);
 	TPad *CC1mt2ll = (TPad*)CCmt2ll->GetPad(1); //Ahi va el h_mt2mlblbtrue
-	CC1mt2ll->SetLogx(); CC1mt2ll->SetGridx(); CC1mt2ll->SetGridy(); 
+	CC1mt2ll->SetLogy(); CC1mt2ll->SetGridx(); CC1mt2ll->SetGridy(); 
 	TPad *CC2mt2ll = (TPad*)CCmt2ll->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
-	CC2mt2ll->SetLogx(); CC2mt2ll->SetGridx(); CC2mt2ll->SetGridy(); 
-	/*TPad *CC3mt2ll = (TPad*)CCmt2ll->GetPad(3); //Ahi va el h_mt2mlblbtrue
-	CC3mt2ll->SetGridx(); CC3mt2ll->SetGridy(); 
+	CC2mt2ll->SetLogy(); CC2mt2ll->SetGridx(); CC2mt2ll->SetGridy(); 
+	TPad *CC3mt2ll = (TPad*)CCmt2ll->GetPad(3); //Ahi va el h_mt2mlblbtrue
+	CC3mt2ll->SetLogy(); CC3mt2ll->SetGridx(); CC3mt2ll->SetGridy(); 
 	TPad *CC4mt2ll = (TPad*)CCmt2ll->GetPad(4); //Ahi va el h_mt2mlblbtrue
-	CC4mt2ll->SetGridx(); CC4mt2ll->SetGridy(); 
+	CC4mt2ll->SetLogy(); CC4mt2ll->SetGridx(); CC4mt2ll->SetGridy(); 
 	TPad *CC5mt2ll = (TPad*)CCmt2ll->GetPad(5); //Ahi va el h_mt2mlblbtrue
 	CC5mt2ll->SetGridx(); CC5mt2ll->SetGridy(); 
 	TPad *CC6mt2ll = (TPad*)CCmt2ll->GetPad(6); //Ahi va el h_mt2mlblbtrue
 	CC6mt2ll->SetGridx(); CC6mt2ll->SetGridy(); 
 
-	TCanvas *CCmt2lblb = new TCanvas("CCmt2lblb", "", 1000, 800);
-	CCmt2lblb->Divide(2, 3);
-	TPad *CC1mt2lblb = (TPad*)CCmt2lblb->GetPad(1); //Ahi va el h_mt2mlblbtrue
-	CC1mt2lblb->SetGridx(); CC1mt2lblb->SetGridy(); 
-	TPad *CC2mt2lblb = (TPad*)CCmt2lblb->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
-	CC2mt2lblb->SetGridx(); CC2mt2lblb->SetGridy(); 
-	TPad *CC3mt2lblb = (TPad*)CCmt2lblb->GetPad(3); //Ahi va el h_mt2mlblbtrue
-	CC3mt2lblb->SetGridx(); CC3mt2lblb->SetGridy(); 
-	TPad *CC4mt2lblb = (TPad*)CCmt2lblb->GetPad(4); //Ahi va el h_mt2mlblbtrue
-	CC4mt2lblb->SetGridx(); CC4mt2lblb->SetGridy(); 
-	TPad *CC5mt2lblb = (TPad*)CCmt2lblb->GetPad(5); //Ahi va el h_mt2mlblbtrue
-	CC5mt2lblb->SetGridx(); CC5mt2lblb->SetGridy(); 
-	TPad *CC6mt2lblb = (TPad*)CCmt2lblb->GetPad(6); //Ahi va el h_mt2mlblbtrue
-	CC6mt2lblb->SetGridx(); CC6mt2lblb->SetGridy(); 
-*/
+
+	TCanvas *CCcut = new TCanvas("CCcut", "", 1000, 800);
+	CCcut->Divide(1, 3);
+	TPad *CCcut1 = (TPad*)CCcut->GetPad(1); //Ahi va el h_mt2mlblbtrue
+	CCcut1->SetLogy(); CCcut1->SetGridx(); CCcut1->SetGridy(); 
+	TPad *CCcut2 = (TPad*)CCcut->GetPad(2); //Ahi va el h_mt2mlblbtrue_cut
+	CCcut2->SetLogy(); CCcut2->SetGridx(); CCcut2->SetGridy(); 
+	TPad *CCcut3 = (TPad*)CCcut->GetPad(3); //Ahi va el h_mt2mlblbtrue
+	CCcut3->SetGridx(); CCcut3->SetGridy(); 
 
 	int HistoCol[2] = {4, 2};
-	int HistoStyle[2] = {1, 2};
 
 	TString Option = "histo";
+
+	TLegend *leg1 = new TLegend(0.4,0.1,0.7,0.4);
+	leg1->AddEntry(h_mt2ll_minitrees[0],"minitree top","l");
+	leg1->AddEntry(h_mt2ll_minitrees[1],"minitree stop","l");
+	leg1->AddEntry(h_mt2ll_S0_TW05[0],"Strategy=0, TopWeight=0.5 top","l");
+	leg1->AddEntry(h_mt2ll_S0_TW05[1],"Strategy=0, TopWeight=0.5 stop","l");
+
+	TLegend *leg2 = new TLegend(0.6,0.1,0.9,0.4);
+	leg2->AddEntry(h_mt2lblb_minitrees[0],"minitree top","l");
+	leg2->AddEntry(h_mt2lblb_minitrees[1],"minitree stop","l");
+	leg2->AddEntry(h_mt2lblb_S0_TW05[0],"Strategy=0, TopWeight=0.5 top","l");
+	leg2->AddEntry(h_mt2lblb_S0_TW05[1],"Strategy=0, TopWeight=0.5 stop","l");
+
+	TLegend *leg3 = new TLegend(0.6,0.1,0.9,0.4);
+	leg3->AddEntry(h_mt2ll_minitrees_Integ[0],"minitree top","l");
+	leg3->AddEntry(h_mt2ll_minitrees_Integ[1],"minitree stop","l");
+	leg3->AddEntry(h_mt2ll_S0_TW05_Integ[0],"Strategy=0, TopWeight=0.5 top","l");
+	leg3->AddEntry(h_mt2ll_S0_TW05_Integ[1],"Strategy=0, TopWeight=0.5 stop","l");
+
+	TLegend *leg4 = new TLegend(0.6,0.1,0.9,0.4);
+	leg4->AddEntry(h_mt2lblb_minitrees_Integ[0],"minitree top","l");
+	leg4->AddEntry(h_mt2lblb_minitrees_Integ[1],"minitree stop","l");
+	leg4->AddEntry(h_mt2lblb_S0_TW05_Integ[0],"Strategy=0, TopWeight=0.5 top","l");
+	leg4->AddEntry(h_mt2lblb_S0_TW05_Integ[1],"Strategy=0, TopWeight=0.5 stop","l");
+
+	TLegend *leg5 = new TLegend(0.6,0.3,0.9,0.6);
+	leg5->AddEntry(h_mt2ll_minitrees_Signif,"minitree","l");
+	leg5->AddEntry(h_mt2ll_S0_TW05_Signif,"Strategy=0, TopWeight=0.5","l");
+
+	TLegend *leg6 = new TLegend(0.4,0.1,0.7,0.4);
+	leg6->AddEntry(h_mt2lblb_minitrees_Signif,"minitree","l");
+	leg6->AddEntry(h_mt2lblb_S0_TW05_Signif,"Strategy=0, TopWeight=0.5","l");
+
+
+	TLegend *legcut1 = new TLegend(0.6,0.1,0.9,0.4);
+	TLegend *legcut2 = new TLegend(0.6,0.1,0.9,0.4);
+	TLegend *legcut3 = new TLegend(0.4,0.1,0.7,0.4);
+
+	for (float cut = low_cut; cut <= high_cut; cut += step) {
+
+		int icut = (cut-low_icut)/istep;
+
+		legcut1->AddEntry(h_mt2lblb_minitrees_cut[0][icut],"minitree top","l");
+		legcut1->AddEntry(h_mt2lblb_minitrees_cut[1][icut],"minitree stop","l");
+		legcut1->AddEntry(h_mt2lblb_S0_TW05_cut[0][icut],"Strategy=0, TopWeight=0.5 top","l");
+		legcut1->AddEntry(h_mt2lblb_S0_TW05_cut[1][icut],"Strategy=0, TopWeight=0.5 stop","l");
+
+
+		legcut2->AddEntry(h_mt2lblb_minitrees_Integ_cut[0][icut],"minitree top","l");
+		legcut2->AddEntry(h_mt2lblb_minitrees_Integ_cut[1][icut],"minitree stop","l");
+		legcut2->AddEntry(h_mt2lblb_S0_TW05_Integ_cut[0][icut],"Strategy=0, TopWeight=0.5 top","l");
+		legcut2->AddEntry(h_mt2lblb_S0_TW05_Integ_cut[1][icut],"Strategy=0, TopWeight=0.5 stop","l");
+
+
+		legcut3->AddEntry(h_mt2lblb_minitrees_Signif_cut[icut],"minitree","l");
+		legcut3->AddEntry(h_mt2lblb_S0_TW05_Signif_cut[icut],"Strategy=0, TopWeight=0.5","l");
+
+	}
+
 
 	for (int dt = 0; dt < 2; dt++) {
 
@@ -329,6 +596,52 @@ void MT2top(bool TestStandardMt2 = false) {
 		h_mt2lblb_S0_TW05[dt] -> SetLineColor(HistoCol[dt]);
 		h_mt2lblb_S0_TW05[dt] -> SetLineStyle(2);
 		h_mt2lblb_S0_TW05[dt] -> SetLineWidth(2);
+
+		h_mt2ll_minitrees_Integ[dt] -> SetLineColor(HistoCol[dt]);
+		h_mt2ll_minitrees_Integ[dt] -> SetLineStyle(1);
+		h_mt2ll_minitrees_Integ[dt] -> SetLineWidth(2);
+		h_mt2ll_S0_TW05_Integ[dt] -> SetLineColor(HistoCol[dt]);
+		h_mt2ll_S0_TW05_Integ[dt] -> SetLineStyle(2);
+		h_mt2ll_S0_TW05_Integ[dt] -> SetLineWidth(2);
+
+		h_mt2lblb_minitrees_Integ[dt] -> SetLineColor(HistoCol[dt]);
+		h_mt2lblb_minitrees_Integ[dt] -> SetLineStyle(1);
+		h_mt2lblb_minitrees_Integ[dt] -> SetLineWidth(2);
+		h_mt2lblb_S0_TW05_Integ[dt] -> SetLineColor(HistoCol[dt]);
+		h_mt2lblb_S0_TW05_Integ[dt] -> SetLineStyle(2);
+		h_mt2lblb_S0_TW05_Integ[dt] -> SetLineWidth(2);
+
+		h_mt2ll_minitrees_Signif -> SetLineColor(1);
+		h_mt2ll_minitrees_Signif -> SetLineStyle(1);
+		h_mt2ll_minitrees_Signif -> SetLineWidth(2);
+		h_mt2ll_S0_TW05_Signif -> SetLineColor(1);
+		h_mt2ll_S0_TW05_Signif -> SetLineStyle(2);
+		h_mt2ll_S0_TW05_Signif -> SetLineWidth(2);
+
+		h_mt2lblb_minitrees_Signif -> SetLineColor(1);
+		h_mt2lblb_minitrees_Signif -> SetLineStyle(1);
+		h_mt2lblb_minitrees_Signif -> SetLineWidth(2);
+		h_mt2lblb_S0_TW05_Signif -> SetLineColor(1);
+		h_mt2lblb_S0_TW05_Signif -> SetLineStyle(2);
+		h_mt2lblb_S0_TW05_Signif -> SetLineWidth(2);
+
+
+		for (float cut = low_cut; cut <= high_cut; cut += step) {
+
+			int icut = (cut-low_icut)/istep;
+
+
+			h_mt2lblb_minitrees_cut[dt][icut] -> SetLineColor(HistoCol[dt]);
+			h_mt2lblb_minitrees_Integ_cut[dt][icut] -> SetLineColor(HistoCol[dt]);
+			h_mt2lblb_minitrees_Signif_cut[icut] -> SetLineColor(HistoColSignif[icut]);
+
+			h_mt2lblb_S0_TW05_cut[dt][icut] ->SetLineStyle(LineStyle[icut]);
+			h_mt2lblb_S0_TW05_Integ_cut[dt][icut] ->SetLineStyle(LineStyle[icut]);
+			h_mt2lblb_S0_TW05_Signif_cut[icut] -> SetLineStyle(1);
+
+
+		}
+
 
 		CC->cd(dt+1); // se pone en el TPad 1 
 
@@ -348,47 +661,126 @@ void MT2top(bool TestStandardMt2 = false) {
 		h_neutrino2_pxy[dt]->SetTitle("neutrino2" + Histoname[dt]);
 		h_neutrino2_pxy[dt]->DrawCopy("box");
 
+
+
+
+
+
 		CCmt2ll->cd(1); // se pone en el TPad 1 
 
-		h_mt2ll_minitrees[dt]->GetXaxis()->SetRangeUser(1, 300);
+		h_mt2ll_minitrees[dt]->GetXaxis()->SetRangeUser(1, 600);
 		h_mt2ll_minitrees[dt]->GetXaxis()->SetTitle("Mt2ll");
-	//	h_mt2ll_minitrees[dt]->GetYaxis()->SetRangeUser(1, 300);
 		h_mt2ll_minitrees[dt]->SetTitle("Mt2ll");
 		h_mt2ll_minitrees[dt]->DrawCopy(Option);
-		h_mt2ll_S0_TW05[dt]->GetXaxis()->SetRangeUser(1, 300);
-	//	h_mt2ll_S0_TW05[dt]->GetYaxis()->SetRangeUser(1, 300);
+		h_mt2ll_S0_TW05[dt]->GetXaxis()->SetRangeUser(1, 600);
 		h_mt2ll_S0_TW05[dt]->DrawCopy("histosame");
 
-		TLegend *leg1 = new TLegend(0.3,0.1,0.5,0.4);
-		leg1->AddEntry(h_mt2ll_minitrees[0],"minitree top","l");
-		leg1->AddEntry(h_mt2ll_minitrees[1],"minitree stop","l");
-		leg1->AddEntry(h_mt2ll_S0_TW05[0],"Strategy=0, TopWeight=0.5 top","l");
-		leg1->AddEntry(h_mt2ll_S0_TW05[1],"Strategy=0, TopWeight=0.5 stop","l");
 		leg1->Draw();
 
 		CCmt2ll->cd(2); // se pone en el TPad 1 
 
-		h_mt2lblb_minitrees[dt]->GetXaxis()->SetRangeUser(1, 300);
+		h_mt2lblb_minitrees[dt]->GetXaxis()->SetRangeUser(1, 600);
 		h_mt2lblb_minitrees[dt]->GetXaxis()->SetTitle("Mt2lblb");
-	//	h_mt2lblb_minitrees[dt]->GetYaxis()->SetRangeUser(1, 300);
 		h_mt2lblb_minitrees[dt]->SetTitle("Mt2lblb");
 		h_mt2lblb_minitrees[dt]->DrawCopy(Option);
-		h_mt2lblb_S0_TW05[dt]->GetXaxis()->SetRangeUser(1, 300);
-	//	h_mt2lblb_S0_TW05[dt]->GetYaxis()->SetRangeUser(1, 300);
+		h_mt2lblb_S0_TW05[dt]->GetXaxis()->SetRangeUser(1, 600);
 		h_mt2lblb_S0_TW05[dt]->DrawCopy("histosame");
-			
-		TLegend *leg2 = new TLegend(0.3,0.1,0.5,0.4);
-		leg2->AddEntry(h_mt2lblb_minitrees[0],"minitree top","l");
-		leg2->AddEntry(h_mt2lblb_minitrees[1],"minitree stop","l");
-		leg2->AddEntry(h_mt2lblb_S0_TW05[0],"Strategy=0, TopWeight=0.5 top","l");
-		leg2->AddEntry(h_mt2lblb_S0_TW05[1],"Strategy=0, TopWeight=0.5 stop","l");
+
 		leg2->Draw();
 
-		Option = "histosame";
+		CCmt2ll->cd(3); // se pone en el TPad 1 
+
+		h_mt2ll_minitrees_Integ[dt]->GetXaxis()->SetRangeUser(1, 600);
+		h_mt2ll_minitrees_Integ[dt]->GetXaxis()->SetTitle("Mt2ll Integ");
+		h_mt2ll_minitrees_Integ[dt]->SetTitle("Mt2ll Integ ");
+		h_mt2ll_minitrees_Integ[dt]->DrawCopy(Option);
+		h_mt2ll_S0_TW05_Integ[dt]->GetXaxis()->SetRangeUser(1, 600);
+		h_mt2ll_S0_TW05_Integ[dt]->DrawCopy("histosame");
+
+		leg3->Draw();
+
+		CCmt2ll->cd(4); // se pone en el TPad 1 
+
+		h_mt2lblb_minitrees_Integ[dt]->GetXaxis()->SetRangeUser(1, 600);
+		h_mt2lblb_minitrees_Integ[dt]->GetXaxis()->SetTitle("Mt2lblb Integ");
+		h_mt2lblb_minitrees_Integ[dt]->SetTitle("Mt2lblb Integ");
+		h_mt2lblb_minitrees_Integ[dt]->DrawCopy(Option);
+		h_mt2lblb_S0_TW05_Integ[dt]->GetXaxis()->SetRangeUser(1, 600);
+		h_mt2lblb_S0_TW05_Integ[dt]->DrawCopy("histosame");
+
+		leg4->Draw();
+
+		CCmt2ll->cd(5); // se pone en el TPad 1 
+
+		h_mt2ll_minitrees_Signif->GetXaxis()->SetRangeUser(1, 600);
+		h_mt2ll_minitrees_Signif->GetXaxis()->SetTitle("Mt2ll Significance");
+		h_mt2ll_minitrees_Signif->SetTitle("Mt2ll Significance");
+		h_mt2ll_minitrees_Signif->DrawCopy(Option);
+		h_mt2ll_S0_TW05_Signif->GetXaxis()->SetRangeUser(1, 600);
+		h_mt2ll_S0_TW05_Signif->DrawCopy("histosame");
+
+		leg5->Draw();
+
+		CCmt2ll->cd(6); // se pone en el TPad 1 
+
+		h_mt2lblb_minitrees_Signif->GetXaxis()->SetRangeUser(1, 600);
+		h_mt2lblb_minitrees_Signif->GetXaxis()->SetTitle("Mt2lblb Significance");
+		h_mt2lblb_minitrees_Signif->SetTitle("Mt2lblb Significance");
+		h_mt2lblb_minitrees_Signif->DrawCopy(Option);
+		h_mt2lblb_S0_TW05_Signif->GetXaxis()->SetRangeUser(1, 600);
+		h_mt2lblb_S0_TW05_Signif->DrawCopy("histosame");
+
+		leg6->Draw();
+
+
+		for (float cut = low_cut; cut <= high_cut; cut += step) {
+
+			int icut = (cut-low_icut)/istep;
+
+			CCcut->cd(1); // se pone en el TPad 1 
+
+			h_mt2lblb_minitrees_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_minitrees_cut[dt][icut]->GetXaxis()->SetTitle("Mt2lblb");
+			h_mt2lblb_minitrees_cut[dt][icut]->SetTitle("Mt2lblb");
+			h_mt2lblb_minitrees_cut[dt][icut]->DrawCopy(Option);
+			h_mt2lblb_S0_TW05_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_S0_TW05_cut[dt][icut]->DrawCopy("histosame");
+
+			legcut1->Draw();
+
+
+			CCcut->cd(2); // se pone en el TPad 1 
+
+			h_mt2lblb_minitrees_Integ_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_minitrees_Integ_cut[dt][icut]->GetXaxis()->SetTitle("Mt2lblb Integ");
+			h_mt2lblb_minitrees_Integ_cut[dt][icut]->SetTitle("Mt2lblb Integ");
+			h_mt2lblb_minitrees_Integ_cut[dt][icut]->DrawCopy(Option);
+			h_mt2lblb_S0_TW05_Integ_cut[dt][icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_S0_TW05_Integ_cut[dt][icut]->DrawCopy("histosame");
+
+			legcut2->Draw();
+
+
+			CCcut->cd(3); // se pone en el TPad 1 
+
+			h_mt2lblb_minitrees_Signif_cut[icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_minitrees_Signif_cut[icut]->GetXaxis()->SetTitle("Mt2lblb Significance");
+			h_mt2lblb_minitrees_Signif_cut[icut]->SetTitle("Mt2lblb Significance");
+			h_mt2lblb_minitrees_Signif_cut[icut]->DrawCopy(Option);
+			h_mt2lblb_S0_TW05_Signif_cut[icut]->GetXaxis()->SetRangeUser(1, 600);
+			h_mt2lblb_S0_TW05_Signif_cut[icut]->DrawCopy("histosame");
+
+			legcut3->Draw();
+
+			Option = "histosame";
+
+		}
+
 
 	}	
 
 	CC->Print("MT2top_neutrino_pxy.png");
 	CCmt2ll->Print("MT2top_S0_TW05.png");
+	CCcut->Print("MT2top_mt2llcut.png");
 
 }
