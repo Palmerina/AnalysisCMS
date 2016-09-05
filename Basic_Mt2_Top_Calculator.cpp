@@ -153,6 +153,8 @@ namespace Mt2 {
     //else Mt2Top = sqrt(sqrt(fabs(best*best - Mt2W*Mt2W)))/Mt2TopWeight;
     else Mt2Top = sqrt(fabs(best - Mt2W*Mt2W))/Mt2TopWeight;
 
+    std::cout << "Mt2Top: " << Mt2Top << std::endl;
+
     return best;    
 
   }

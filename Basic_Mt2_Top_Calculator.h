@@ -130,7 +130,7 @@ namespace Mt2 {
       double theMlb2;
 
       int    theTopStrategy;
-      int    theTopWeight;
+      double    theTopWeight;
 
       double theErrorDef;
 
