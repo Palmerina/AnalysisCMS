@@ -353,10 +353,10 @@ void MT2top(bool TestStandardMt2 = false) {
 				h_mt2ll_S0_TW05[dt] -> Fill(Mt2Strategy0p05.Mt2ll, eventW);
 				h_mt2lblb_minitrees[dt] -> Fill(mt2lblb, eventW);
 				h_mt2lblb_S0_TW05[dt] -> Fill(Mt2Strategy0p05.Mt2lblb, eventW);
-				cout << "mt2ll minitrees: " << mt2ll << endl;
-				cout << "mt2lblb minitrees: " << mt2lblb << endl;
-				cout << "Mt2ll S0_TW05: " <<Mt2Strategy0p05.Mt2ll << endl;
-				cout << "Mt2lblb S0_TW05: " << Mt2Strategy0p05.Mt2lblb << endl;
+				//cout << "mt2ll minitrees: " << mt2ll << endl;
+				//cout << "mt2lblb minitrees: " << mt2lblb << endl;
+				//cout << "Mt2ll S0_TW05: " <<Mt2Strategy0p05.Mt2ll << endl;
+				//cout << "Mt2lblb S0_TW05: " << Mt2Strategy0p05.Mt2lblb << endl;
 			}
 
 			for (int cut = low_icut; cut <= high_icut; cut += istep) {
@@ -415,6 +415,11 @@ void MT2top(bool TestStandardMt2 = false) {
 
 		for (int ib = 1; ib<=nBinsX; ib++) { // loop through the bins
 
+			cout << "mt2ll[i]: " << h_mt2ll_minitrees[hf]->GetBinContent(ib) << endl;
+			cout << "Mt2ll[i]: " << h_mt2ll_S0_TW05[hf]->GetBinContent(ib) << endl;
+			cout << "Mt2lblb[i]: " << h_mt2lblb_minitrees[hf]->GetBinContent(ib) << endl;
+			cout << "mt2lblb[i]: " << h_mt2lblb_S0_TW05[hf]->GetBinContent(ib) << endl;
+			
 			float recursive_integral_mt2ll_minitrees = h_mt2ll_minitrees[hf]->Integral(ib, 3001);
 			h_mt2ll_minitrees_Integ[hf]->SetBinContent(ib, recursive_integral_mt2ll_minitrees); // asigna el valor ThisBinContent al bin ib
 
@@ -654,9 +659,17 @@ void MT2top(bool TestStandardMt2 = false) {
 			h_mt2lblb_minitrees_Integ_cut[dt][icut] -> SetLineColor(HistoColSignif[icut]);
 			h_mt2lblb_minitrees_Signif_cut[icut] -> SetLineColor(HistoColSignif[icut]);
 
+			h_mt2lblb_minitrees_cut[dt][icut] -> SetLineStyle(LineStyle[dt]);
+			h_mt2lblb_minitrees_Integ_cut[dt][icut] -> SetLineStyle(LineStyle[dt]);
+			h_mt2lblb_minitrees_Signif_cut[icut] -> SetLineStyle(LineStyle[dt]);
+
 			h_mt2lblb_S0_TW05_cut[dt][icut] ->SetLineStyle(LineStyle[dt]);
 			h_mt2lblb_S0_TW05_Integ_cut[dt][icut] ->SetLineStyle(LineStyle[dt]);
 			h_mt2lblb_S0_TW05_Signif_cut[icut] -> SetLineStyle(1);
+
+			h_mt2lblb_S0_TW05_cut[dt][icut] ->SetLineColor(HistoColSignif[icut]);
+			h_mt2lblb_S0_TW05_Integ_cut[dt][icut] ->SetLineColor(HistoColSignif[icut]);
+			h_mt2lblb_S0_TW05_Signif_cut[icut] -> SetLineColor(HistoColSignif[icut]);
 
 
 		}
