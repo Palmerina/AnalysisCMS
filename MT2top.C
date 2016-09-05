@@ -159,7 +159,6 @@ Mt2Result ComputeMt2Top(Mt2::LorentzVector& Lepton1,  Mt2::LorentzVector& Lepton
 		Mt2::TwoVector& ptmiss, double mEachInvisible, 
 		int Mt2TopStrategy, float Mt2TopWeight) {
 
-	cout << "ComputeMt2Top"<< endl;
 
 	double Mt2W[2], Mt2Top[2], NeuAPx[2], NeuAPy[2], NeuBPx[2], NeuBPy[2];
 
@@ -204,7 +203,6 @@ Mt2Result ComputeMt2Top(Mt2::LorentzVector& Lepton1,  Mt2::LorentzVector& Lepton
 
 void MT2top(bool TestStandardMt2 = false) {
 
-	cout << "MT2top" << endl;
 
 	//TString FileName[2] = {"/afs/cern.ch/user/p/palmerin/public/TTTo2L2Nu.root",
 	//"/afs/cern.ch/user/p/palmerin/public/T2tt_mStop500-525-550_mLSP1to425-325to450-1to475.root"};
@@ -212,7 +210,6 @@ void MT2top(bool TestStandardMt2 = false) {
 	TString FileName[2] = {"minitrees/minitreesLuca/TTTo2L2Nu.root",
 		"minitrees/minitreesLuca/T2tt_mStop600-950_mLSP1to450.root"};
 
-	cout << "FileName" << endl;
 
 	TString Histoname[2]={"_top", "_stop"};
 
@@ -271,7 +268,7 @@ void MT2top(bool TestStandardMt2 = false) {
 
 			int icut = (cut-low_icut)/istep;
 			char scut [50];
-			sprintf(scut, "_%.f", cut);
+			sprintf(scut, "_%.d", cut);
 
 			h_mt2lblb_minitrees_cut[dt][icut] = new TH1D("h_mt2lblb_minitrees_cut" + Histoname[dt] + scut,"h_mt2lblb_minitrees_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
 
@@ -281,7 +278,6 @@ void MT2top(bool TestStandardMt2 = false) {
 			h_mt2lblb_S0_TW05_Integ_cut[dt][icut] = new TH1D("h_mt2lblb_S0_TW05_Integ_cut" + Histoname[dt] + scut,"h_mt2lblb_S0_TW05_Integ_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
 			h_mt2lblb_minitrees_Signif_cut[icut] = new TH1D("h_mt2lblb_minitrees_Signif_cut" + Histoname[dt] + scut,"h_mt2lblb_minitrees_Signif_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
 			h_mt2lblb_S0_TW05_Signif_cut[icut] = new TH1D("h_mt2lblb_S0_TW05_Signif_cut" + Histoname[dt] + scut,"h_mt2lblb_S0_TW05_Signif_cut" + Histoname[dt] + scut, 300, 0, 3000); //2 histos para top y stop
-			cout << "new TH1D" << endl;
 
 		}
 
@@ -296,7 +292,6 @@ void MT2top(bool TestStandardMt2 = false) {
 
 		for (Int_t i = 0; i<nentries; i++) {
 
-			cout << "eventW" <<Histoname[dt] << eventW << endl;
 			MiniTree->GetEntry(i);
 
 			// Apply ttbar selection
@@ -343,7 +338,7 @@ void MT2top(bool TestStandardMt2 = false) {
 			const double mT2lblb = Mt2Calcolator.mt2_332(visUA, visUB, pT_Miss, m_invis_mass);
 
 			Mt2Result Mt2Strategy0p999 = ComputeMt2Top(Lepton1, Lepton2, Bottom1, Bottom2, pT_Miss, m_invis_mass, 0, 999.);
-			Mt2Result Mt2Strategy0p05 = ComputeMt2Top(Lepton1, Lepton2, Bottom1, Bottom2, pT_Miss, m_invis_mass, 0, 500.0);
+			Mt2Result Mt2Strategy0p05 = ComputeMt2Top(Lepton1, Lepton2, Bottom1, Bottom2, pT_Miss, m_invis_mass, 0, 0.5);
 
 			//cout << "peso 999: " << Mt2Strategy0p999.Mt2lblb << endl;
 			//std::cout << "Test mt2lblb " << mt2lblb << " " << mt2lblbcomb << " " << mT2lblb << " " << Mt2Strategy0p999.Mt2lblb << std::endl;
@@ -358,10 +353,10 @@ void MT2top(bool TestStandardMt2 = false) {
 				h_mt2ll_S0_TW05[dt] -> Fill(Mt2Strategy0p05.Mt2ll, eventW);
 				h_mt2lblb_minitrees[dt] -> Fill(mt2lblb, eventW);
 				h_mt2lblb_S0_TW05[dt] -> Fill(Mt2Strategy0p05.Mt2lblb, eventW);
-				//cout << "mt2ll minitrees: " << mt2ll << endl;
-				//cout << "mt2lblb minitrees: " << mt2lblb << endl;
-				//cout << "Mt2ll S0_TW05: " <<Mt2Strategy0p05.Mt2ll << endl;
-				//cout << "Mt2lblb S0_TW05: " << Mt2Strategy0p05.Mt2lblb << endl;
+				cout << "mt2ll minitrees: " << mt2ll << endl;
+				cout << "mt2lblb minitrees: " << mt2lblb << endl;
+				cout << "Mt2ll S0_TW05: " <<Mt2Strategy0p05.Mt2ll << endl;
+				cout << "Mt2lblb S0_TW05: " << Mt2Strategy0p05.Mt2lblb << endl;
 			}
 
 			for (int cut = low_icut; cut <= high_icut; cut += istep) {
